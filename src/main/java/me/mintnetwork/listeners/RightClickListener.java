@@ -55,8 +55,12 @@ public class RightClickListener implements Listener {
             //Air Dash
             if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Air Dash")) {
                 p.getPlayer().setGravity(false);
-                p.setVelocity();
-                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask()
+//                p.setVelocity();
+                Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                    public void run() {
+
+                    }
+                },100);
 
             }
 

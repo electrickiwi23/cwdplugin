@@ -6,3 +6,5 @@ authors: [ ElectricKiwi ]
 commands:
   givewands:
     description: gives you the wand
+  test:
+    description: test!

@@ -25,7 +25,7 @@ public class Mana {
             playerMana.put(uuid, null);
             manaCounter.put(uuid, null);
         }
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
                 for (String player : playerMana.keySet()) {

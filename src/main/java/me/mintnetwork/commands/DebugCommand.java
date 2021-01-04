@@ -33,15 +33,17 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        Player p = (Player) sender;
-        World world = Bukkit.getServer().getWorld("world");
+        System.out.println("running exp code");
+
+        Bukkit.getServer().getScheduler().cancelTasks(plugin);
+
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             String uuid = player.getUniqueId().toString();
-            playerMana.put(uuid, null);
-            manaCounter.put(uuid, null);
+            playerMana.put(uuid, 0);
+            manaCounter.put(uuid, 0);
         }
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
                 for (String player : playerMana.keySet()) {
@@ -56,9 +58,6 @@ public class DebugCommand implements CommandExecutor {
                 }
             }
         },0,10);
-
-
-
         return false;
     }
 }

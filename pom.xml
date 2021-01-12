@@ -80,5 +80,13 @@
             <version>6.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.aim</groupId>
+            <artifactId>ParticleProjectileApi</artifactId>
+            <version>6.4</version>
+            <scope>system</scope>
+            <systemPath>D:/test_server1.16.4/plugins/ParticleProjectileApi.jar</systemPath>
+
+        </dependency>
     </dependencies>
 </project>

@@ -2,12 +2,13 @@ package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.block.data.type.Snow;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,28 +27,17 @@ public class ProjectileHitListener implements Listener {
 
 
     @EventHandler
-    public void onHit(EntityDamageByEntityEvent event) {
-        Entity entity = event.getDamager();
-        if ((entity instanceof Arrow)) {
-
-
-
-            System.out.println("hit");
-            Entity victim = event.getEntity();
-
-            if (victim instanceof LivingEntity) {
-
-                LivingEntity living = (LivingEntity) victim;
-                Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                                living.setCustomName(String.valueOf(living.getHealth()));
-                                living.setNoDamageTicks(0);
-                            }
-                        });
-
+    public void onHit(ProjectileHitEvent event) {
+        Projectile e = event.getEntity();
+        System.out.println("Hit");
+        if (e instanceof Snowball) {
+            if (e.doesBounce()) {
+                Vector d = e.getVelocity();
+                Vector n = event.getHitBlockFace().getDirection().normalize();
+                Vector v = d.subtract(n.multiply(d.dot(n) * 2));
+                Snowball b = (Snowball) e.getWorld().spawnEntity(e.getLocation().add(n.multiply(-.5)), EntityType.SNOWBALL);
+                b.setVelocity(v.multiply(.4));
             }
         }
-
     }
 }

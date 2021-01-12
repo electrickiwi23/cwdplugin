@@ -53,7 +53,7 @@ public class Cast {
                         if(projectile.getLocation().distance(stand.getLocation())<=4.5) {
                             Vector d = projectile.getVelocity();
                             Vector n = stand.getLocation().toVector().subtract(projectile.getLocation().toVector()).normalize().multiply(-1);
-                            projectile.setVelocity(d.subtract(n.multiply(d.dot(n)*2)));
+                            if (d.dot(n)<=0&&projectile.getLocation().distance(stand.getLocation())>=3) projectile.setVelocity(d.subtract(n.multiply(d.dot(n)*2)));
                         }
                     }
 

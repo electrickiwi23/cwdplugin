@@ -4,7 +4,6 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.ShieldEffect;
 import de.slikey.effectlib.effect.SphereEffect;
 import de.slikey.effectlib.effect.TraceEffect;
-import jdk.internal.access.JavaIOFileDescriptorAccess;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.Mana;
 import org.bukkit.Bukkit;

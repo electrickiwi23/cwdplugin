@@ -2,7 +2,6 @@ package me.mintnetwork.listeners;
 
 //import com.aim.coltonjgriswold.api.ParticleProjectile;
 //import me.mintnetwork.spells.projectiles.BloodBolt;
-import com.aim.coltonjgriswold.api.ParticleProjectile;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.AtomEffect;
 import de.slikey.effectlib.effect.LineEffect;
@@ -10,7 +9,6 @@ import de.slikey.effectlib.effect.SphereEffect;
 import de.slikey.effectlib.effect.TraceEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.spells.Cast;
-import me.mintnetwork.spells.projectiles.BloodBolt;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Ladder;

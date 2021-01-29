@@ -23,8 +23,6 @@ public class DebugCommand implements CommandExecutor {
         plugin.getCommand("test").setExecutor(this);
     }
 
-    Map<String, Integer> playerMana = new HashMap<String, Integer>();
-    Map<String, Integer> manaCounter = new HashMap<String, Integer>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -33,31 +31,8 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        System.out.println("running exp code");
+        System.out.println(((Player) sender).getInventory().getItemInMainHand());
 
-        Bukkit.getServer().getScheduler().cancelTasks(plugin);
-
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String uuid = player.getUniqueId().toString();
-            playerMana.put(uuid, 0);
-            manaCounter.put(uuid, 0);
-        }
-        Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                for (String player : playerMana.keySet()) {
-                    if (playerMana.get(player)<10){
-                        manaCounter.replace(player, manaCounter.get(player)+1);
-                        if (manaCounter.get(player)>=6) {
-                            playerMana.replace(player, playerMana.get(player) + 1);
-                            Bukkit.getPlayer(UUID.fromString(player)).setLevel(playerMana.get(player));
-                            manaCounter.replace(player, 0);
-                        }
-                    }
-                }
-            }
-        },0,10);
         return false;
     }
 }

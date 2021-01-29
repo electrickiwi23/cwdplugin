@@ -1,20 +1,12 @@
 package me.mintnetwork.listeners;
 
-//import com.aim.coltonjgriswold.api.ParticleProjectile;
-//import me.mintnetwork.spells.projectiles.BloodBolt;
-import com.aim.coltonjgriswold.api.ParticleProjectile;
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.AtomEffect;
-import de.slikey.effectlib.effect.LineEffect;
-import de.slikey.effectlib.effect.SphereEffect;
-import de.slikey.effectlib.effect.TraceEffect;
+import de.slikey.effectlib.effect.CloudEffect;
+import de.slikey.effectlib.effect.DiscoBallEffect;
+import de.slikey.effectlib.effect.DragonEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.spells.Cast;
-import me.mintnetwork.spells.projectiles.BloodBolt;
 import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Ladder;
-import org.bukkit.block.data.type.TNT;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.EquipmentSlot;
 import me.mintnetwork.utils.Utils;
@@ -24,14 +16,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class RightClickListener implements Listener {
 
@@ -49,35 +36,22 @@ public class RightClickListener implements Listener {
 
     @EventHandler
     public void onClick(PlayerInteractEvent event) {
-        Player p = (Player) event.getPlayer();
-        EffectManager em = new EffectManager(plugin);
-
-
-        if (lastUsed.containsKey(p.getUniqueId())) {
-            if (System.currentTimeMillis() - lastUsed.get(p.getUniqueId()) < 580) {
-
-                return;
+        if (event.getPlayer() != null) {
+            Player p = event.getPlayer();
+            EffectManager em = new EffectManager(plugin);
+            if (lastUsed.containsKey(p.getUniqueId())) {
+                if (System.currentTimeMillis() - lastUsed.get(p.getUniqueId()) < 380) {
+                    return;
+                }
             }
-        }
-        lastUsed.put(p.getUniqueId(), System.currentTimeMillis());
-        Block targetBlock = p.getTargetBlock((Set<Material>) null, 100);
-        if (p.getInventory().getItemInMainHand() != null) {
-            if (event.getHand().equals(EquipmentSlot.HAND)) {
-                if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                    if (Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName().contains("Blood Bolt")) {
-                        Snowball grenade = p.launchProjectile(Snowball.class);
-                        Vector v = p.getEyeLocation().getDirection();
-                        grenade.setItem(new ItemStack(Material.REDSTONE_BLOCK));
-                        grenade.setGravity(false);
-                        BukkitTask particle = Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        grenade.setVelocity(v);
-                                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED,3);
-                                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 3, .1, .1, .1, dust);
-                                    }
-                                },1,1);
-
+            lastUsed.put(p.getUniqueId(), System.currentTimeMillis());
+            if (!p.getInventory().getItemInMainHand().equals(new ItemStack(Material.AIR, 0))) {
+                if (event.getHand() != null) {
+                    if (event.getHand().equals(EquipmentSlot.HAND)) {
+                        if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                            if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Blood Bolt")) {
+                                    Cast.ShadowInvis(p,plugin);
 //                        ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
 //                        stand.addScoreboardTag("BlackHole");
 //                        stand.setVisible(false);
@@ -136,21 +110,42 @@ public class RightClickListener implements Listener {
 //                        effect.duration = 1;
 //                        effect.setLocation(p.getLocation().add(0,0,0));
 //                        em.start(effect);
-                                //TNT bolt
-                    }
-                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
-                        if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
-                            Cast.FireworkBolt(p);
+                                    //TNT bolt
+                                }
+                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
+                                        Cast.BeeBolt(p,plugin);
+//                                        if (event.getClickedBlock() != null) {
+//                                            Cast.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
+//                                        }
+
+                                    }
+//                            p.launchProjectile(SmallFireball.class);
+//                            Cast.FireworkBolt(p);
+                                }
+                                //End Warp
+                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
+                                    Cast.PaintBomb(p,plugin);
+//                        Cast.BloodSacrifice(p);
+                                }
+                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Sniper Bolt")) {
+                                    if (event.getClickedBlock() != null) {
+                                        Cast.BeamPillar(p,plugin, event.getClickedBlock(),event.getBlockFace(),em);
+                                    }
+                                }
+
+//                        Cast.ShadowInvis(p,plugin);
+//                        Cast.ShieldDome(p, em, plugin);
+                                //Air Dash
+                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Air Dash")) {
+                                    System.out.println("yo");
+
+                                }
+                            }
                         }
                     }
-                    //End Warp
-                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
-                        Cast.ShieldDome(p, em, plugin);
-                    }
-                    //Air Dash
-                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Air Dash")) {
-
-                    }
+                } else {
+                    System.out.println("your hand is empty");
                 }
             }
         }

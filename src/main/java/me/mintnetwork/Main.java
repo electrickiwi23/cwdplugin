@@ -4,7 +4,6 @@ import me.mintnetwork.commands.DebugCommand;
 import me.mintnetwork.commands.GiveWand;
 import me.mintnetwork.listeners.*;
 import me.mintnetwork.initialization.ScoreboardInit;
-import me.mintnetwork.listeners.DamageListener;
 import me.mintnetwork.listeners.ProjectileHitListener;
 import me.mintnetwork.listeners.RightClickListener;
 import me.mintnetwork.repeaters.Mana;
@@ -35,6 +34,7 @@ public final class Main extends JavaPlugin {
 
         new ScoreboardInit(this);
         new Ultimate(this);
+        //hello
 
 
     }

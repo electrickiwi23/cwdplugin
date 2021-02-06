@@ -1,5 +1,6 @@
 package me.mintnetwork.spells.projectiles;
 
+import de.slikey.effectlib.Effect;
 import me.mintnetwork.Main;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
@@ -52,4 +53,7 @@ public class ProjectileInfo {
 
     public static Map<Entity, Boolean> getPillarCoolDown() {return pillarCoolDown;}
 
+    public static Map<Entity, Effect> visualEffect = new HashMap<>();
+
+    public static Map<Entity, Effect> getVisualEffect() {return visualEffect;}
 }

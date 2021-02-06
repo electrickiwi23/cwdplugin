@@ -1,12 +1,15 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.Color;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -33,6 +36,26 @@ public class StatusEffects {
 
     public static Map<LivingEntity, Integer> getPaintTimer(){return paintTimer; }
 
+    public static Map<LivingEntity, Integer> speedTimer = new HashMap<>();
+
+    public static Map<LivingEntity, Integer> getSpeedTimer(){return speedTimer; }
+
+    public static Map<Player, LivingEntity> ShadowGrappled = new HashMap<>();
+
+    public static Map<Player, LivingEntity> getShadowGrappled(){return ShadowGrappled; }
+
+    public static Map<LivingEntity, Player> ShadowGrappler = new HashMap<>();
+
+    public static Map<LivingEntity, Player> getShadowGrappler(){ return  ShadowGrappler; }
+
+    public static Map<LivingEntity, Integer> ShadowGrappleTimer = new HashMap<>();
+
+    public static Map<LivingEntity, Integer> getShadowGrappleTimer(){return ShadowGrappleTimer; }
+
+    public static Map<LivingEntity, Entity> ShadowGrappleStand = new HashMap<>();
+
+    public static Map<LivingEntity, Entity> getShadowGrappleStand(){return ShadowGrappleStand;}
+
     public void statusEffects(Main plugin) {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
@@ -51,17 +74,52 @@ public class StatusEffects {
 
                     e.getWorld().spawnParticle(Particle.REDSTONE,e.getLocation().add(0,1,0),1,.25,.45,.25,0, dust);
 
-
                     if (paintTimer.get(e)<=0){
                         paintTimer.remove(e);
                     }
                     if (e.isDead()){
                         paintTimer.remove(e);
                     }
+                }
+                for (LivingEntity e: speedTimer.keySet()) {
+                    speedTimer.replace(e,speedTimer.get(e)-1);
+
+                    if (speedTimer.get(e)<=0){
+                        speedTimer.remove(e);
+                    }
+                    if (e.isDead()){
+                        speedTimer.remove(e);
+                    }
 
                 }
+                for (LivingEntity e: ShadowGrappleTimer.keySet()) {
+                    ShadowGrappleTimer.replace(e,ShadowGrappleTimer.get(e)+1);
+                    if (ShadowGrappleTimer.get(e)>=60){
+                        ShadowGrappleCancel(e);
+                    }
+                }
             }
+
         }, 0, 2);
+    }
+
+    public static void ShadowGrappleCancel(LivingEntity e){
+        e.setCustomNameVisible(true);
+
+        e.removePotionEffect(PotionEffectType.BLINDNESS);
+        e.removePotionEffect(PotionEffectType.WEAKNESS);
+        ShadowGrappler.get(e).removePotionEffect(PotionEffectType.WEAKNESS);
+
+        if (e.getVehicle()!=null){
+            Entity vehicle = e.getVehicle();
+            vehicle.eject();
+            vehicle.remove();
+
+        }
+
+        ShadowGrappleTimer.remove(e);
+        ShadowGrappled.remove(ShadowGrappler.get(e));
+        ShadowGrappler.remove(e);
     }
 
 

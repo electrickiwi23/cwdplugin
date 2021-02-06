@@ -19,6 +19,8 @@ public class ScoreboardInit implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         Scoreboard dummy = createScoreboard(e.getPlayer());
@@ -30,11 +32,13 @@ public class ScoreboardInit implements Listener {
         updateScoreboard();
     }
 
-    public Scoreboard getScoreboard(Player player){
+    public Scoreboard scoreboard = null;
+
+    public static Scoreboard getScoreboard(Player player){
         return createScoreboard(player);
     }
 
-    public Scoreboard createScoreboard(Player player) {
+    public static Scoreboard createScoreboard(Player player) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
         // Temporary placeholders and setting the scoreboard
@@ -52,8 +56,8 @@ public class ScoreboardInit implements Listener {
         // Setting player prefixes and team characteristics
         red.setPrefix(ChatColor.RED + "[RED]" + ChatColor.WHITE);
         blue.setPrefix(ChatColor.DARK_BLUE + "[BLUE]" + ChatColor.WHITE);
-        yellow.setPrefix(ChatColor.RED + "[YELLOW]" + ChatColor.WHITE);
-        green.setPrefix(ChatColor.DARK_BLUE + "[GREEN]" + ChatColor.WHITE);
+        yellow.setPrefix(ChatColor.YELLOW + "[YELLOW]" + ChatColor.WHITE);
+        green.setPrefix(ChatColor.GREEN + "[GREEN]" + ChatColor.WHITE);
 
         red.setAllowFriendlyFire(false);
         blue.setAllowFriendlyFire(false);

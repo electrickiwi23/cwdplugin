@@ -1,5 +1,6 @@
 package me.mintnetwork.listeners;
 
+import de.slikey.effectlib.Effect;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -16,6 +17,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -40,6 +42,7 @@ public class ProjectileHitListener implements Listener {
         Projectile e = event.getEntity();
         LivingEntity hit = null;
         BlockFace hitFace = null;
+        Block hitBlock = null;
         if (event.getHitEntity()!=null) {
             if (event.getHitEntity() instanceof LivingEntity) {
                 hit = (LivingEntity) event.getHitEntity();
@@ -48,20 +51,67 @@ public class ProjectileHitListener implements Listener {
         if (event.getHitBlockFace()!=null){
             hitFace = event.getHitBlockFace();
         }
+        if (event.getHitBlock()!=null){
+            hitBlock = event.getHitBlock();
+        }
+        if (event.getHitBlock()!=null){
+            hitBlock = event.getHitBlock();
+        }
         LivingEntity shooter = (LivingEntity) e.getShooter();
         Map<Entity,String> ID = ProjectileInfo.getProjectileID();
         Map<Entity, BukkitTask> task = ProjectileInfo.getTickCode();
         Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
         Map<Entity, List<Double>> offset = ProjectileInfo.getStickyOffset();
+        Map<Entity, Effect> effectMap = ProjectileInfo.getVisualEffect();
+        if ((e instanceof Arrow)) {
+            if (ID.containsKey(e)) {
+                 if (ID.get(e).equals("Wind Arrow")) {
+                     if (hit != null) {
+                         LivingEntity finalHit = hit;
+                         Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
+                             @Override
+                             public void run() {
+                                 finalHit.setCustomName(String.valueOf(finalHit.getHealth()));
+                                 finalHit.setNoDamageTicks(0);
+                             }
+                         });
+                     }
+                     task.get(e).cancel();
+                 }
+            }
+
+        }
         if (e instanceof Snowball) {
             Snowball snow = (Snowball) e;
             if (ID.containsKey(snow)) {
+                if (ID.get(snow).equals("FireBolt")) {
+                    if (hit != null) {
+                        hit.damage(2,snow);
+                        hit.setFireTicks(60);
+                    }
+                    if (hitBlock != null) {
+                        hitBlock.getLocation().add(hitFace.getDirection()).getBlock().setType(Material.FIRE);
+                    }
+                    task.get(snow).cancel();
+                }
+
+                if (ID.get(snow).equals("Grab Hook")) {
+                    if (hit != null) {
+                        hit.setFireTicks(100);
+                    }
+                }
+                if (ID.get(snow).equals("Black Hole")){
+                    snow.remove();
+                    task.get(snow).cancel();
+                    effectMap.get(snow).cancel();
+                }
+
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
                         hit.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 3));
                         shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                     }
-                    task.get(snow).cancel();
+
                 }
                 if (ID.get(snow).equals("HealBolt")) {
                     if (hit != null) {
@@ -109,7 +159,31 @@ public class ProjectileHitListener implements Listener {
 
                 }
 
-
+                if (ID.get(snow).equals("SnowBolt")) {
+                    task.get(snow).cancel();
+                    snow.getWorld().spawnParticle(Particle.SNOWBALL, snow.getLocation(), 20, 0, 0, 0, 100);
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.WHITE, 1);
+                    snow.getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 30, 1.5, 1.5, 1.5, dust);
+                    for (Entity entity : snow.getNearbyEntities(4, 4, 4)) {
+                        if (entity instanceof LivingEntity) {
+                            ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2));
+                        }
+                    }
+                    for (int j = 0; j < 9; j++) {
+                        for (int k = 0; k < 9; k++) {
+                            if (!(Math.abs(j - 3) == 3 && Math.abs(k - 4) == 3)) {
+                                for (int l = 0; l < 9; l++) {
+                                    Location block = new Location(snow.getWorld(), snow.getLocation().getX() + j - 3, snow.getLocation().getY() + k - 3, snow.getLocation().getZ() + l - 3);
+                                    if (block.getBlock().getType().isAir()) {
+                                        if (block.add(0, -1, 0).getBlock().getType().isSolid()) {
+                                            block.add(0, 1, 0).getBlock().setType(Material.SNOW);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 if (ID.get(snow).equals("StickyTNT")) {
                     if (hit != null) {

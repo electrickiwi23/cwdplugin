@@ -4,6 +4,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,6 +39,13 @@ public class TakeDamageListener implements Listener {
                 System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
+        }
+        if (entity instanceof LivingEntity){
+            LivingEntity living = (LivingEntity) entity;
+        Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
+        if (ShadowGrappler.containsKey(living)) {
+            StatusEffects.ShadowGrappleCancel(living);
+        }
         }
     }
 }

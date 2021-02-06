@@ -4,7 +4,9 @@ import me.mintnetwork.Main;
 import me.mintnetwork.commands.GiveWand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.*;
 
@@ -21,6 +23,11 @@ public class Mana implements Listener {
 
     public static Map<Player, Integer> getPlayerMana() {return playerMana; }
 
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        playerMana.put(e.getPlayer(), 0);
+        manaCounter.put(e.getPlayer(), 0);
+    }
 
     public static boolean spendMana(Player p, int c) {
         boolean has = playerMana.get(p)>=c;

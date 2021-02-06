@@ -3,10 +3,13 @@
 //import me.mintnetwork.Main;
 //import me.mintnetwork.initialization.ScoreboardInit;
 //import org.bukkit.Bukkit;
+//import org.bukkit.ChatColor;
 //import org.bukkit.command.Command;
 //import org.bukkit.command.CommandExecutor;
 //import org.bukkit.command.CommandSender;
 //import org.bukkit.entity.Player;
+//import org.bukkit.scoreboard.Scoreboard;
+//import org.bukkit.scoreboard.Team;
 //
 //import java.lang.reflect.Array;
 //import java.util.*;
@@ -32,11 +35,16 @@
 //
 //        if (p.hasPermission("cwd.assign")) {
 //
-//            ScoreboardInit.getScoreboard();
+//            Scoreboard board = ScoreboardInit.getScoreboard(p);
 //
 //            Random random = new Random();
 //
 //            String team;
+//
+//            Team red = board.getTeam("Red");
+//            Team blue = board.getTeam("Blue");
+//
+//
 //            // if both teams have the same amount of players....
 //            if (red.getPlayers().size() == blue.getPlayers().size()) {
 //                // add to a random team

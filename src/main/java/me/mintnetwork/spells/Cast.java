@@ -1,11 +1,10 @@
 package me.mintnetwork.spells;
 
 import com.sun.tools.javac.jvm.Items;
+import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.CircleEffect;
-import de.slikey.effectlib.effect.LineEffect;
-import de.slikey.effectlib.effect.SphereEffect;
-import de.slikey.effectlib.effect.TraceEffect;
+import de.slikey.effectlib.effect.*;
+import jdk.internal.icu.util.CodePointTrie;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
@@ -32,7 +31,9 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
+import java.util.zip.Adler32;
 
 public class Cast {
 
@@ -40,6 +41,58 @@ public class Cast {
 
     public Cast(Main plugin) {
         this.plugin = plugin;
+    }
+
+    public static void SpeedBoost(Player p){
+        Map<LivingEntity, Integer> speedMap = StatusEffects.getSpeedTimer();
+        if (!speedMap.containsKey(p)) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1,false,true));
+            speedMap.put(p,30);
+
+        }
+    }
+
+    public static void ForcePull(Player p,Plugin plugin,EffectManager em){
+        int distance = 15;
+        Location start = p.getEyeLocation();
+        RayTraceResult ray = p.getWorld().rayTraceBlocks(start,start.getDirection(),distance,FluidCollisionMode.NEVER,true);
+        if (ray != null){
+            distance = (int) Math.ceil(ray.getHitPosition().distance(start.toVector()));
+        }
+
+        final Location[] Current = {p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(distance)).setDirection(p.getEyeLocation().getDirection().multiply(-1))};
+        VortexEffect effect = new VortexEffect(em);
+        effect.setLocation(Current[0]);
+        effect.radius = 3;
+        effect.circles = 20;
+        effect.iterations = distance;
+        effect.particle = Particle.BUBBLE_POP;
+        List<Entity> CantHit = new ArrayList<>();
+        CantHit.add(p);
+
+        em.start(effect);
+        final int[] count = {0};
+        int finalDistance = distance;
+        BukkitTask task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                count[0]++;
+                for (Entity e: Current[0].getWorld().getNearbyEntities(Current[0],3,3,3)) {
+                    if (e instanceof LivingEntity){
+                        if (!(e instanceof ArmorStand)){
+                            if (!CantHit.contains(e)) {
+                                e.setVelocity(e.getVelocity().add(e.getLocation().toVector().subtract(start.toVector()).multiply(-1).add(new Vector(0, 1, 0)).normalize().multiply(1.5)));
+                                CantHit.add(e);
+                            }
+                        }
+                    }
+                }
+                Current[0] = Current[0].add(Current[0].getDirection());
+                if (count[0]>= finalDistance){
+                    this.cancel();
+                }
+            }
+        }.runTaskTimer(plugin,1,1);
     }
 
     public static void ShieldDome(Player p, EffectManager em, Plugin plugin) {
@@ -197,6 +250,13 @@ public class Cast {
                     bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
                 }
             }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    tick.get(bolt).cancel();
+                    bolt.remove();
+                }
+            }, 100);
         }
     }
 
@@ -219,6 +279,16 @@ public class Cast {
             pillar.getEquipment().setHelmet(new ItemStack(Material.BLACK_CONCRETE));
             pillar.setSilent(true);
 
+            CircleEffect effect = new CircleEffect(em);
+            effect.enableRotation = false;
+            effect.setLocation(pillar.getLocation());
+            effect.radius = 7;
+            effect.particle = Particle.REDSTONE;
+            effect.particleCount = 1;
+            effect.particleSize = 3;
+            effect.color = Color.BLACK;
+            em.start(effect);
+
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             tick.put(pillar, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
                 @Override
@@ -226,40 +296,42 @@ public class Cast {
                     pillar.getWorld().spawnParticle(Particle.REDSTONE, pillar.getLocation().add(0, 1, 0), 8, .2, .4, .2, 0, new Particle.DustOptions(Color.BLACK, 2));
                     pillar.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, pillar.getLocation().add(0, 2, 0), 4, 0, 0, 0, 1);
                     for (Entity e : pillar.getNearbyEntities(7, 7, 7)) {
-                        boolean voidable = false;
-                        boolean grenade = false;
-                        if (e instanceof TNTPrimed) {
-                            voidable = true;
-                        }
-                        if (e instanceof Firework) {
-                            voidable = true;
-                        }
-                        if (ID.containsKey(e)) {
-                            if (ID.get(e).equals("TNTGrenade")) {
+                        if (e.getLocation().distance(pillar.getLocation())<=7){
+                            boolean voidable = false;
+                            boolean grenade = false;
+                            if (e instanceof TNTPrimed) {
                                 voidable = true;
-                                grenade = true;
                             }
-                            if (ID.get(e).equals("StickyTNT")) {
+                            if (e instanceof Firework) {
                                 voidable = true;
-                                grenade = true;
                             }
-                        }
-                        if (voidable) {
-                            LineEffect line = new LineEffect(em);
-                            line.setTargetLocation(e.getLocation());
-                            line.setLocation(pillar.getLocation());
-                            line.particle = Particle.REDSTONE;
-                            line.color = Color.BLACK;
-                            line.particleSize = 2;
-                            em.start(line);
-                            if (grenade) {
-                                Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
-                                Map<Entity, BukkitTask> activate = ProjectileInfo.getActivateCode();
-                                tick.get(e).cancel();
-                                linked.get(e).remove();
-                                activate.get(e).cancel();
+                            if (ID.containsKey(e)) {
+                                if (ID.get(e).equals("TNTGrenade")) {
+                                    voidable = true;
+                                    grenade = true;
+                                }
+                                if (ID.get(e).equals("StickyTNT")) {
+                                    voidable = true;
+                                    grenade = true;
+                                }
                             }
-                            e.remove();
+                            if (voidable) {
+                                LineEffect line = new LineEffect(em);
+                                line.setTargetLocation(e.getLocation());
+                                line.setLocation(pillar.getLocation());
+                                line.particle = Particle.REDSTONE;
+                                line.color = Color.BLACK;
+                                line.particleSize = 2;
+                                em.start(line);
+                                if (grenade) {
+                                    Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
+                                    Map<Entity, BukkitTask> activate = ProjectileInfo.getActivateCode();
+                                    tick.get(e).cancel();
+                                    linked.get(e).remove();
+                                    activate.get(e).cancel();
+                                }
+                                e.remove();
+                            }
                         }
                         if (pillar.isDead()) {
                             tick.get(pillar).cancel();
@@ -516,6 +588,54 @@ public class Cast {
 
     }
 
+    public static void FireBolt(Player p,Plugin plugin){
+        if (Mana.spendMana(p, 2)) {
+            Snowball bolt = p.launchProjectile(Snowball.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(bolt, p.getEyeLocation().getDirection());
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            bolt.setItem(new ItemStack(Material.FIRE_CHARGE));
+            bolt.setFireTicks(600);
+            bolt.setGravity(false);
+            ID.put(bolt, "FireBolt");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                    bolt.setVelocity(velocity.get(bolt));
+                    bolt.getWorld().spawnParticle(Particle.FLAME, bolt.getLocation(), 1, .1, .1, .1,.1);
+                }
+            }, 1, 1));
+        }
+    }
+
+    public static void SnowBolt(Player p,Plugin plugin){
+        if (Mana.spendMana(p, 3)) {
+            Snowball bolt = p.launchProjectile(Snowball.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(bolt, p.getEyeLocation().getDirection());
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            bolt.setGravity(false);
+            ID.put(bolt, "SnowBolt");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                    bolt.setVelocity(velocity.get(bolt));
+                    bolt.getWorld().spawnParticle(Particle.SNOW_SHOVEL, bolt.getLocation(), 2, .1, .1, .1);
+                }
+            }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    tick.get(bolt).cancel();
+                    bolt.remove();
+                }
+            }, 100);
+        }
+    }
 
     public static void LightningBolt(Player p, Plugin plugin, EffectManager em) {
         if (Mana.spendMana(p, 4)) {
@@ -531,40 +651,71 @@ public class Cast {
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
+                    cloud.cancel();
+                    Vector direction = v;
+                    Location current = l;
+                    p.getWorld().playSound(current, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1);
+                    int range = 0;
+                    boolean hasHit = false;
+                    while (!hasHit) {
+                        if (current.isWorldLoaded()) {
+                            RayTraceResult ray = p.getWorld().rayTrace(current, direction, 1, FluidCollisionMode.NEVER, true, .1, null);
+                            Location hitLocation = null;
+                            LivingEntity hitEntity = null;
+                            if (ray != null) {
+                                try {
+                                    hitEntity = (LivingEntity) ray.getHitEntity();
+                                } catch (Exception ignore) {
+                                }
+                                try {
+                                    hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                                } catch (Exception ignore) {
+                                }
+                                if (hitLocation != null && hitEntity == null) {
+                                    hasHit = true;
+                                }
+                                if (hitEntity != null) {
+                                    hasHit = true;
+                                    LivingEntity finalHitEntity = hitEntity;
+                                    final int[] hits = {0};
+                                    BukkitTask task = new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            hits[0]++;
+                                            finalHitEntity.setNoDamageTicks(0);
+                                            finalHitEntity.damage(1, p);
+                                            if (hits[0]>=6) this.cancel();
+                                            finalHitEntity.setVelocity(new Vector(0,0,0));
+                                        }
+                                    }.runTaskTimer(plugin,0,2);
+                                }
 
-                    RayTraceResult ray = p.getWorld().rayTrace(l, v, 80, FluidCollisionMode.NEVER, true, .2, null);
-                    LineEffect effect = new LineEffect(em);
-                    LivingEntity hitEntity = null;
-                    Location hitLocation = null;
-                    System.out.println(effect.particleCount);
+                            }
+                            if (!hasHit) {
+                                current = current.add(direction);
+                                Particle.DustOptions dust = new Particle.DustOptions(Color.YELLOW,2);
+                                p.getWorld().spawnParticle(Particle.REDSTONE, current, 2, .1, .1, .1, 0,dust);
+                                range++;
+                                if (range >= 80) hasHit = true;
+                                Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+                                for (Entity stand : current.getWorld().getNearbyEntities(current, 5, 5, 5)) {
+                                    if (ID.containsKey(stand)) {
+                                        if (ID.get(stand).equals("ShieldDome")) {
+                                            if (current.distance(stand.getLocation()) <= 4.5) {
+                                                Vector d = direction;
+                                                Vector n = stand.getLocation().toVector().subtract(current.toVector()).normalize().multiply(-1);
+                                                if (d.dot(n) <= 0 && current.distance(stand.getLocation()) >= 3)
+                                                    direction = (d.subtract(n.multiply(d.dot(n) * 2)));
+                                            }
 
-                    effect.setLocation(l);
-                    effect.isZigZag = true;
-                    effect.zigZags = 3;
-                    effect.zigZagOffset = new Vector(0, .03, 0);
-                    effect.particle = Particle.REDSTONE;
-                    effect.color = Color.YELLOW;
-                    effect.setTargetLocation(l.add(v.multiply(80)));
-
-                    if (ray != null) {
-                        try {
-                            hitLocation = ray.getHitPosition().toLocation(p.getWorld());
-                        } catch (Exception ignore) {
-                        }
-                        try {
-                            hitEntity = (LivingEntity) ray.getHitEntity();
-                        } catch (Exception ignore) {
-                        }
-                        if (hitLocation != null) {
-                            effect.setTargetLocation(hitLocation);
-                        }
-                        if (hitEntity != null) {
-                            hitEntity.damage(4, p);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            hasHit = true;
                         }
                     }
-                    effect.particleCount = (int) effect.getTarget().distance(effect.getLocation()) / 20;
-                    em.start(effect);
-                    cloud.cancel();
                 }
             }, 10);
         }
@@ -584,7 +735,7 @@ public class Cast {
 
 
     public static void HealBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, 2)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -705,6 +856,18 @@ public class Cast {
         }
     }
 
+    public static void ShadowRetreat(Player p,Plugin plugin){
+        for (Entity e:p.getNearbyEntities(4,4,4)) {
+            if (e instanceof LivingEntity){
+                //TEAM CODE make it only effect enemies
+
+
+                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,60,1));
+            }
+        }
+        p.getWorld().spawnParticle(Particle.SQUID_INK,p.getEyeLocation(),30,.1,.1,.1,.5);
+        p.setVelocity(p.getEyeLocation().getDirection().multiply(-1).add(new Vector(0,.5,0)).normalize().multiply(1.5));
+    }
 
     public static void ShadowInvis(Player p, Plugin plugin) {
         Collection<Player> status = StatusEffects.getShadowInvis();
@@ -747,6 +910,43 @@ public class Cast {
         }
     }
 
+    public static void ShadowGrapple(Player p) {
+        Vector direction = p.getEyeLocation().getDirection();
+        RayTraceResult ray = p.getWorld().rayTrace(p.getEyeLocation().add(direction), direction, 5, FluidCollisionMode.NEVER, true, .1, null);
+        int distance = 5;
+        Particle.DustOptions dust = new Particle.DustOptions(Color.BLACK, 3);
+        Entity hit = null;
+        p.getWorld().spawnParticle(Particle.REDSTONE, p.getEyeLocation().add(direction.multiply(3)), 25, 1, 1, 1, 0, dust);
+        if (ray != null) {
+            distance = (int) Math.ceil(ray.getHitPosition().distance(p.getEyeLocation().toVector()));
+            try {
+                hit = ray.getHitEntity();
+            } catch (Exception ignore) {
+            }
+            if (hit != null) {
+                if (hit instanceof LivingEntity) {
+                    ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
+                    stand.setSmall(true);
+                    stand.setInvisible(true);
+                    stand.setInvulnerable(true);
+                    p.addPassenger(stand);
+                    stand.addPassenger(hit);
+                    Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
+                    Map<LivingEntity, Integer> ShadowTimer = StatusEffects.getShadowGrappleTimer();
+                    Map<Player, LivingEntity> ShadowGrappled = StatusEffects.getShadowGrappled();
+                    ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,120,1,true,true));
+                    ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
+                    ShadowGrappler.put((LivingEntity) hit,p);
+                    ShadowGrappled.put(p,(LivingEntity) hit);
+                    ShadowTimer.put((LivingEntity) hit, 0);
+                    hit.setCustomNameVisible(false);
+
+                }
+            }
+        }
+    }
+
 
     public static void ZombieSpawn(Player p) {
         if (Mana.spendMana(p, 5)) {
@@ -755,31 +955,37 @@ public class Cast {
 
 
     //casting code for Air needdles
+
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
         if (Mana.spendMana(p, 2)) {
             Arrow arrow = p.launchProjectile(Arrow.class);
-            TraceEffect effect = new TraceEffect(em);
-            effect.setEntity(arrow);
-            effect.particle = Particle.SPELL;
-            effect.duration = 1;
-            effect.disappearWithTargetEntity = true;
-            em.start(effect);
-            arrow.addScoreboardTag("windArrow");
-            arrow.setDamage(1);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(arrow, "Wind Arrow");
+            arrow.setDamage(.35 );
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                }
+            }, 1, 1));
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
+
                     Arrow arrow = p.launchProjectile(Arrow.class);
-                    TraceEffect effect = new TraceEffect(em);
-                    effect.setEntity(arrow);
-                    effect.particle = Particle.SPELL;
-                    effect.duration = 1;
-                    effect.disappearWithTargetEntity = true;
-                    em.start(effect);
-                    arrow.addScoreboardTag("windArrow");
-                    arrow.setDamage(1);
+                    Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+                    ID.put(arrow, "Wind Arrow");
+                    arrow.setDamage(.35);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+                    Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+                    tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                        }
+                    }, 1, 1));
 
                 }
             }, 3);
@@ -787,42 +993,63 @@ public class Cast {
                 @Override
                 public void run() {
                     Arrow arrow = p.launchProjectile(Arrow.class);
-                    TraceEffect effect = new TraceEffect(em);
-                    effect.setEntity(arrow);
-                    effect.particle = Particle.SPELL;
-                    effect.duration = 1;
-                    effect.disappearWithTargetEntity = true;
-                    em.start(effect);
-                    arrow.addScoreboardTag("windArrow");
-                    arrow.setDamage(1);
+                    Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+                    ID.put(arrow, "Wind Arrow");
+                    arrow.setDamage(.35);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+                    Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+                    tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                        }
+                    }, 1, 1));
                 }
             }, 6);
         }
     }
 
-
     public static void CloudBurst(Player p, Plugin plugin) {
-        Location l = p.getLocation();
-        p.setVelocity(new Vector(0, 2, 0));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                p.getWorld().createExplosion(l, 2);
-            }
-        }, 4);
+        if (Mana.spendMana(p, 3)) {
+            Location l = p.getLocation();
+            p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
+            final int[] count = {0};
+            p.setVelocity(new Vector(0, 2, 0));
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    count[0]++;
+                    p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .2, .2, .2, 0);
+                    if (count[0] >= 5) {
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(plugin, 1, 1);
+        }
     }
 
 
     public static void AirDash(Player p, Plugin plugin) {
-        p.setGravity(false);
-        p.setVelocity(p.getVelocity().add(p.getEyeLocation().getDirection()));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                p.setGravity(true);
-            }
-        }, 10);
+        if (Mana.spendMana(p, 3)) {
+            Vector v = p.getEyeLocation().getDirection().multiply(1.7);
+            p.setGravity(false);
+            p.setVelocity(v);
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.setVelocity(v);
+                    p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .1, .1, .1, 0);
+                }
+            }.runTaskTimer(plugin, 1, 1);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    p.setVelocity(p.getVelocity().multiply(.5));
+                    p.setGravity(true);
+                    task.cancel();
+                }
+            }, 7);
+        }
     }
 
     public static void SprayPaint(Player p,Plugin plugin) {
@@ -1073,6 +1300,10 @@ public class Cast {
         }
     }
 
+    public static void SpeedSong(Player p,Plugin plugin){
+
+    }
+
 
     public static void DragonGrenade(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
@@ -1200,6 +1431,93 @@ public class Cast {
                     bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 1, .1, .1, .1, dust);
                 }
             }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    tick.get(bolt).cancel();
+                    bolt.remove();
+                }
+            }, 100);
+        }
+    }
+
+    public static void BlackHole(Player p, Plugin plugin, EffectManager em) {
+        if (Mana.spendMana(p, 3)) {
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            Map<Entity, Effect> effectMap = ProjectileInfo.getVisualEffect();
+
+            Snowball bolt = p.launchProjectile(Snowball.class,p.getEyeLocation().getDirection().multiply(.05));
+            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.05));
+            bolt.setItem(new ItemStack(Material.BLACK_DYE));
+            bolt.setGravity(false);
+            ID.put(bolt, "Black Hole");
+            final Boolean[] active = {false};
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    bolt.setVelocity(velocity.get(bolt));
+                    for (Entity entity : bolt.getNearbyEntities(12, 12, 12)) {
+                        if (active[0]) {
+                            if (entity instanceof Projectile) {
+                                if (entity.getLocation().distance(bolt.getLocation()) <= 9) {
+                                    Vector n = bolt.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(2 - (bolt.getLocation().distance(entity.getLocation())) / 10);
+                                    double len = entity.getVelocity().length();
+                                    Vector suck = entity.getVelocity().add(n).multiply(.5).normalize().multiply(len);
+
+                                    entity.setVelocity(suck);
+                                    if (velocity.containsKey(entity)){
+                                        velocity.replace(entity,suck);
+                                    }
+                                }
+
+                            } else if (entity instanceof Damageable) {
+                                if (entity.getLocation().distance(bolt.getLocation()) <= 8) {
+                                    Vector n = bolt.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.015 * (1 - (bolt.getLocation().distance(entity.getLocation())) / 10));
+                                    entity.setVelocity(entity.getVelocity().add(n));
+                                    if (entity.getLocation().distance(bolt.getLocation()) <= 3) {
+                                        ((Damageable) entity).damage(3, bolt);
+                                    }
+                                }
+                            }
+                        } else{
+                            bolt.getWorld().spawnParticle(Particle.SQUID_INK, bolt.getLocation(),10,.2,.2,.2,0);
+                        }
+                    }
+                }
+            }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            AtomEffect effect = new AtomEffect(em);
+                            effect.setLocation(p.getEyeLocation().add(0, 0, 0));
+                            effect.yaw = p.getEyeLocation().getYaw();
+                            effect.pitch = p.getEyeLocation().getPitch();
+                            effect.setEntity(bolt);
+                            effect.particleNucleus = Particle.SQUID_INK;
+                            effect.particlesNucleus = 30;
+                            effect.radiusNucleus = (float) .3;
+                            effect.particleOrbital = Particle.FLAME;
+                            effect.orbitals = 3;
+                            effect.duration = 15;
+                            em.start(effect);
+                            effectMap.put(bolt,effect);
+                            active[0] = true;
+                        }
+                    },70);
+
+
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    if (!bolt.isDead()) {
+                        bolt.remove();
+                        tick.get(bolt).cancel();
+                        effectMap.get(bolt).cancel();
+                    }
+                }
+            }, 460);
         }
     }
 
@@ -1218,10 +1536,12 @@ public class Cast {
             if (r == 5.0) effect.withColor(Color.BLUE);
             if (r == 6.0) effect.withColor(Color.fromBGR(255, 0, 255));
             meta.addEffect(effect.build());
+            meta.setPower(2);
             firework.setShooter(p);
             firework.setShotAtAngle(true);
             firework.setVelocity(p.getEyeLocation().getDirection());
             firework.setFireworkMeta(meta);
+
             return firework;
         }
         return null;

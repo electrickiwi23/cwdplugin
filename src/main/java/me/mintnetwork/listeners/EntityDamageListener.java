@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
@@ -42,21 +43,14 @@ public class EntityDamageListener implements Listener {
                 CancelMap.get(p).run();
             }
         }
-        if ((entity instanceof Arrow)) {
-
-            if (victim instanceof LivingEntity) {
-
-                LivingEntity living = (LivingEntity) victim;
-                Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                                living.setCustomName(String.valueOf(living.getHealth()));
-                                living.setNoDamageTicks(0);
-                            }
-                        });
-
+        if (entity instanceof Player) {
+            if (victim instanceof Player) {
+                Map<LivingEntity, Integer> speedMap = StatusEffects.getSpeedTimer();
+                if (speedMap.containsKey(entity)) {
+                    ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
+                    speedMap.put((Player) entity, 30);
+                }
             }
         }
-
     }
 }

@@ -11,7 +11,6 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.plugin.java.JavaPlugin;
-//import com.aim.coltonjgriswold.ParticleProjectileApi;
 
 public final class Main extends JavaPlugin {
 

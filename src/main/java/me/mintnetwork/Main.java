@@ -28,9 +28,11 @@ public final class Main extends JavaPlugin {
         new EntityDamageListener(this);
         new ProjectileHitListener(this);
         new EntityDieListener(this);
+        new PlayerJoinListener(this);
         new PlayerHoldsItemListener(this);
         new PlayerSneakListener(this);
         new TakeDamageListener(this);
+        new EntityExplodeListener(this);
 
         new ScoreboardInit(this);
         new Ultimate(this);

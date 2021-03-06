@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.*;
 
-public class Mana implements Listener {
+public class Mana{
     private final Main plugin;
 
     public Mana(Main plugin) {
@@ -18,15 +18,23 @@ public class Mana implements Listener {
     };
 
     private static Map<Player, Integer> playerMana = new HashMap<Player, Integer>();
-    Map<Player, Integer> manaCounter = new HashMap<Player, Integer>();
+    public static Map<Player, Integer> manaCounter = new HashMap<Player, Integer>();
 
 
     public static Map<Player, Integer> getPlayerMana() {return playerMana; }
+    public static Map<Player, Integer> getManaCounter() {return manaCounter; }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        playerMana.put(e.getPlayer(), 0);
-        manaCounter.put(e.getPlayer(), 0);
+
+    public static void tickMana(Player player){
+        if (playerMana.get(player) < 10) {
+            manaCounter.replace(player, manaCounter.get(player) + 1);
+            //if player has a mana counter of 6 add a mana and set their xp to mana and resets their counter
+            if (manaCounter.get(player) >= 6) {
+                playerMana.replace(player, playerMana.get(player) + 1);
+                player.setLevel(playerMana.get(player));
+                manaCounter.replace(player, 0);;
+            }
+        }
     }
 
     public static boolean spendMana(Player p, int c) {

@@ -25,6 +25,9 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
         Map<Player, Integer> playerMana = Mana.getPlayerMana();
+        Map<Player, Integer> ManaCount = Mana.getManaCounter();
+        ManaCount.put(p,0);
         playerMana.put(p,0);
+        System.out.println(p.getName() + " joining mana");
     }
 }

@@ -3,9 +3,11 @@ package me.mintnetwork.spells.projectiles;
 import de.slikey.effectlib.Effect;
 import me.mintnetwork.Main;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,4 +58,12 @@ public class ProjectileInfo {
     public static Map<Entity, Effect> visualEffect = new HashMap<>();
 
     public static Map<Entity, Effect> getVisualEffect() {return visualEffect;}
+
+    public static Map<Player, Entity> StrikeTrackedEntity = new HashMap<>();
+
+    public static Map<Player, Entity> getStrikeTrackedEntity() {return StrikeTrackedEntity; }
+
+    public static Map<Player, ArrayList<Entity>> ManaPillarLimit = new HashMap<>();
+
+    public static Map<Player, ArrayList<Entity>> getManaPillarLimit = new HashMap<>();
 }

@@ -287,6 +287,7 @@ public class Cast {
             effect.particleCount = 1;
             effect.particleSize = 3;
             effect.color = Color.BLACK;
+            effect.wholeCircle = true;
             em.start(effect);
 
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
@@ -342,6 +343,77 @@ public class Cast {
                 }
             }, 1, 1));
 
+        }
+    }
+
+    public static void ManaPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
+        if (Mana.spendMana(p, 4)) {
+            Zombie pillar = (Zombie) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize()).add(.5, .5, .5), EntityType.ZOMBIE);
+            pillar.setInvisible(true);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(pillar, "ManaPillar");
+            pillar.setBaby();
+            pillar.setAI(false);
+            pillar.setGravity(false);
+            pillar.getEquipment().setHelmet(new ItemStack(Material.EMERALD_BLOCK));
+            pillar.setSilent(true);
+
+            CircleEffect effect = new CircleEffect(em);
+            effect.enableRotation = false;
+            effect.setLocation(pillar.getLocation());
+            effect.radius = 7;
+            effect.particle = Particle.VILLAGER_HAPPY;
+            effect.particleCount = 1;
+            effect.particleSize = 3;
+            effect.wholeCircle = true;
+            em.start(effect);
+            final int[] count = {0};
+
+            Map<Player, ArrayList<Entity>> limitMap = ProjectileInfo.getManaPillarLimit;
+
+            if (limitMap.containsKey(p)){
+                ArrayList<Entity> limit = ProjectileInfo.getManaPillarLimit.get(p);
+
+                limit.removeIf(Entity::isDead);
+
+                if (limit.size()>=3){
+                    limit.get(0).remove();
+                    limit.remove(0);
+                }
+                limit.add(pillar);
+            } else {
+                ArrayList<Entity> limit = new ArrayList<Entity>();
+                limit.add(pillar);
+                limitMap.put(p,limit);
+            }
+
+
+
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            BukkitTask mana = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (Entity e : pillar.getNearbyEntities(7, 7, 7)) {
+                        if (e.getLocation().distance(pillar.getLocation()) <= 7) {
+                            if (e instanceof Player) {
+                                Mana.tickMana(p);
+                            }
+                        }
+                    }
+                }
+            }.runTaskTimer(plugin,0,30);
+            tick.put(pillar, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    pillar.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, pillar.getLocation().add(0, 1, 0), 8, .2, .4, .2, 0);
+
+                    if (pillar.isDead()) {
+                        tick.get(pillar).cancel();
+                        mana.cancel();
+                   }
+
+                }
+            }, 1, 1));
         }
     }
 
@@ -810,6 +882,7 @@ public class Cast {
                                     LivingEntity live = (LivingEntity) e;
                                     if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
                                         live.getWorld().spawnParticle(Particle.HEART, live.getLocation().add(0, 1, 0), 4, .2, .4, .2);
+                                        live.setHealth(live.getHealth()+1);
                                     }
                                 }
                             }
@@ -1085,16 +1158,18 @@ public class Cast {
                                         hasHit = true;
                                     }
                                     if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
-                                        if (Math.abs(hitLocation.getY() - hitEntity.getEyeLocation().getY()) <= .4) {
-                                            hitEntity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
+                                        if (!(hitEntity instanceof ArmorStand)) {
+                                            if (Math.abs(hitLocation.getY() - hitEntity.getEyeLocation().getY()) <= .4) {
+                                                hitEntity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
+                                            }
+                                            Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
+                                            if (painted.containsKey(hitEntity)) {
+                                                painted.replace(hitEntity, painted.get(hitEntity) + 80);
+                                            } else {
+                                                painted.put(hitEntity, 80);
+                                            }
+                                            hitEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
                                         }
-                                        Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
-                                        if (painted.containsKey(hitEntity)) {
-                                            painted.replace(hitEntity, painted.get(hitEntity) + 80);
-                                        } else {
-                                            painted.put(hitEntity, 80);
-                                        }
-                                        hitEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
                                     }
                                 }
 
@@ -1160,7 +1235,6 @@ public class Cast {
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(grenade, p.getEyeLocation().getDirection());
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-
             grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
             grenade.setCustomName("A Paint Canister");
             ID.put(grenade, "PaintBomb");
@@ -1191,9 +1265,40 @@ public class Cast {
     }
 }
 
-
-
-
+public static void PaintReveal(Player p){
+    Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
+    if (painted.keySet().size()>0){
+        if (Mana.spendMana(p,2)){
+            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
+            dust = new Particle.DustOptions(Color.ORANGE, 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
+            dust = new Particle.DustOptions(Color.YELLOW, 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
+            dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0),20, .7, 4, .7, 0, dust);
+            dust = new Particle.DustOptions(Color.BLUE, 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
+            dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
+            for (LivingEntity e: painted.keySet()) {
+                e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,60,1));
+                dust = new Particle.DustOptions(Color.RED, 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
+                dust = new Particle.DustOptions(Color.ORANGE, 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
+                dust = new Particle.DustOptions(Color.YELLOW, 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
+                dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0),20, .7, 4, .7, 0, dust,true);
+                dust = new Particle.DustOptions(Color.BLUE, 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
+                dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
+                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
+            }
+        }
+    }
+}
 
     public static void SniperBolt(Player p, Plugin plugin) {
         Location spread = p.getEyeLocation();
@@ -1300,8 +1405,99 @@ public class Cast {
         }
     }
 
+    public static void GrappleHook(Player p,Plugin plugin){
+    if (Mana.spendMana(p, 3)) {
+        Slime slime = (Slime) p.getWorld().spawnEntity(p.getEyeLocation(),EntityType.SLIME);
+        slime.setLeashHolder(p);
+        slime.setSize(1);
+        slime.setAI(false);
+        slime.setInvulnerable(true);
+        slime.setInvisible(true);
+        slime.setMaxHealth(100);
+        slime.setHealth(100);
+        Snowball bolt = p.launchProjectile(Snowball.class);
+        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+        velocity.put(bolt, p.getEyeLocation().getDirection());
+        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+        bolt.setItem(new ItemStack(Material.SLIME_BALL));
+        bolt.setGravity(false);
+        ID.put(bolt, "Grapple Bolt");
+        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+
+        Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
+        linked.put(slime, bolt);
+        linked.put(bolt, slime);
+
+        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                bolt.setVelocity(velocity.get(bolt));
+                slime.teleport(bolt);
+                if (p.isDead()){
+                    bolt.remove();
+                    slime.remove();
+                    tick.get(bolt).cancel();
+                }
+            }
+        }, 1, 1));
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                if (!bolt.isDead()) {
+                    bolt.remove();
+                    slime.remove();
+                }
+                if (!tick.get(bolt).isCancelled()) {
+                    tick.get(bolt).cancel();
+                }
+
+            }
+        }, 20);
+    }
+    }
+
     public static void SpeedSong(Player p,Plugin plugin){
 
+    }
+
+    public static void AcidPotion(Player p){
+        if (Mana.spendMana(p, 3)) {
+            ThrownPotion potion = p.launchProjectile(ThrownPotion.class);
+            ItemStack item = (new ItemStack(Material.SPLASH_POTION));
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            potionMeta.setColor(Color.fromRGB(0, 255, 0));
+            item.setItemMeta(potionMeta);
+            potion.setItem(item);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(potion, "Acid Potion");
+        }
+    }
+
+    public static void HealPotion(Player p){
+        if (Mana.spendMana(p, 4)) {
+            ThrownPotion potion = p.launchProjectile(ThrownPotion.class);
+            ItemStack item = (new ItemStack(Material.SPLASH_POTION));
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            potionMeta.setColor(Color.fromRGB(240, 40, 128));
+            item.setItemMeta(potionMeta);
+            potion.setItem(item);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(potion, "Heal Potion");
+        }
+    }
+
+    public static void DebuffPotion(Player p){
+        if (Mana.spendMana(p, 3)) {
+            ThrownPotion potion = p.launchProjectile(ThrownPotion.class);
+            ItemStack item = (new ItemStack(Material.SPLASH_POTION));
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            potionMeta.setColor(Color.fromRGB(30, 0, 0));
+            item.setItemMeta(potionMeta);
+            potion.setItem(item);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(potion, "Debuff Potion");
+        }
     }
 
 
@@ -1521,6 +1717,32 @@ public class Cast {
         }
     }
 
+    public static void EndWarp(Player p,Plugin plugin){
+        if (Mana.spendMana(p, 3)) {
+            EnderPearl bolt = p.launchProjectile(EnderPearl.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(bolt, p.getEyeLocation().getDirection());
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            bolt.setGravity(false);
+            ID.put(bolt, "Warp Bolt");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                    bolt.setVelocity(velocity.get(bolt));
+                    bolt.getWorld().spawnParticle(Particle.REVERSE_PORTAL, bolt.getLocation(), 2, 0, 0, 0, .1);
+                }
+            }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    tick.get(bolt).cancel();
+                    bolt.remove();
+                }
+            }, 100);
+        }
+    }
 
     public static Firework FireworkBolt(Player p) {
         if (Mana.spendMana(p, 2)) {

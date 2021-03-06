@@ -15,12 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -78,9 +80,79 @@ public class ProjectileHitListener implements Listener {
                      }
                      task.get(e).cancel();
                  }
+                if (ID.get(e).equals("Tracker Arrow")) {
+                    if (hit != null) {
+                        Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
+                        for (Player p :tracked.keySet()) {
+                            if (tracked.get(p)==e){
+                                tracked.replace(p, hit);
+                            }
+                        }
+
+                    }
+                    }
             }
 
         }
+        if (e instanceof ThrownPotion){
+            ThrownPotion potion = (ThrownPotion) e;
+            if (ID.containsKey(potion)) {
+                if (ID.get(potion).equals("Acid Potion")) {
+                    AreaEffectCloud cloud = (AreaEffectCloud) potion.getWorld().spawnEntity(potion.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
+                    cloud.setParticle(Particle.REDSTONE, dust);
+                    cloud.setRadius(4);
+                    cloud.setRadiusPerTick((float) -.01);
+                    cloud.setDuration(200);
+                    cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, true, true), false);
+                    cloud.setReapplicationDelay(10);
+                    cloud.setSource(shooter);
+                    cloud.setCustomName("Acid Pool");
+                }
+                if (ID.get(potion).equals("Heal Potion")) {
+                    AreaEffectCloud cloud = (AreaEffectCloud) potion.getWorld().spawnEntity(potion.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(240,40,128), 2);
+                    cloud.setParticle(Particle.REDSTONE, dust);
+                    cloud.setRadius(4);
+                    cloud.setRadiusPerTick((float) -.005);
+                    cloud.setDuration(150);
+                    cloud.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 3, false, false), false);
+                    cloud.setReapplicationDelay(20);
+                    cloud.setSource(shooter);
+                }
+                if (ID.get(potion).equals("Debuff Potion")) {
+                    AreaEffectCloud cloud = (AreaEffectCloud) potion.getWorld().spawnEntity(potion.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(30,0,0), 2);
+                    cloud.setParticle(Particle.REDSTONE, dust);
+                    cloud.setRadius((float) 4.5);
+                    cloud.setRadiusPerTick((float) -.01);
+                    cloud.setDuration(250);
+                    cloud.addCustomEffect(new PotionEffect(PotionEffectType.SLOW, 50, 2, false, true), false);
+                    cloud.addCustomEffect(new PotionEffect(PotionEffectType.WEAKNESS, 50, 1, false, true), false);
+                    cloud.setReapplicationDelay(5);
+                    cloud.setSource(shooter);
+                }
+                if (ID.get(potion).equals("Immortal Potion")) {
+                    AreaEffectCloud cloud = (AreaEffectCloud) potion.getWorld().spawnEntity(potion.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(255,215,0), 2);
+                    cloud.setParticle(Particle.REDSTONE, dust);
+                    cloud.setRadius(5);
+                    cloud.setDuration(200);
+                    cloud.addCustomEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10, 10, false, false), false);
+                    cloud.setReapplicationDelay(5);
+                    cloud.setSource(shooter);
+                }
+            }
+        }
+
+        if (e instanceof EnderPearl){
+            if (ID.containsKey(e)){
+                if (ID.get(e).equals("Warp Bolt")) {
+                    task.get(e).cancel();
+                }
+            }
+        }
+
         if (e instanceof Snowball) {
             Snowball snow = (Snowball) e;
             if (ID.containsKey(snow)) {
@@ -111,7 +183,37 @@ public class ProjectileHitListener implements Listener {
                         hit.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 3));
                         shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                     }
-
+                }
+                if (ID.get(snow).equals("BloodUlt")) {
+                    if (hit != null) {
+                        LivingEntity finalHit = hit;
+                        BukkitTask bloodUltTask = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (finalHit.isDead()) {
+                                    Firework firework = (Firework) finalHit.getWorld().spawnEntity(finalHit.getEyeLocation(), EntityType.FIREWORK);
+                                    FireworkEffect.Builder effect = FireworkEffect.builder();
+                                    FireworkMeta meta = firework.getFireworkMeta();
+                                    effect.with(FireworkEffect.Type.BURST);
+                                    effect.withColor(Color.RED);
+                                    meta.addEffect(effect.build());
+                                    meta.setPower(0);
+                                    firework.setShooter(shooter);
+                                    firework.setFireworkMeta(meta);
+                                    firework.detonate();
+                                    this.cancel();
+                                } else {
+                                    finalHit.setNoDamageTicks(0);
+                                    finalHit.damage(2, shooter);
+                                    if (shooter.getMaxHealth() - 2 >= Math.ceil(shooter.getHealth())) {
+                                        shooter.setHealth(shooter.getHealth() + 2);
+                                    }
+                                    finalHit.setVelocity(new Vector(0, 0, 0));
+                                }
+                            }
+                        }.runTaskTimer(plugin,0,1);
+                    }
+                    task.get(snow).cancel();
                 }
                 if (ID.get(snow).equals("HealBolt")) {
                     if (hit != null) {
@@ -122,6 +224,37 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BuildBolt")) {
                     task.get(snow).cancel();
+                }
+
+                if (ID.get(snow).equals("Element Blast")) {
+                    snow.getWorld().createExplosion(snow.getLocation(),6,true);
+                    task.get(snow).cancel();
+                }
+
+                if (ID.get(snow).equals("Grapple Bolt")){
+                    task.get(snow).cancel();
+                    LivingEntity stand = (LivingEntity) linked.get(snow);
+                    BukkitTask pull = new BukkitRunnable(){
+                        @Override
+                        public void run() {
+                            shooter.setVelocity(shooter.getVelocity().add(shooter.getLocation().toVector().subtract(stand.getEyeLocation().toVector()).normalize().multiply(-.15 )));
+                            if (((Player)shooter).isSneaking()){
+                                stand.remove();
+                                this.cancel();
+                            }
+                            if (((Player)shooter).isDead()){
+                                stand.remove();
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(plugin,1,1);
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            stand.remove();
+                            pull.cancel();
+                        }
+                    },100);
                 }
 
                 if (ID.get(snow).equals("BeeBolt")) {
@@ -222,18 +355,20 @@ public class ProjectileHitListener implements Listener {
                     snow.getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
                     dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
                     snow.getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
-                    for (Entity entity :snow.getWorld().getNearbyEntities(snow.getLocation(),7,7,7)) {
+                    for (Entity entity :snow.getWorld().getNearbyEntities(snow.getLocation(),6,6,6)) {
                         if (entity instanceof LivingEntity){
-                            LivingEntity live = (LivingEntity) entity;
-                            if (entity.getLocation().distance(snow.getLocation())<=5){
-                                live.damage(3, snow);
-                                live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
-                                live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
-                                Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
-                                if (painted.containsKey(live)) {
-                                    painted.replace(live, painted.get(live) + 300);
-                                } else {
-                                    painted.put(live, 300);
+                            if (!(entity instanceof ArmorStand)) {
+                                LivingEntity live = (LivingEntity) entity;
+                                if (entity.getLocation().distance(snow.getLocation()) <= 5) {
+                                    live.damage(3, snow);
+                                    live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
+                                    live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
+                                    Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
+                                    if (painted.containsKey(live)) {
+                                        painted.replace(live, painted.get(live) + 300);
+                                    } else {
+                                        painted.put(live, 300);
+                                    }
                                 }
                             }
                         }

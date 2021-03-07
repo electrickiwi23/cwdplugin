@@ -8,3 +8,5 @@ commands:
     description: gives you the wand
   test:
     description: test!
+  assign:
+    description: admin command to assign teams for game

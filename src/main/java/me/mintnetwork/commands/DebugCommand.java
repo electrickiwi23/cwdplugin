@@ -1,6 +1,7 @@
 package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -31,7 +32,9 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        System.out.println(((Player) sender).getInventory().getItemInMainHand());
+        Player p = (Player) sender;
+
+//        System.out.println(TeamsInit.getTeam(p));
 
         return false;
     }

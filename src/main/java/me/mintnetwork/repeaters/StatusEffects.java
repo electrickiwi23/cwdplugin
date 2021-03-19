@@ -1,8 +1,12 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.listeners.PlayerDismountListener;
+import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.Color;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,6 +19,7 @@ import org.bukkit.util.Vector;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class StatusEffects {
 
@@ -33,8 +38,6 @@ public class StatusEffects {
     public static Map<Player,Runnable> getShadowCancel(){return ShadowCancel;  }
 
     public static Map<LivingEntity, Integer> paintTimer = new HashMap<LivingEntity, Integer>();
-
-    public static Map<LivingEntity, Integer> getPaintTimer(){return paintTimer; }
 
     public static Map<LivingEntity, Integer> speedTimer = new HashMap<>();
 
@@ -56,10 +59,73 @@ public class StatusEffects {
 
     public static Map<LivingEntity, Entity> getShadowGrappleStand(){return ShadowGrappleStand;}
 
+    public static Map<Block, Integer> ObsidianDecay = new HashMap<>();
+
+    public static Map<Block, Integer> getObsidianDecay(){return ObsidianDecay;}
+
+    public static Map<LivingEntity, Integer> stunSong = new HashMap<>();
+
+    public static Map<LivingEntity, Integer> BloodWeak = new HashMap<>();
+
+    public static boolean CanCast(Player p){
+        Map<Entity,String> ID = ProjectileInfo.getProjectileID();
+        if (ShadowGrappler.containsKey(p)) return false;
+        if (stunSong.containsKey(p)) return false;
+        for (Entity e : p.getWorld().getNearbyEntities(p.getLocation(),7,16,7)) {
+            if (e instanceof ArmorStand) {
+                if (ProjectileInfo.TornadoTeam.containsKey(e)) {
+
+                    String teamName = "Red";
+                    if (!ProjectileInfo.TornadoTeam.get(e).equals(teamName)) {
+
+                        Location entityLocation = p.getLocation().clone();
+                        entityLocation.setY(e.getLocation().getY());
+                        if (entityLocation.distance(e.getLocation()) <= 6) {
+                            if (p.getLocation().getY() >= e.getLocation().getY() - 1) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     public void statusEffects(Main plugin) {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
+                List<Block> removeBlocks = new ArrayList<>();
+                for (Block b: ObsidianDecay.keySet()) {
+
+                    ObsidianDecay.replace(b,ObsidianDecay.get(b)+1);
+                    if(ObsidianDecay.get(b)==600){
+                        b.setType(Material.CRYING_OBSIDIAN);
+                    }
+                    if(ObsidianDecay.get(b)==800){
+                        b.setType(Material.BLACKSTONE);
+                        removeBlocks.add(b);
+                    }
+                }
+                for (Block r: removeBlocks) {
+                    ObsidianDecay.remove(r);
+                }
+                removeBlocks.clear();
+
+                for (LivingEntity e: BloodWeak.keySet()){
+                    Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 2);
+                    e.getWorld().spawnParticle(Particle.REDSTONE,e.getLocation().add(0,1,0),2,.2,.4,.2,0,dustCloud);
+                    BloodWeak.replace(e, BloodWeak.get(e)-1);
+                    if (BloodWeak.get(e)<=0){
+                        BloodWeak.remove(e);
+                    }
+                    if (e.isDead()){
+                        BloodWeak.remove(e);
+                    }
+                }
+
                 for (LivingEntity e: paintTimer.keySet()) {
                     paintTimer.replace(e,paintTimer.get(e)-1);
                     double r = (Math.ceil(Math.random() * 6));
@@ -81,6 +147,31 @@ public class StatusEffects {
                         paintTimer.remove(e);
                     }
                 }
+
+                List<LivingEntity> removeStunSong = new ArrayList<>();
+                for (LivingEntity e: stunSong.keySet()){
+                    int x = stunSong.get(e);
+                    Location direction = e.getLocation().clone();
+                    direction.setYaw((x%20)*18-180);
+                    direction.setPitch(0);
+
+                    if (e instanceof Player) {
+                        if (x == 45||x == 70) {
+                            ((Player) e).playSound(e.getLocation(),Sound.BLOCK_BELL_RESONATE,1,1);
+                        }
+                    }
+
+                    e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection()).add(0,1,0), 0, .6, .2, .92,1, null);
+
+                    stunSong.replace(e, stunSong.get(e)-1);
+                    if (stunSong.get(e)<=0) removeStunSong.add(e);
+                }
+
+                for (LivingEntity r: removeStunSong) {
+                    stunSong.remove(r);
+                }
+                removeStunSong.clear();
+
                 for (LivingEntity e: speedTimer.keySet()) {
                     speedTimer.replace(e,speedTimer.get(e)-1);
 

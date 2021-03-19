@@ -3,6 +3,7 @@ package me.mintnetwork.listeners;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.*;
 import me.mintnetwork.Main;
+import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.Cast;
 import me.mintnetwork.ultimates.UltCast;
 import org.bukkit.*;
@@ -49,8 +50,9 @@ public class RightClickListener implements Listener {
                     if (event.getHand().equals(EquipmentSlot.HAND)) {
                         if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                             if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
-                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Blood Bolt")) {
-                                        UltCast.BloodUlt(p,plugin);
+                                if (StatusEffects.CanCast(p)) {
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Blood Bolt")) {
+                                        Cast.StunSong(p,plugin);
 
 //
 //                        TornadoEffect effect = new TornadoEffect(em);
@@ -61,43 +63,44 @@ public class RightClickListener implements Listener {
 //                        effect.duration = 1;
 //                        effect.setLocation(p.getLocation().add(0,0,0));
 //                        em.start(effect);
-                                    //TNT bolt
-                                }
-                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
-                                    if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
-                                        UltCast.ElementBlast(p,plugin,em);
+                                        //TNT bolt
+                                    }
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
+                                        if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
+                                            Cast.SlimeBomb(p, plugin);
 
 //                                        if (event.getClickedBlock() != null) {
 //                                            Cast.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
 //                                        }
 
-                                    }
+                                        }
 //
 //                            Cast.FireworkBolt(p);
-                                }
-                                //End Warp
-                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
-                                    Cast.GrappleHook(p,plugin);
+                                    }
+                                    //End Warp
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
+                                        UltCast.TornadoBlast(p,plugin);
 //                        Cast.BloodSacrifice(p);
-                                }
-                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Sniper Bolt")) {
-                                    Cast.PaintBomb(p,plugin);
-                                }
+                                    }
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Sniper Bolt")) {
+                                        Cast.BloodTracker(p,plugin);
+                                    }
 
 //                        Cast.ShadowInvis(p,plugin);
 //                        Cast.ShieldDome(p, em, plugin);
-                                //Air Dash
-                                if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Air Dash")) {
-                                    if (event.getClickedBlock() != null) {
-                                        Cast.ManaPillar(p, plugin,event.getClickedBlock(),event.getBlockFace(),em);
-                                    }
+                                    //Air Dash
+                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Air Dash")) {
+                                        if (event.getClickedBlock() != null) {
+                                            UltCast.ArrowTurret(p, plugin, event.getClickedBlock(), event.getBlockFace(),em);
+                                        }
 
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        System.out.println("your hand is empty");
                     }
-                } else {
-                    System.out.println("your hand is empty");
                 }
             }
         }

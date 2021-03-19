@@ -1,16 +1,15 @@
 package me.mintnetwork.ultimates;
 
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.CircleEffect;
-import de.slikey.effectlib.effect.DnaEffect;
-import de.slikey.effectlib.effect.LineEffect;
-import de.slikey.effectlib.effect.WarpEffect;
+import de.slikey.effectlib.effect.*;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.Color;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -20,12 +19,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class UltCast {
 
@@ -160,7 +162,7 @@ public class UltCast {
     }
 
     public static void PaintActivateUlt(Player p, Plugin plugin) {
-        Map<LivingEntity, Integer> painted = StatusEffects.getPaintTimer();
+        Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
         if (painted.keySet().size() > 0) {
             //Spend Ult
             ArrayList<LivingEntity> list = new ArrayList<LivingEntity>(painted.keySet());
@@ -224,6 +226,7 @@ public class UltCast {
     }
 
     public static void ElementBlast(Player p, Plugin plugin, EffectManager em) {
+        //Spend Ult
         Snowball bolt = p.launchProjectile(Snowball.class);
         Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
         velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.7));
@@ -252,6 +255,17 @@ public class UltCast {
                 line.particle = Particle.REDSTONE;
                 line.color = Color.YELLOW;
                 line.start();
+                for (Entity e:bolt.getNearbyEntities(5,5,5)) {
+                    if (e.getLocation().distance(bolt.getLocation())<=4){
+                        if (e instanceof LivingEntity){
+                            if (!(e.equals(p))) {
+                                ((LivingEntity) e).damage(1);
+                                ((LivingEntity) e).setNoDamageTicks(0);
+                                e.setVelocity(new Vector(0, 0, 0));
+                            }
+                        }
+                    }
+                }
             }
         }, 1, 1));
         Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -261,6 +275,164 @@ public class UltCast {
                 bolt.remove();
             }
         }, 100);
+    }
+
+    public static void ObsidianWall(Player p, Plugin plugin) {
+        //Spend Ult
+        Map<Block, Integer> decay = StatusEffects.getObsidianDecay();
+        Location l = p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(5));
+        l.getBlock().setType(Material.OBSIDIAN);
+        l.setYaw(l.getYaw()+90);
+        l.setPitch(0);
+        final int[] i = {0};
+
+        BukkitTask task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Location current = l.clone();
+                current.add(l.getDirection().multiply(i[0]));
+                current.add(0,-6,0);
+                for (int j = 0; j < 13; j++) {
+                    current.getBlock().setType(Material.OBSIDIAN);
+                    decay.put(current.getBlock(),(int) (Math.random()*80-40));
+                    current = current.add(0,1,0);
+                }
+                current = l.clone();
+                current.add(l.getDirection().multiply(i[0]).multiply(-1));
+                current.add(0,-6,0);
+                for (int j = 0; j < 13; j++) {
+                    current.getBlock().setType(Material.OBSIDIAN);
+                    decay.put(current.getBlock(), (int) (Math.random()*80-40));
+                    current = current.add(0,1,0);
+                }
+                i[0]++;
+
+            }
+        }.runTaskTimer(plugin,1,1);
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                task.cancel();
+            }
+        },12);
+    }
+
+    public static void TornadoBlast(Player p, Plugin plugin) {
+        //Spend Ult
+        Snowball grenade = p.launchProjectile(Snowball.class);
+        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+        velocity.put(grenade, p.getEyeLocation().getDirection());
+        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+        grenade.setItem(new ItemStack(Material.BONE_MEAL));
+        ID.put(grenade, "TornadoUlt");
+        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+        tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+            @Override
+            public void run() {
+                p.getWorld().spawnParticle(Particle.CLOUD, grenade.getLocation(), 3, .2, .2, .2, 0);
+            }
+        }, 1, 1));
+    }
+
+    public static void ArrowTurret(Player p, Plugin plugin, Block block, BlockFace face,EffectManager em) {
+        //Spend Ult
+        if (face.getDirection().equals(new Vector(0, 1, 0))) {
+            for (int i = 1; i < 4; i++) {
+                Block currentBlock = block.getLocation().add(face.getDirection().normalize().multiply(i)).getBlock();
+                if (currentBlock.isPassable()) {
+                    currentBlock.setType(Material.BONE_BLOCK);
+                }
+            }
+
+            Skeleton skeleton = (Skeleton) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize().multiply(4)).add(.5, 0, .5), EntityType.SKELETON);
+            skeleton.getEquipment().setItemInMainHand(new ItemStack(Material.BOW));
+            skeleton.getEquipment().setItemInOffHand(new ItemStack(Material.BOW));
+            skeleton.getEquipment().setHelmet(new ItemStack(Material.WITHER_SKELETON_SKULL));
+            skeleton.setInvisible(true);
+            skeleton.setAI(false);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            boolean[] coolDown = {true};
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            final boolean[] isActive = {false};
+            final int[] count = {0};
+            final int[] charge = {0};
+            tick.put(skeleton, new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (isActive[0]) {
+                        Entity aimed = null;
+                        double aimedDistance = 20.0;
+
+                        for (Entity e : skeleton.getNearbyEntities(9, 9, 9)) {
+                            if (e instanceof LivingEntity) {
+                                if (!(e instanceof ArmorStand)) {
+                                    if (skeleton.getLocation().distance(e.getLocation()) < aimedDistance) {
+                                        aimed = e;
+                                        aimedDistance = skeleton.getLocation().distance(e.getLocation());
+                                    }
+                                }
+                            }
+                        }
+
+                        for (Entity projectile : skeleton.getNearbyEntities(5, 5, 5)) {
+                            if (projectile instanceof Projectile) {
+                                if (projectile.getLocation().distance(skeleton.getLocation()) <= 3.5) {
+
+
+                                    Vector d = projectile.getVelocity();
+                                    Vector n = skeleton.getLocation().toVector().subtract(projectile.getLocation().toVector()).normalize().multiply(-1);
+                                    if (d.dot(n) <= 0) {
+                                        SphereEffect sphere = new SphereEffect(em);
+                                        sphere.setLocation(skeleton.getLocation());
+                                        sphere.particle = Particle.SMOKE_NORMAL;
+                                        sphere.radius = 3;
+                                        sphere.iterations = 1;
+                                        em.start(sphere);
+
+                                        charge[0] = charge[0] - 12;
+
+                                        Vector v = d.subtract(n.multiply(d.dot(n) * 2));
+                                        v = v.normalize().multiply(projectile.getVelocity().length());
+                                        projectile.setVelocity(v);
+                                        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                                        if (velocity.containsKey(projectile)) {
+                                            velocity.replace(projectile, v);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (aimed != null) {
+                            if (aimed.getLocation().distance(skeleton.getLocation()) <= 15) {
+                                skeleton.teleport(skeleton.getLocation().setDirection(skeleton.getLocation().toVector().subtract(aimed.getLocation().toVector()).normalize().multiply(-1)));
+                                count[0]++;
+                                if (count[0] >= 8) {
+                                    skeleton.launchProjectile(Arrow.class);
+                                    count[0] = 0;
+                                    charge[0] = charge[0] - 2;
+                                }
+                            }
+                        }
+                        if (charge[0] <= 0) {
+                            charge[0] = 0;
+                            skeleton.getWorld().playSound(skeleton.getLocation(),Sound.BLOCK_FIRE_EXTINGUISH,1,1);
+                            skeleton.getEquipment().setHelmet(new ItemStack(Material.WITHER_SKELETON_SKULL));
+                            isActive[0] = false;
+                        }
+                    } else {
+                        charge[0]++;
+                        skeleton.getWorld().spawnParticle(Particle.SMOKE_NORMAL, skeleton.getLocation().add(0, 1, 0), 1, .2, .4, .2, .1);
+                        if (charge[0] >= 80) {
+                            skeleton.getEquipment().setHelmet(new ItemStack(Material.SKELETON_SKULL));
+                            isActive[0] = true;
+                        }
+                    }
+
+                    if (skeleton.isDead()) this.cancel();
+                }
+            }.runTaskTimer(plugin, 1, 1));
+
+        }
     }
 }
 

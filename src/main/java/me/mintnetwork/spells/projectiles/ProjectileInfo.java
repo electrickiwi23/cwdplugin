@@ -2,6 +2,7 @@ package me.mintnetwork.spells.projectiles;
 
 import de.slikey.effectlib.Effect;
 import me.mintnetwork.Main;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -65,5 +66,6 @@ public class ProjectileInfo {
 
     public static Map<Player, ArrayList<Entity>> ManaPillarLimit = new HashMap<>();
 
-    public static Map<Player, ArrayList<Entity>> getManaPillarLimit = new HashMap<>();
+    public static Map<ArmorStand, String> TornadoTeam = new HashMap<>();
+
 }

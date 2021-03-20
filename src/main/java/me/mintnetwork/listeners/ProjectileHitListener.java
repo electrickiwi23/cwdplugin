@@ -545,8 +545,8 @@ public class ProjectileHitListener implements Listener {
                             if (victim.getLocation().distance(stand.getLocation()) <= 4) {
                                 if (victim instanceof LivingEntity) {
                                     LivingEntity living = (LivingEntity) victim;
-                                    ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 140, 1));
-                                    ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 140, 10));
+                                    ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 140, 1,false,false));
+                                    ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 140, 10,false,false));
 
                                     Map<LivingEntity, Integer> stunMap = StatusEffects.stunSong;
                                     if (stunMap.containsKey(living)) {

@@ -52,11 +52,6 @@ public class EntityDamageListener implements Listener {
                 }
             }
         }
-        if (victim instanceof LivingEntity) {
-            if (StatusEffects.BloodWeak.containsKey(victim)) {
-                event.setDamage(event.getDamage()+1);
-            }
-        }
 
     }
 }

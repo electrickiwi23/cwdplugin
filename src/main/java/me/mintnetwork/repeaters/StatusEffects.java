@@ -67,6 +67,10 @@ public class StatusEffects {
 
     public static Map<LivingEntity, Integer> BloodWeak = new HashMap<>();
 
+    public static Map<LivingEntity, Integer> healSong = new HashMap<>();
+
+    public static Map<LivingEntity, Integer> speedSong = new HashMap<>();
+
     public static boolean CanCast(Player p){
         Map<Entity,String> ID = ProjectileInfo.getProjectileID();
         if (ShadowGrappler.containsKey(p)) return false;
@@ -150,18 +154,33 @@ public class StatusEffects {
 
                 List<LivingEntity> removeStunSong = new ArrayList<>();
                 for (LivingEntity e: stunSong.keySet()){
-                    int x = stunSong.get(e);
+
+                    boolean hasSpeedSong = speedSong.containsKey(e);
+                    boolean hasHealSong = healSong.containsKey(e);
+
+                    long x = e.getWorld().getFullTime();
                     Location direction = e.getLocation().clone();
-                    direction.setYaw((x%20)*18-180);
                     direction.setPitch(0);
 
+                    if (hasHealSong&&hasSpeedSong) {
+                        direction.setYaw((x % 40) * 9 - 300);
+                    } else{
+                        direction.setYaw((x % 40) * 9 - 180);
+                    }
+
+
+
                     if (e instanceof Player) {
-                        if (x == 45||x == 70) {
+                        if (stunSong.get(e) == 45||stunSong.get(e) == 70) {
                             ((Player) e).playSound(e.getLocation(),Sound.BLOCK_BELL_RESONATE,1,1);
                         }
                     }
 
-                    e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection()).add(0,1,0), 0, .6, .2, .92,1, null);
+                    if (hasHealSong&&!hasSpeedSong){
+                        e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection().multiply(-.7)).add(0,.7,0), 0, .6, .2, .92,1, null);
+                    } else {
+                        e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection().multiply(.7)).add(0, .7, 0), 0, .6, .2, .92, 1, null);
+                    }
 
                     stunSong.replace(e, stunSong.get(e)-1);
                     if (stunSong.get(e)<=0) removeStunSong.add(e);
@@ -171,6 +190,54 @@ public class StatusEffects {
                     stunSong.remove(r);
                 }
                 removeStunSong.clear();
+
+                List<LivingEntity> removeSpeedSong = new ArrayList<>();
+                for (LivingEntity e: speedSong.keySet()){
+
+                    boolean hasStunSong = stunSong.containsKey(e);
+                    boolean hasHealSong = healSong.containsKey(e);
+
+                    long x = e.getWorld().getFullTime();
+                    Location direction = e.getLocation().clone();
+                    direction.setPitch(0);
+
+                    if (hasHealSong&&hasStunSong) {
+                        direction.setYaw((x % 40) * 9 - 60);
+                        e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection().multiply(.7)).add(0,.7,0), 0, .25, .15, .15,1, null);
+                    } else{
+                        direction.setYaw((x % 40) * 9 - 180);
+                        e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection().multiply(-.7)).add(0, .7, 0), 0, .25, .15, .15, 1, null);
+                    }
+
+                    speedSong.replace(e, speedSong.get(e)-1);
+                    if (speedSong.get(e)<=0) removeSpeedSong.add(e);
+                }
+
+                for (LivingEntity r: removeSpeedSong) {
+                    speedSong.remove(r);
+                }
+                removeSpeedSong.clear();
+
+                List<LivingEntity> removeHealSong = new ArrayList<>();
+                for (LivingEntity e: healSong.keySet()){
+
+                    long x = e.getWorld().getFullTime();
+                    Location direction = e.getLocation().clone();
+                    direction.setPitch(0);
+
+                    direction.setYaw((x % 40) * 9 - 180);
+                    e.getWorld().spawnParticle(Particle.NOTE, e.getEyeLocation().add(direction.getDirection().multiply(.7)).add(0,.7,0), 0, .9, .15, .15, 1, null);
+
+                    healSong.replace(e, healSong.get(e)-1);
+                    if (healSong.get(e)<=0) removeHealSong.add(e);
+                }
+
+                for (LivingEntity r: removeHealSong) {
+                    healSong.remove(r);
+                }
+                removeHealSong.clear();
+
+//end of bard songs---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 for (LivingEntity e: speedTimer.keySet()) {
                     speedTimer.replace(e,speedTimer.get(e)-1);

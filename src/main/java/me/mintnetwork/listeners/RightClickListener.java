@@ -16,6 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -54,20 +56,11 @@ public class RightClickListener implements Listener {
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Blood Bolt")) {
                                         Cast.StunSong(p,plugin);
 
-//
-//                        TornadoEffect effect = new TornadoEffect(em);
-//                        effect.tornadoParticle = Particle.SPELL;
-//                        effect.tornadoHeight = 2;
-//                        effect.particleOffsetX = 1;
-//                        effect.particleOffsetZ = 1;
-//                        effect.duration = 1;
-//                        effect.setLocation(p.getLocation().add(0,0,0));
-//                        em.start(effect);
                                         //TNT bolt
                                     }
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
                                         if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
-                                            Cast.SlimeBomb(p, plugin);
+                                            Cast.SpeedSong(p,plugin);
 
 //                                        if (event.getClickedBlock() != null) {
 //                                            Cast.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
@@ -79,11 +72,13 @@ public class RightClickListener implements Listener {
                                     }
                                     //End Warp
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
-                                        UltCast.TornadoBlast(p,plugin);
+                                        if (event.getClickedBlock() != null) {
+                                            Cast.HealPillar(p,plugin,event.getBlockFace(),event.getClickedBlock());
+                                        }
 //                        Cast.BloodSacrifice(p);
                                     }
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Sniper Bolt")) {
-                                        Cast.BloodTracker(p,plugin);
+                                        Cast.HealSong(p,plugin);
                                     }
 
 //                        Cast.ShadowInvis(p,plugin);

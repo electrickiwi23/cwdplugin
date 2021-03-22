@@ -1445,6 +1445,7 @@ public static void PaintReveal(Player p){
 }
 
     public static void SniperBolt(Player p, Plugin plugin) {
+        if (Mana.spendMana(p, 3)){
         Location spread = p.getEyeLocation();
         if (!p.isSneaking()) {
             float pitch = spread.getPitch() + (float) (Math.random() * 60 - 30);
@@ -1510,6 +1511,7 @@ public static void PaintReveal(Player p){
                 hasHit = true;
             }
         }
+    }
     }
 
 

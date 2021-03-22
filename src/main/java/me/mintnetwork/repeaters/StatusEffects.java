@@ -242,14 +242,14 @@ public class StatusEffects {
             for (Player e: ShadowConsumed.keySet()){
                 String teamName = "Red";
 
-                Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 3);
+                Particle.DustOptions dustCloud = new Particle.DustOptions(Color.BLACK, 3);
                 for (Player p:Bukkit.getOnlinePlayers()){
                     if (e!=p){
                         if (e.getLocation().distance(p.getLocation())<=10){
                             e.spawnParticle(Particle.REDSTONE,p.getLocation().add(0,1,0),5,.2,.4,.2,0,dustCloud);
                         }
                     }
-
+                    p.spawnParticle(Particle.REDSTONE,e.getEyeLocation(),1,.1,.1,.1,0,dustCloud);
                 }
 
                 if (ShadowConsumed.get(e)%40==0) {
@@ -278,6 +278,9 @@ public class StatusEffects {
 
 
                 ShadowConsumed.replace(e, ShadowConsumed.get(e)-1);
+
+                if (e.isDead()) ShadowConsumed.replace(e,0);
+
                 if (ShadowConsumed.get(e)<=0){
                     removeShadowConsume.add(e);
                     e.resetPlayerTime();

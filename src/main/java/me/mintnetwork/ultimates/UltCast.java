@@ -425,5 +425,8 @@ public class UltCast {
             }, 20);
         }
     }
+    public static void SirenSong(Player p, Plugin plugin){
+
+    }
 }
 

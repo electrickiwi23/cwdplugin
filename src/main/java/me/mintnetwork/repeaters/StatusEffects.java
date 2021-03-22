@@ -242,7 +242,7 @@ public class StatusEffects {
             for (Player e: ShadowConsumed.keySet()){
                 String teamName = "Red";
 
-                Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 3);
+                Particle.DustOptions dustCloud = new Particle.DustOptions(Color.BLACK, 3);
                 for (Player p:Bukkit.getOnlinePlayers()){
                     if (e!=p){
                         if (e.getLocation().distance(p.getLocation())<=10){

@@ -33,7 +33,7 @@ public class TakeDamageListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player){
             Player p = (Player) entity;
-            Collection<Player> shadowList = StatusEffects.getShadowInvis();
+            Collection<Player> shadowList = StatusEffects.ShadowInvis;
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 System.out.println("invis damage");

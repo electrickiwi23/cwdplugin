@@ -1,13 +1,11 @@
 package me.mintnetwork.ultimates;
 
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.*;
-import me.mintnetwork.Main;
-import me.mintnetwork.repeaters.Mana;
+import de.slikey.effectlib.effect.LineEffect;
+import de.slikey.effectlib.effect.SphereEffect;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
-import org.bukkit.Color;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
@@ -22,20 +20,11 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Predicate;
 
 public class UltCast {
-
-    private final Main plugin;
-
-    public UltCast(Main plugin) {
-        this.plugin = plugin;
-    }
 
     public static void ClusterBomb(Player p, Plugin plugin) {
         //Spend Ult
@@ -45,13 +34,10 @@ public class UltCast {
         tnt.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
         tnt.setFuseTicks(120);
         ID.put(tnt, "Cluster 0");
-        tick.put(tnt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                tnt.getWorld().spawnParticle(Particle.SMOKE_LARGE, tnt.getLocation(), 1, .4, .4, .4, 0);
-                tnt.getWorld().spawnParticle(Particle.REDSTONE, tnt.getLocation(), 1, .5, .5, .5, 0, dust);
-            }
+        tick.put(tnt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+            tnt.getWorld().spawnParticle(Particle.SMOKE_LARGE, tnt.getLocation(), 1, .4, .4, .4, 0);
+            tnt.getWorld().spawnParticle(Particle.REDSTONE, tnt.getLocation(), 1, .5, .5, .5, 0, dust);
         }, 1, 1));
 
 
@@ -70,12 +56,9 @@ public class UltCast {
             ID.put(arrow, "Tracker Arrow");
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
             arrow.setDamage(.35);
-            tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                    arrow.getWorld().spawnParticle(Particle.REDSTONE, tracked.get(p).getLocation(), 1, .1, .1, .1, 0, dust);
-                }
+            tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+                arrow.getWorld().spawnParticle(Particle.REDSTONE, tracked.get(p).getLocation(), 1, .1, .1, .1, 0, dust);
             }, 20, 20));
         }
     }
@@ -84,7 +67,6 @@ public class UltCast {
         //Spend Ult
         Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
         Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
         Firework firework = (Firework) p.getWorld().spawnEntity(tracked.get(p).getLocation().add(0, 1, 0), EntityType.FIREWORK);
         FireworkEffect.Builder effect = FireworkEffect.builder();
         Random random = new Random();
@@ -99,25 +81,19 @@ public class UltCast {
         firework.setFireworkMeta(meta);
         final Location origin = tracked.get(p).getLocation();
 
-        BukkitTask task = Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Location l = origin.toVector().toLocation(origin.getWorld());
-                Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
-                Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
-                fireball.setVelocity(new Vector(0, -2.5, 0));
-                fireball.setDirection(new Vector(0, -2.5, 0));
-                fireball.setYield(3);
-            }
+        BukkitTask task = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            Location l = origin.toVector().toLocation(origin.getWorld());
+            Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
+            Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
+            fireball.setVelocity(new Vector(0, -2.5, 0));
+            fireball.setDirection(new Vector(0, -2.5, 0));
+            fireball.setYield(3);
         }, 40, 2);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                tick.get(tracked.get(p)).cancel();
-                tracked.get(p).remove();
-                tracked.remove(p);
-                task.cancel();
-            }
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+            tick.get(tracked.get(p)).cancel();
+            tracked.get(p).remove();
+            tracked.remove(p);
+            task.cancel();
         }, 220);
     }
 
@@ -131,21 +107,15 @@ public class UltCast {
         bolt.setGravity(false);
         ID.put(bolt, "BloodUlt");
         Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-                bolt.setVelocity(velocity.get(bolt));
-                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
-                bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
-            }
+        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
+            bolt.setVelocity(velocity1.get(bolt));
+            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
+            bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
         }, 1, 1));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                tick.get(bolt).cancel();
-                bolt.remove();
-            }
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+            tick.get(bolt).cancel();
+            bolt.remove();
         }, 160);
     }
 
@@ -165,13 +135,13 @@ public class UltCast {
         Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
         if (painted.keySet().size() > 0) {
             //Spend Ult
-            ArrayList<LivingEntity> list = new ArrayList<LivingEntity>(painted.keySet());
+            ArrayList<LivingEntity> list = new ArrayList<>(painted.keySet());
             for (LivingEntity e : list) {
                 e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 100, 1));
                 e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 3));
             }
             final int[] paintActivateCount = {0};
-            BukkitTask task = new BukkitRunnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     paintActivateCount[0]++;
@@ -211,9 +181,7 @@ public class UltCast {
                                         live.damage(5, p);
                                         live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
                                         live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
-                                        if (painted.containsKey(live)) {
-                                            painted.remove(live);
-                                        }
+                                        painted.remove(live);
                                     }
                                 }
                             }
@@ -236,50 +204,41 @@ public class UltCast {
         ID.put(bolt, "Element Blast");
         Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
-        float shootYaw = p.getLocation().getYaw();
-        float shootPitch = p.getLocation().getPitch();
-
-        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-                bolt.setVelocity(velocity.get(bolt));
-                bolt.getWorld().spawnParticle(Particle.FLAME,bolt.getLocation(),20,.2,.2,.2,0);
-                bolt.getWorld().spawnParticle(Particle.SNOW_SHOVEL,bolt.getLocation(),20,.3,.3,.3,0);
-                LineEffect line = new LineEffect(em);
-                line.setLocation(bolt.getLocation());
-                line.setTargetLocation(bolt.getLocation().add( Math.random()*4-2,Math.random()*4-2,Math.random()*4-2));
-                line.isZigZag = true;
-                line.zigZags = 2;
-                line.zigZagOffset = new Vector(Math.random()*.06-.03,Math.random()*.06-.03,Math.random()*.06-.03);
-                line.particle = Particle.REDSTONE;
-                line.color = Color.YELLOW;
-                line.start();
-                for (Entity e:bolt.getNearbyEntities(5,5,5)) {
-                    if (e.getLocation().distance(bolt.getLocation())<=4){
-                        if (e instanceof LivingEntity){
-                            if (!(e.equals(p))) {
-                                ((LivingEntity) e).damage(1);
-                                ((LivingEntity) e).setNoDamageTicks(0);
-                                e.setVelocity(new Vector(0, 0, 0));
-                            }
+        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
+            bolt.setVelocity(velocity1.get(bolt));
+            bolt.getWorld().spawnParticle(Particle.FLAME,bolt.getLocation(),20,.2,.2,.2,0);
+            bolt.getWorld().spawnParticle(Particle.SNOW_SHOVEL,bolt.getLocation(),20,.3,.3,.3,0);
+            LineEffect line = new LineEffect(em);
+            line.setLocation(bolt.getLocation());
+            line.setTargetLocation(bolt.getLocation().add( Math.random()*4-2,Math.random()*4-2,Math.random()*4-2));
+            line.isZigZag = true;
+            line.zigZags = 2;
+            line.zigZagOffset = new Vector(Math.random()*.06-.03,Math.random()*.06-.03,Math.random()*.06-.03);
+            line.particle = Particle.REDSTONE;
+            line.color = Color.YELLOW;
+            line.start();
+            for (Entity e:bolt.getNearbyEntities(5,5,5)) {
+                if (e.getLocation().distance(bolt.getLocation())<=4){
+                    if (e instanceof LivingEntity){
+                        if (!(e.equals(p))) {
+                            ((LivingEntity) e).damage(1);
+                            ((LivingEntity) e).setNoDamageTicks(0);
+                            e.setVelocity(new Vector(0, 0, 0));
                         }
                     }
                 }
             }
         }, 1, 1));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                tick.get(bolt).cancel();
-                bolt.remove();
-            }
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+            tick.get(bolt).cancel();
+            bolt.remove();
         }, 100);
     }
 
     public static void ObsidianWall(Player p, Plugin plugin) {
         //Spend Ult
-        Map<Block, Integer> decay = StatusEffects.getObsidianDecay();
+        Map<Block, Integer> decay = StatusEffects.ObsidianDecay;
         Location l = p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(5));
         l.getBlock().setType(Material.OBSIDIAN);
         l.setYaw(l.getYaw()+90);
@@ -293,28 +252,23 @@ public class UltCast {
                 current.add(l.getDirection().multiply(i[0]));
                 current.add(0,-6,0);
                 for (int j = 0; j < 13; j++) {
-                    current.getBlock().setType(Material.OBSIDIAN);
-                    decay.put(current.getBlock(),(int) (Math.random()*80-40));
+                    current.getBlock().setType(Material.NETHERITE_BLOCK);
+                    decay.put(current.getBlock(),(int) (Math.random()*160-80));
                     current = current.add(0,1,0);
                 }
                 current = l.clone();
                 current.add(l.getDirection().multiply(i[0]).multiply(-1));
                 current.add(0,-6,0);
                 for (int j = 0; j < 13; j++) {
-                    current.getBlock().setType(Material.OBSIDIAN);
-                    decay.put(current.getBlock(), (int) (Math.random()*80-40));
+                    current.getBlock().setType(Material.NETHERITE_BLOCK);
+                    decay.put(current.getBlock(), (int) (Math.random()*160-80));
                     current = current.add(0,1,0);
                 }
                 i[0]++;
 
             }
         }.runTaskTimer(plugin,1,1);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                task.cancel();
-            }
-        },12);
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> task.cancel(),12);
     }
 
     public static void TornadoBlast(Player p, Plugin plugin) {
@@ -350,8 +304,6 @@ public class UltCast {
             skeleton.getEquipment().setHelmet(new ItemStack(Material.WITHER_SKELETON_SKULL));
             skeleton.setInvisible(true);
             skeleton.setAI(false);
-            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-            boolean[] coolDown = {true};
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             final boolean[] isActive = {false};
             final int[] count = {0};
@@ -432,6 +384,45 @@ public class UltCast {
                 }
             }.runTaskTimer(plugin, 1, 1));
 
+        }
+    }
+    public static void ConsumingNight(Player p, Plugin plugin,EffectManager em){
+        Vector direction = p.getEyeLocation().getDirection();
+        RayTraceResult ray =  p.getWorld().rayTrace(p.getEyeLocation().add(direction),direction,50,FluidCollisionMode.NEVER,true,.1,null);
+        if (ray != null) {
+            //Spend Ult
+            Location hit = ray.getHitPosition().toLocation(p.getWorld());
+
+            SphereEffect sphere = new SphereEffect(em);
+            sphere.radius = 1;
+            sphere.particle = Particle.REDSTONE;
+            sphere.particleSize = 5;
+            sphere.color = Color.BLACK;
+            sphere.radiusIncrease = 1;
+            sphere.setLocation(hit);
+            em.start(sphere);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+                for (Entity e : p.getWorld().getNearbyEntities(hit,20,20,20)) {
+                    if (e.getLocation().distance(hit)<=20) {
+                        if (e instanceof Player) {
+                            Player victim = (Player) e;
+                            if (StatusEffects.ShadowConsumed.containsKey(victim)){
+                                StatusEffects.ShadowConsumed.replace(victim,180);
+                            } else {
+                                StatusEffects.ShadowConsumed.put(victim,180);
+                            }
+
+                            victim.setPlayerTime(114000,false);
+
+                            victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,380,2));
+                            victim.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,360,0));
+
+
+                        }
+                    }
+                }
+                sphere.cancel();
+            }, 20);
         }
     }
 }

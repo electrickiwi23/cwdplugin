@@ -9,26 +9,19 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class ProjectileHitListener implements Listener {
 
@@ -39,9 +32,7 @@ public class ProjectileHitListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-
     Map<UUID, Long> lastUsed = new HashMap<UUID, Long>();
-
 
     @EventHandler
     public void onHit(ProjectileHitEvent event) {

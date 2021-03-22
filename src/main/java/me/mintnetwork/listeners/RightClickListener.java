@@ -53,14 +53,14 @@ public class RightClickListener implements Listener {
                         if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                             if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                                 if (StatusEffects.CanCast(p)) {
-                                    if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Blood Bolt")) {
+                                    if (p.getInventory().getItemInMainHand(). getItemMeta().getDisplayName().contains("Blood Bolt")) {
                                         Cast.StunSong(p,plugin);
 
                                         //TNT bolt
                                     }
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("TNT Bolt")) {
                                         if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
-                                            Cast.SpeedSong(p,plugin);
+                                            UltCast.ConsumingNight(p,plugin,em);
 
 //                                        if (event.getClickedBlock() != null) {
 //                                            Cast.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
@@ -72,13 +72,11 @@ public class RightClickListener implements Listener {
                                     }
                                     //End Warp
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("End Warp")) {
-                                        if (event.getClickedBlock() != null) {
-                                            Cast.HealPillar(p,plugin,event.getBlockFace(),event.getClickedBlock());
-                                        }
+                                        UltCast.ObsidianWall(p,plugin);
 //                        Cast.BloodSacrifice(p);
                                     }
                                     if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Sniper Bolt")) {
-                                        Cast.HealSong(p,plugin);
+                                        Cast.SniperBolt(p,plugin);
                                     }
 
 //                        Cast.ShadowInvis(p,plugin);

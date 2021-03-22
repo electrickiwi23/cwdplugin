@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 public class Cast {
 
     public static void SpeedBoost(Player p){
-        Map<LivingEntity, Integer> speedMap = StatusEffects.getSpeedTimer();
+        Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
         if (!speedMap.containsKey(p)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1,false,true));
             speedMap.put(p,30);
@@ -1043,13 +1043,16 @@ public class Cast {
                         victim.removePotionEffect(PotionEffectType.WITHER);
                         victim.removePotionEffect(PotionEffectType.POISON);
                         victim.removePotionEffect(PotionEffectType.GLOWING);
-                        victim.removePotionEffect(PotionEffectType.WEAKNESS);
-                        if (StatusEffects.BloodWeak.containsKey(victim)){
-                            StatusEffects.BloodWeak.remove(victim);
+
+                        if (!StatusEffects.ShadowConsumed.containsKey(victim)){
+                            victim.removePotionEffect(PotionEffectType.WEAKNESS);
+                            victim.removePotionEffect(PotionEffectType.BLINDNESS);
                         }
-                        if (StatusEffects.stunSong.containsKey(victim)){
-                            StatusEffects.stunSong.remove(victim);
-                        }
+
+
+
+                        StatusEffects.BloodWeak.remove(victim);
+                        StatusEffects.stunSong.remove(victim);
 
 
                     }
@@ -1091,7 +1094,7 @@ public class Cast {
     }
 
     public static void ShadowInvis(Player p, Plugin plugin) {
-        Collection<Player> status = StatusEffects.getShadowInvis();
+        Collection<Player> status = StatusEffects.ShadowInvis;
         if (!status.contains(p)) {
             if (Mana.spendMana(p, 3)) {
                 status.add(p);

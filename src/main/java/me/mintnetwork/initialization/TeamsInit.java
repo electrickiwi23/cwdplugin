@@ -3,109 +3,135 @@ package me.mintnetwork.initialization;
 import me.mintnetwork.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scoreboard.*;
 
-public class TeamsInit implements CommandExecutor {
+public class TeamsInit implements Listener {
 
     private final Main plugin;
 
     public TeamsInit(Main plugin) {
         this.plugin = plugin;
-        plugin.getCommand("assign").setExecutor(this);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    ScoreboardManager manager = Bukkit.getScoreboardManager();
-    Scoreboard board = manager.getNewScoreboard();
+//  Individual Scoreboard Start ----------------------------------------------------------------------------------------
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players may execute this command!");
-            return true;
-        }
+//    @EventHandler
+//    public void onPlayerJoin(PlayerJoinEvent e){
+//        Scoreboard dummy = createScoreboard(e.getPlayer(), 'x');
+//        updateScoreboard();
+//    }
 
-        Player p = (Player) sender;
+//    @EventHandler
+//    public void onPlayerQuit(PlayerQuitEvent e){
+//        updateScoreboard();
+//    }
 
-        System.out.println("first");
+//    public static Scoreboard getScoreboard(Player player){
+//        return createScoreboard(player, 'x');
+//    }
 
-        if (p.hasPermission("cwd.assign")) {
+//    public static Scoreboard addToTeam(Player player, char color){
+//        return createScoreboard(player, color);
+//    }
 
-            System.out.println("second");
+//    Temporary placeholders and setting the scoreboard
+//      Objective objective = board.registerNewObjective("Stats", "dummy", "Stats");
+//      objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+//      Score score = objective.getScore("players:");
+//      score.setScore(Bukkit.getOnlinePlayers().size());
 
+//  Individual Scoreboard Pause ----------------------------------------------------------------------------------------
 
+    public static void initializeTeams(int teamAmount) {
 
-            // Initialization of teams
-            Team red = board.registerNewTeam("Red");
-            Team blue = board.registerNewTeam("Blue");
-            Team yellow = board.registerNewTeam("Yellow");
-            Team green = board.registerNewTeam("Green");
+        System.out.println("second");
 
-            // Setting player prefixes and team characteristics
-            red.setPrefix(ChatColor.RED + "[RED] " + ChatColor.WHITE);
-            blue.setPrefix(ChatColor.DARK_BLUE + "[BLUE] " + ChatColor.WHITE);
-            yellow.setPrefix(ChatColor.YELLOW + "[YELLOW] " + ChatColor.WHITE);
-            green.setPrefix(ChatColor.GREEN + "[GREEN] " + ChatColor.WHITE);
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard board = manager.getMainScoreboard();
 
-            red.setAllowFriendlyFire(false);
-            blue.setAllowFriendlyFire(false);
-            yellow.setAllowFriendlyFire(false);
-            green.setAllowFriendlyFire(false);
-
-
-            if (args[0].equalsIgnoreCase("rb")) {
-                System.out.println("third");
-                int count = 0;
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    count++;
-                    if (count % 2 == 0) {
-                        System.out.println("fifth");
-                        red.addEntry(online.getDisplayName());
-                    } else {
-                        System.out.println("sixth");
-                        blue.addEntry(online.getDisplayName());
-                    }
-                }
-            } else if (args[0].equalsIgnoreCase("rbyg")) {
-                System.out.println("fourth");
-                int count = 0;
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    count++;
-                    switch(count % 4) {
-                        case(1):
-                            red.addEntry(online.getName());
-                            break;
-                        case(2):
-                            blue.addEntry(online.getName());
-                            break;
-                        case(3):
-                            yellow.addEntry(online.getName());
-                            break;
-                        case(0):
-                            green.addEntry(online.getName());
-                            break;
-                    }
-                }
-            } else {
-                p.sendMessage(ChatColor.RED + "Invalid use of command, correct usage: " + ChatColor.GREEN + "/assign rb " + ChatColor.RED + "or " + ChatColor.GREEN + "/assign rbyg");
-            }
-            p.setScoreboard(board);
-        }
-        return false;
-    }
-
-    public Team getTeam(Entity entity) {
         for (Team team : board.getTeams()) {
-            if (team.hasEntry(String.valueOf(entity))) {
-                return team;
+            System.out.println("two and half");
+            team.unregister();
+        }
+
+        System.out.println("third");
+
+        // Initialization of teams
+        board.registerNewTeam("red");
+        board.registerNewTeam("blue");
+        board.registerNewTeam("yellow");
+        board.registerNewTeam("green");
+
+        System.out.println("fourth");
+
+        // Setting player prefixes and team characteristics
+        board.getTeam("red").setPrefix(ChatColor.RED + "[RED] " + ChatColor.WHITE);
+        board.getTeam("blue").setPrefix(ChatColor.BLUE + "[BLUE] " + ChatColor.WHITE);
+        board.getTeam("yellow").setPrefix(ChatColor.YELLOW + "[YELLOW] " + ChatColor.WHITE);
+        board.getTeam("green").setPrefix(ChatColor.GREEN + "[GREEN] " + ChatColor.WHITE);
+
+        board.getTeam("red").setColor(ChatColor.RED);
+        board.getTeam("blue").setColor(ChatColor.BLUE);
+        board.getTeam("yellow").setColor(ChatColor.YELLOW);
+        board.getTeam("green").setColor(ChatColor.GREEN);
+
+        board.getTeam("red").setAllowFriendlyFire(false);
+        board.getTeam("blue").setAllowFriendlyFire(false);
+        board.getTeam("yellow").setAllowFriendlyFire(false);
+        board.getTeam("green").setAllowFriendlyFire(false);
+
+        System.out.println("fifth");
+
+        if (teamAmount == 2) {
+            System.out.println("sixth");
+            int count = 0;
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                count++;
+                if (count % 2 == 0) {
+                    System.out.println("eighth");
+                    board.getTeam("red").addEntry(online.getName());
+                } else {
+                    System.out.println("ninth");
+                    board.getTeam("blue").addEntry(online.getName());
+                }
+            }
+        } else if (teamAmount == 4) {
+            System.out.println("seventh");
+            int count = 0;
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                count++;
+                switch (count % 4) {
+                    case (1):
+                        System.out.println("tenth");
+                        board.getTeam("red").addEntry(online.getName());
+                        break;
+                    case (2):
+                        board.getTeam("blue").addEntry(online.getName());
+                        break;
+                    case (3):
+                        board.getTeam("yellow").addEntry(online.getName());
+                        break;
+                    case (0):
+                        board.getTeam("green").addEntry(online.getName());
+                        break;
+                }
             }
         }
-        return null;
     }
+
+//  Individual Scoreboard Resume ---------------------------------------------------------------------------------------
+//    public void updateScoreboard() {
+//        for (Player online : Bukkit.getOnlinePlayers()){
+//            Score score = online.getScoreboard().getObjective(DisplaySlot.SIDEBAR).getScore("players:");
+//            score.setScore(Bukkit.getOnlinePlayers().size());
+//        }
+//    }
+//  Individual Scoreboard End -----------------------------------------------------------------------------------------
+
 }

@@ -33,19 +33,25 @@ public class TakeDamageListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player){
             Player p = (Player) entity;
-            Collection<Player> shadowList = StatusEffects.getShadowInvis();
+            Collection<Player> shadowList = StatusEffects.ShadowInvis;
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
         }
-        if (entity instanceof LivingEntity){
+        if (entity instanceof LivingEntity) {
+            if (StatusEffects.BloodWeak.containsKey(entity)) {
+                event.setDamage(event.getDamage() + 1);
+            }
+
+
             LivingEntity living = (LivingEntity) entity;
-        Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
-        if (ShadowGrappler.containsKey(living)) {
-            StatusEffects.ShadowGrappleCancel(living);
+            Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
+            if (ShadowGrappler.containsKey(living)) {
+                StatusEffects.ShadowGrappleCancel(living);
+            }
         }
-        }
+
     }
 }

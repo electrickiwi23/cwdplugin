@@ -1,12 +1,8 @@
 package me.mintnetwork.spells;
 
-import com.sun.tools.javac.jvm.Items;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.*;
-import jdk.internal.icu.util.CodePointTrie;
-import me.mintnetwork.Main;
-import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -14,34 +10,26 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Cake;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.MaterialData;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Team;
-import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
-import java.util.zip.Adler32;
 
 public class Cast {
 
     public static void SpeedBoost(Player p){
-        Map<LivingEntity, Integer> speedMap = StatusEffects.getSpeedTimer();
+        Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
         if (!speedMap.containsKey(p)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1,false,true));
             speedMap.put(p,30);
@@ -1010,12 +998,12 @@ public class Cast {
                     }
                     BukkitTask healing = new BukkitRunnable() {
                         public void run() {
-                            for (Entity e : pillarLocation.getWorld().getNearbyEntities(pillarLocation.getLocation(), 6, 6, 6)) {
+                            pillarLocation.getWorld().spawnParticle(Particle.HEART, pillarLocation.getLocation().add(.5, 1, .5), 1, 1.5, 1.5, 1.5, .2);
+                            for (Entity e : pillarLocation.getWorld().getNearbyEntities(pillarLocation.getLocation().add(.5,.5,.5), 6, 6, 6)) {
                                 if (e instanceof LivingEntity) {
                                     LivingEntity live = (LivingEntity) e;
-                                    if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
-                                        live.getWorld().spawnParticle(Particle.HEART, live.getLocation().add(0, 1, 0), 4, .2, .4, .2);
-                                        live.setHealth(live.getHealth()+1);
+                                    if (live.getMaxHealth() - .033 >= Math.ceil(live.getHealth())) {
+                                        live.setHealth(live.getHealth()+.033);
                                     }
                                 }
                             }
@@ -1023,7 +1011,7 @@ public class Cast {
                                 this.cancel();
                             }
                         }
-                    }.runTaskTimer(plugin, 1, 30);
+                    }.runTaskTimer(plugin, 1, 1);
                     BukkitTask cake = new BukkitRunnable() {
                         public void run() {
                             if (cakeLocation.getType().equals(Material.CAKE)) {
@@ -1054,7 +1042,17 @@ public class Cast {
                         victim.removePotionEffect(PotionEffectType.SLOW);
                         victim.removePotionEffect(PotionEffectType.WITHER);
                         victim.removePotionEffect(PotionEffectType.POISON);
-                        victim.removePotionEffect(PotionEffectType.WEAKNESS);
+                        victim.removePotionEffect(PotionEffectType.GLOWING);
+
+                        if (!StatusEffects.ShadowConsumed.containsKey(victim)){
+                            victim.removePotionEffect(PotionEffectType.WEAKNESS);
+                            victim.removePotionEffect(PotionEffectType.BLINDNESS);
+                        }
+
+
+
+                        StatusEffects.BloodWeak.remove(victim);
+                        StatusEffects.stunSong.remove(victim);
 
 
                     }
@@ -1096,7 +1094,7 @@ public class Cast {
     }
 
     public static void ShadowInvis(Player p, Plugin plugin) {
-        Collection<Player> status = StatusEffects.getShadowInvis();
+        Collection<Player> status = StatusEffects.ShadowInvis;
         if (!status.contains(p)) {
             if (Mana.spendMana(p, 3)) {
                 status.add(p);
@@ -1603,8 +1601,83 @@ public static void PaintReveal(Player p){
     }
     }
 
-    public static void SpeedSong(Player p,Plugin plugin){
+    public static void SpeedSong(Player p,Plugin plugin) {
+        if (Mana.spendMana(p, 4)) {
+            String teamName = "Red";
+            List<Entity> entities = p.getNearbyEntities(5, 5, 5);
+            entities.add(p);
+            for (Entity e : entities) {
+                if (e instanceof Player) {
+                    Player victim = (Player) e;
+                    String victimTeam = "Red";
+                    if (teamName.matches(victimTeam)) {
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 1, false, false));
+                        if (StatusEffects.speedSong.containsKey(victim)) {
+                            StatusEffects.speedSong.replace(victim, 70);
+                        } else {
+                            StatusEffects.speedSong.put(victim, 70);
+                        }
+                    }
+                }
+            }
+            final int[] count = {0};
+            BukkitTask task = new BukkitRunnable(){
+                @Override
+                public void run() {
+                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO,(float).4, (float) 0.793701);
+                    if (count[0] % 5==0){
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASEDRUM,(float).3, (float) .6);
+                    }
+                    if ((count[0] -2) % 5==0){
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_SNARE,(float).3, (float) .9);
+                    }
+                    count[0]++;
+                    if (count[0] >=20){
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(plugin,1,2);
+        }
+    }
 
+    public static void HealSong(Player p,Plugin plugin) {
+        if (Mana.spendMana(p, 3)) {
+            String teamName = "Red";
+            List<Entity> entities = p.getNearbyEntities(5, 5, 5);
+            entities.add(p);
+            for (Entity e : entities) {
+                if (e instanceof Player) {
+                    Player victim = (Player) e;
+                    String victimTeam = "Red";
+                    if (teamName.matches(victimTeam)) {
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0, false, false));
+                        if (StatusEffects.healSong.containsKey(victim)) {
+                            StatusEffects.healSong.replace(victim, 100);
+                        } else {
+                            StatusEffects.healSong.put(victim, 100);
+                        }
+
+                    }
+                }
+            }
+            final int[] count = {0};
+            BukkitTask task = new BukkitRunnable(){
+                @Override
+                public void run() {
+                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_FLUTE,(float).3, (float) 0.840896);
+                    if (count[0] > 15){
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_FLUTE,(float).3, (float) 0.667420);
+                    }
+                    if (count[0] > 30){
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_FLUTE,(float).3, (float) 1);
+                    }
+                    count[0]++;
+                    if (count[0] >=60){
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(plugin,1,1);
+        }
     }
 
     public static void StunSong(Player p, Plugin plugin){

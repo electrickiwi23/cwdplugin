@@ -21,7 +21,7 @@ public final class Main extends JavaPlugin {
         new RightClickListener(this);
         Mana manaGen = new Mana(this);
         manaGen.mana(this);
-        StatusEffects statuses = new StatusEffects(this);
+        StatusEffects statuses = new StatusEffects();
         statuses.statusEffects(this);
         new DebugCommand(this);
         new EntityDamageListener(this);

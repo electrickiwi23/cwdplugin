@@ -36,7 +36,7 @@ public class EntityDamageListener implements Listener {
         Entity victim = event.getEntity();
         if (entity instanceof Player) {
             Player p = (Player) entity;
-            Collection<Player> shadowList = StatusEffects.getShadowInvis();
+            Collection<Player> shadowList = StatusEffects.ShadowInvis;
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 System.out.println("invis damage");
@@ -45,16 +45,11 @@ public class EntityDamageListener implements Listener {
         }
         if (entity instanceof Player) {
             if (victim instanceof Player) {
-                Map<LivingEntity, Integer> speedMap = StatusEffects.getSpeedTimer();
+                Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
                     ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
                     speedMap.put((Player) entity, 30);
                 }
-            }
-        }
-        if (victim instanceof LivingEntity) {
-            if (StatusEffects.BloodWeak.containsKey(victim)) {
-                event.setDamage(event.getDamage()+1);
             }
         }
 

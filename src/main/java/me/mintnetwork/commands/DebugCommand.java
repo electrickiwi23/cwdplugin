@@ -2,17 +2,10 @@ package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.TeamsInit;
-import me.mintnetwork.repeaters.Mana;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 
 public class DebugCommand implements CommandExecutor {
@@ -32,9 +25,8 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        Player p = (Player) sender;
-
-//        System.out.println(TeamsInit.getTeam(p));
+        System.out.println("first");
+        TeamsInit.initializeTeams(2);
 
         return false;
     }

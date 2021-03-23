@@ -2,8 +2,9 @@ package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.wizard.Wizard;
+import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,9 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class EntityDamageListener implements Listener {
 
@@ -26,9 +25,6 @@ public class EntityDamageListener implements Listener {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
-
-    Map<UUID, Long> lastUsed = new HashMap<UUID, Long>();
-
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event) {
@@ -49,6 +45,23 @@ public class EntityDamageListener implements Listener {
                 if (speedMap.containsKey(entity)) {
                     ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
                     speedMap.put((Player) entity, 30);
+                }
+                Wizard wizard = WizardInit.playersWizards.get(entity);
+                if (wizard.ClassID.equals("blood mage")){
+                    LivingEntity live = (LivingEntity) entity;
+                    if (StatusEffects.BloodWeak.containsKey(victim)){
+                        for (int i = 0; i < 3; i++) {
+                            if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
+                                live.setHealth(live.getHealth()+1);
+                            }
+                        }
+                    } else{
+                        if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
+                            live.setHealth(live.getHealth()+1);
+                        }
+                    }
+
+
                 }
             }
         }

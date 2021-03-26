@@ -11,6 +11,7 @@ public class Wizard {
     public int Mana = 0;
     public int ManaTick = 0;
     public String ClassID = "";
+    public int PassiveTick = 0;
     ArrayList<Integer> ChosenSpells = new ArrayList<>();
 
     public Wizard(Player p){

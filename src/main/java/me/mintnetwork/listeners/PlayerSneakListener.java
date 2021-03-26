@@ -6,6 +6,7 @@ import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -55,6 +56,10 @@ public class PlayerSneakListener implements Listener {
                 p.getInventory().setHelmet(PreviousHelm.get(p));
                 Zoomed.remove(p);
             }
+            if(wizard.ClassID.equals("pillar man")){
+                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
+                p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+            }
 
 
         }else{
@@ -66,6 +71,9 @@ public class PlayerSneakListener implements Listener {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 3, false, false));
                     StatusEffects.cloudFloating.add(p);
                 }
+            } else if(wizard.ClassID.equals("pillar man")){
+                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(.6);
+                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1000000,0,true,false));
             }
 
             if (!p.getInventory().getItemInMainHand().getType().isAir()) {

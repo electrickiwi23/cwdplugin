@@ -1,9 +1,6 @@
 package me.mintnetwork;
 
-import me.mintnetwork.commands.AutoCompleter;
-import me.mintnetwork.commands.ClassSelect;
-import me.mintnetwork.commands.DebugCommand;
-import me.mintnetwork.commands.GiveWand;
+import me.mintnetwork.commands.*;
 import me.mintnetwork.listeners.*;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.listeners.ProjectileHitListener;
@@ -39,8 +36,8 @@ public final class Main extends JavaPlugin {
         new PlayerSneakListener(this);
         new TakeDamageListener(this);
         new EntityExplodeListener(this);
-        getCommand("class").setTabCompleter(new AutoCompleter());
-
+        getCommand("class").setTabCompleter(new ClassAutoCompleter());
+        getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         new TeamsInit(this);
         new Ultimate(this);
         //hello

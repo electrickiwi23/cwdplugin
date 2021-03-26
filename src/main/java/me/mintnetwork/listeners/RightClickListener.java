@@ -68,6 +68,9 @@ public class RightClickListener implements Listener {
                                         case ("Force Pull"):
                                             Berserker.ForcePull(p,plugin,em);
                                             break;
+                                        case ("Unleash Rage"):
+                                            Berserker.RageUlt(p);
+                                            break;
 
                                         case ("Void Rift"):
                                             if (event.getClickedBlock() != null) {
@@ -250,7 +253,7 @@ public class RightClickListener implements Listener {
                                         case("End Warp"):
                                             GenericCast.EndWarp(p,plugin);
                                             break;
-                                        case("Baby Bomber"):
+                                        case("Baby Boomer"):
                                             GenericCast.ChildBomber(p,plugin);
                                             break;
                                         case("Zombie Summon"):

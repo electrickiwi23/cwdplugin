@@ -168,7 +168,7 @@ public class TeamsInit implements Listener {
                     armorMeta.setColor(Color.fromRGB(128, 199, 31));
                     break;
                 case ("yellow"):
-                    armorMeta.setColor(Color.fromRGB(71, 79, 82));
+                    armorMeta.setColor(Color.fromRGB(120, 120, 2));
                     break;
             }
             i.setItemMeta(armorMeta);

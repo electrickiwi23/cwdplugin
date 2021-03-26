@@ -48,8 +48,6 @@ public class ClassSelect implements CommandExecutor {
             return true;
         }
 
-        System.out.println("class slection");
-
         Player p = (Player) sender;
 
         ArrayList<ItemMeta> wandList = new ArrayList<>();
@@ -156,6 +154,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rPray Abduction"));
                     wandList.add(meta.clone());
+                    p.setCustomNameVisible(false);
                     wizard.ClassID = "shadow";
                     break;
                 case ("spellslinger"):
@@ -180,6 +179,8 @@ public class ClassSelect implements CommandExecutor {
             if (wandList.isEmpty()) {
                 sender.sendMessage(args[0] + " is not a valid Class");
             } else {
+                if (!wizard.ClassID.equals("shadow")) p.setCustomNameVisible(true);
+
                 ItemStack sword = new ItemStack(Material.STONE_SWORD);
                 ItemMeta swordMeta = sword.getItemMeta();
                 if (wizard.ClassID.equals("berserker")){
@@ -208,7 +209,7 @@ public class ClassSelect implements CommandExecutor {
                 } else if (TeamName.equals("green")) {
                     armorMeta.setColor(Color.fromRGB(128, 199, 31));
                 } else if (TeamName.equals("yellow")) {
-                    armorMeta.setColor(Color.fromRGB(71, 79, 82));
+                    armorMeta.setColor(Color.fromRGB(120, 120, 2));
                 }
 
                 if (wizard.ClassID.equals("demolitionist")){

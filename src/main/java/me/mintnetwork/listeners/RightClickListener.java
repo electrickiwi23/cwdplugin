@@ -196,6 +196,9 @@ public class RightClickListener implements Listener {
                                         case("Concussion Ring"):
                                             Bard.StunSong(p,plugin);
                                             break;
+                                        case("Siren Song"):
+                                            Bard.SirenSong(p,plugin);
+                                            break;
 
                                         case("Sniper Bolt"):
                                             Tactician.SniperBolt(p,plugin);

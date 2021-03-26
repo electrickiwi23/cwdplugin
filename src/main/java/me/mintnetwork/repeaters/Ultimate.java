@@ -1,6 +1,8 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.wizard.Wizard;
+import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,46 +18,50 @@ public class Ultimate {
             this.plugin = plugin;
     }
 
-    private static Map<String, Integer> playerUlt = new HashMap<String, Integer>();
-    private static Map<String, Integer> playerClass = new HashMap<String, Integer>();
+    private static Map<Player, Integer> playerUlt = new HashMap<>();
 
-    public boolean spendUlt(Player p, int c) {
-        String id = p.getUniqueId().toString();
-        boolean has = playerUlt.get(id)>=c;
+    public static boolean spendUlt(Player p, int c) {
+        boolean has = playerUlt.get(p)>=c;
         if (has) {
-            playerUlt.replace(id, 0);
+            playerUlt.replace(p, 0);
         }
         return has;
     }
 
-    public Map<String, Integer>  getPlayerUlt() {
-        return playerUlt;
-    }
-
-    public void ult(Main plugin) {
+    public static void ult(Main plugin) {
         System.out.println("generating ult");
         for (Player player : Bukkit.getOnlinePlayers()) {
-            String uuid = player.getUniqueId().toString();
-            playerUlt.put(uuid, 0);
+            playerUlt.put(player, 0);
         }
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for (String player : playerUlt.keySet()) {
-                    switch (playerClass.get(player)) {
-                        case 1:
+                for (Player player : playerUlt.keySet()) {
+                    Wizard wizard = WizardInit.playersWizards.get(player);
+                    switch (wizard.ClassID) {
+                        case "spell slinger":
+                        case "painter":
                             if (playerUlt.get(player) < 120) {
                                 playerUlt.replace(player, playerUlt.get(player) + 1);
                                 break;
                             }
                             break;
-                        case 2:
+                        case "demolitionist":
+                        case "sky flyer":
+                        case "berserker":
+                        case "alchemist":
+                        case "bard":
+                        case "blood mage":
+                        case "builder":
+                        case "cleric":
+                        case "tactician":
                             if (playerUlt.get(player) < 180) {
                                 playerUlt.replace(player, playerUlt.get(player) + 1);
                                 break;
                             }
                             break;
-                        case 3:
+                        case "shadow":
+                        case "pillar man":
                             if (playerUlt.get(player) < 240) {
                                 playerUlt.replace(player, playerUlt.get(player) + 1);
                                 break;

@@ -11,6 +11,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -55,6 +56,8 @@ public class StatusEffects {
     public static Map<LivingEntity, Integer> speedSong = new HashMap<>();
 
     public static Map<Player, Double> bardInspiration = new HashMap<>();
+
+    public static Map<Player, Integer> sirenSong = new HashMap<>();
 
     public static Map<Player, Integer> ShadowConsumed = new HashMap<>();
 
@@ -282,6 +285,31 @@ public class StatusEffects {
                 }
                 removeInspiration.clear();
 
+
+                for(Player p: sirenSong.keySet()){
+                    p.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,p.getLocation().add(0,1,0),2,.3,.5,.3,0);
+
+
+                    for (Entity e:p.getNearbyEntities(30,30,30)){
+                        if (e instanceof LivingEntity){
+                            if (e.getLocation().distance(p.getLocation())<=30){
+                                if (((LivingEntity) e).hasLineOfSight(p)){
+                                    e.teleport(e.getLocation().setDirection(p.getLocation().toVector().subtract(e.getLocation().toVector()).normalize()));
+                                    e.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,((LivingEntity) e).getEyeLocation(),1,.25,.25,.25,0);
+                                }
+                            }
+                        }
+                    }
+                    sirenSong.replace(p, sirenSong.get(p) - 1);
+                    if (p.isDead()){
+                        sirenSong.replace(p,0);
+                    }
+                    if (sirenSong.get(p) <= 0) {
+                        sirenSong.remove(p);
+                    }
+
+                }
+
 //end of bard songs---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 for (LivingEntity e : speedTimer.keySet()) {
@@ -368,6 +396,16 @@ public class StatusEffects {
         if (ShadowGrappler.containsKey(p)) return false;
         if (stunSong.containsKey(p)) return false;
         if (ShadowConsumed.containsKey(p)) return false;
+
+        for (Player e:Bukkit.getOnlinePlayers()) {
+            if (sirenSong.containsKey(e)) {
+                if (e.getLocation().distance(p.getLocation()) <= 30) {
+                    if (e.hasLineOfSight(p)) {
+                        return false;
+                    }
+                }
+            }
+        }
 
         //ugly code for if you are in a tornado
         for (Entity e : p.getWorld().getNearbyEntities(p.getLocation(),7,16,7)) {

@@ -4,13 +4,16 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.VortexEffect;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -79,4 +82,22 @@ public class Berserker {
         }.runTaskTimer(plugin, 1, 1);
     }
 }
+
+    public static void RageUlt(Player p) {
+        //Spend ult
+        for (ItemStack i:p.getInventory().getContents()) {
+            if (i!=null) {
+                if (i.getType().equals(Material.IRON_SWORD)) {
+                    i.addEnchantment(Enchantment.KNOCKBACK, 1);
+                }
+            }
+        }
+        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_RAVAGER_ROAR,3,1);
+        if (StatusEffects.RageUlt.containsKey(p)){
+            StatusEffects.RageUlt.replace(p,150);
+        }else {
+            StatusEffects.RageUlt.put(p, 150);
+        }
+
+    }
 }

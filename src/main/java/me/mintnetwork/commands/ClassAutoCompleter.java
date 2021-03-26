@@ -7,7 +7,7 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoCompleter implements TabCompleter {
+public class ClassAutoCompleter implements TabCompleter {
 
 
     @Override

@@ -44,6 +44,7 @@ public class PillarMan {
             effect.particleSize = 3;
             effect.color = Color.BLACK;
             effect.wholeCircle = true;
+            effect.iterations = 1;
             em.start(effect);
 
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
@@ -324,6 +325,7 @@ public class PillarMan {
             effect.particleCount = 1;
             effect.particleSize = 3;
             effect.wholeCircle = true;
+            effect.iterations = 2;
             em.start(effect);
 
             tick.put(skeleton, new BukkitRunnable() {

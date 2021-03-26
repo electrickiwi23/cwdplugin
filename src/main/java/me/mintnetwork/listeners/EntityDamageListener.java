@@ -1,10 +1,13 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -32,21 +35,34 @@ public class EntityDamageListener implements Listener {
         Entity victim = event.getEntity();
         if (entity instanceof Player) {
             Player p = (Player) entity;
+            Wizard wizard = WizardInit.playersWizards.get(entity);
             Collection<Player> shadowList = StatusEffects.ShadowInvis;
+
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
-        }
-        if (entity instanceof Player) {
+
+            if (StatusEffects.RageUlt.containsKey(p)) {
+                event.setDamage(event.getDamage()+2);
+            }
+
+            if (StatusEffects.bardInspiration.containsKey(p)){
+                p.getWorld().spawnParticle(Particle.NOTE, p.getEyeLocation().add(0, 1, 0), 0, .1, .2, .92, 1, null);
+                p.getWorld().playSound(p.getEyeLocation().add(0, 1, 0), Sound.BLOCK_NOTE_BLOCK_PLING, (float) .5, (float) (7 + Math.ceil(StatusEffects.bardInspiration.get(p))));
+                StatusEffects.bardInspiration.replace(p,StatusEffects.bardInspiration.get(p)-1);
+                event.setDamage(event.getDamage()+1);
+
+
+            }
+
             if (victim instanceof Player) {
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
                     ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
                     speedMap.put((Player) entity, 30);
                 }
-                Wizard wizard = WizardInit.playersWizards.get(entity);
                 if (wizard.ClassID.equals("blood mage")){
                     LivingEntity live = (LivingEntity) entity;
                     if (StatusEffects.BloodWeak.containsKey(victim)){
@@ -60,8 +76,10 @@ public class EntityDamageListener implements Listener {
                             live.setHealth(live.getHealth()+1);
                         }
                     }
-
-
+                } else if (wizard.ClassID.equals("berserker")){
+                    for (int i = 0; i < 2; i++) {
+                        Mana.tickMana((Player) entity);
+                    }
                 }
             }
         }

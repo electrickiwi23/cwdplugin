@@ -3,9 +3,12 @@ package me.mintnetwork.repeaters;
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -51,9 +54,13 @@ public class StatusEffects {
 
     public static Map<LivingEntity, Integer> speedSong = new HashMap<>();
 
+    public static Map<Player, Double> bardInspiration = new HashMap<>();
+
     public static Map<Player, Integer> ShadowConsumed = new HashMap<>();
 
     public static ArrayList<Player> cloudFloating = new ArrayList<>();
+
+    public static  Map<Player, Integer> RageUlt = new HashMap<>();
 
     public void statusEffects(Main plugin) {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -101,6 +108,32 @@ public class StatusEffects {
 
                 for (Player p : cloudFloating) {
                     p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation().add(0,-1,0), 1, .1, .1, .1, 0);
+                }
+
+                for (Player p: RageUlt.keySet()){
+                    RageUlt.replace(p, RageUlt.get(p) - 1);
+                    Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 3);
+                    for (Player e : Bukkit.getOnlinePlayers()) {
+                        if (e != p) {
+                            e.spawnParticle(Particle.REDSTONE, p.getLocation().add(0, 1, 0), 3, .2, .4, .2, 0, dustCloud);
+                        }
+                    }
+
+                    if (p.isDead()){
+                        RageUlt.replace(p,0);
+                    }
+
+                    if (RageUlt.get(p) <= 0) {
+                        RageUlt.remove(p);
+
+                        for (ItemStack i:p.getInventory().getContents()) {
+                            if (i.getType().equals(Material.IRON_SWORD)){
+                                i.removeEnchantment(Enchantment.KNOCKBACK);
+                            }
+                        }
+
+                    }
+
                 }
 
                 for (LivingEntity e : BloodWeak.keySet()) {
@@ -223,6 +256,32 @@ public class StatusEffects {
                 }
                 removeHealSong.clear();
 
+
+                List<Player> removeInspiration = new ArrayList<>();
+                for(Player p: bardInspiration.keySet()){
+                    String teamName = TeamsInit.getTeamName(p);
+                    for (Player b:Bukkit.getOnlinePlayers()) {
+
+                        if (WizardInit.playersWizards.get(b).ClassID.equals("bard")){
+                            String bardTeamName = TeamsInit.getTeamName(b);
+                            if (bardTeamName.equals(teamName)){
+                                if (b.getLocation().distance(p.getLocation())<=6) {
+                                    bardInspiration.replace(p, Math.ceil(bardInspiration.get(p)));
+                                }
+                            }
+                        }
+                    }
+
+                    bardInspiration.replace(p,bardInspiration.get(p)-.01);
+                    if (bardInspiration.get(p) <= 0) {
+                        removeInspiration.add(p);
+                    }
+                }
+                for (Player r: removeInspiration) {
+                    bardInspiration.remove(r);
+                }
+                removeInspiration.clear();
+
 //end of bard songs---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 for (LivingEntity e : speedTimer.keySet()) {
@@ -236,6 +295,7 @@ public class StatusEffects {
                     }
 
                 }
+
                 for (LivingEntity e : ShadowGrappleTimer.keySet()) {
                     ShadowGrappleTimer.replace(e, ShadowGrappleTimer.get(e) + 1);
                     if (ShadowGrappleTimer.get(e) >= 60) {
@@ -277,9 +337,7 @@ public class StatusEffects {
                             e.playSound(e.getEyeLocation().add(l.getDirection().multiply(5)), Sound.AMBIENT_CAVE, 1, 1);
                         } else {
 
-                            int rnd = new Random().nextInt(validNoise.size());
-                            Player p = validNoise.get(rnd);
-                            e.playSound(p.getLocation(), Sound.AMBIENT_CAVE, 1, 1);
+
                         }
                     }
 
@@ -300,6 +358,7 @@ public class StatusEffects {
                     ShadowConsumed.remove(r);
                 }
                 removeShadowConsume.clear();
+
             }
         }, 0, 2);
     }

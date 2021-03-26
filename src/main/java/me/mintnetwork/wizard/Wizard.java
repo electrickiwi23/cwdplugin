@@ -10,6 +10,7 @@ public class Wizard {
     Player player = null;
     public int Mana = 0;
     public int ManaTick = 0;
+    public int Ult = 0;
     public String ClassID = "";
     ArrayList<Integer> ChosenSpells = new ArrayList<>();
 

@@ -4,6 +4,7 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.TornadoEffect;
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
@@ -102,7 +103,6 @@ public class ProjectileHitListener implements Listener {
                     cloud.setDuration(200);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, true, true), false);
                     cloud.setReapplicationDelay(10);
-                    cloud.setSource(shooter);
                     cloud.setCustomName("Acid Pool");
                 }
                 if (ID.get(potion).equals("Heal Potion")) {
@@ -179,11 +179,12 @@ public class ProjectileHitListener implements Listener {
                         hit.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 3));
                         shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                     }
+                    task.get(snow).cancel();
                 }
                 if (ID.get(snow).equals("BloodUlt")) {
                     if (hit != null) {
                         LivingEntity finalHit = hit;
-                        BukkitTask bloodUltTask = new BukkitRunnable() {
+                        new BukkitRunnable() {
                             @Override
                             public void run() {
                                 if (finalHit.isDead()) {
@@ -300,14 +301,18 @@ public class ProjectileHitListener implements Listener {
                             ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2));
                         }
                     }
-                    for (int j = 0; j < 9; j++) {
-                        for (int k = 0; k < 9; k++) {
-                            if (!(Math.abs(j - 3) == 3 && Math.abs(k - 4) == 3)) {
-                                for (int l = 0; l < 9; l++) {
-                                    Location block = new Location(snow.getWorld(), snow.getLocation().getX() + j - 3, snow.getLocation().getY() + k - 3, snow.getLocation().getZ() + l - 3);
-                                    if (block.getBlock().getType().isAir()) {
-                                        if (block.add(0, -1, 0).getBlock().getType().isSolid()) {
-                                            block.add(0, 1, 0).getBlock().setType(Material.SNOW);
+                    for (int i = 0; i < 7; i++) {
+                        for (int j = 0; j < 7; j++) {
+                            for (int k = 0; k < 7; k++) {
+                                if (!((Math.abs(i - 3) == 3 && Math.abs(j - 3) == 3) || (Math.abs(j - 3) == 3 && Math.abs(k - 3) == 3) || (Math.abs(i - 3) == 3 && Math.abs(k - 3) == 3))) {
+                                    Block b = snow.getLocation().add((i - 3), (j - 3), (k - 3)).getBlock();
+                                    if (hitBlock != null) {
+                                        b = hitBlock.getLocation().add((i - 3), (j - 3), (k - 3)).getBlock();
+                                    }
+                                    if (b.getType().isAir()) {
+                                        if (!(b.getLocation().add(0,-1,0).getBlock().getType().isAir())) {
+                                            b.setType(Material.SNOW);
+                                            StatusEffects.SnowSlow.put(b, (int) (Math.random()*60-30));
                                         }
                                     }
                                 }
@@ -436,8 +441,8 @@ public class ProjectileHitListener implements Listener {
                     ArmorStand stand = (ArmorStand) snow.getWorld().spawnEntity(snow.getLocation(), EntityType.ARMOR_STAND);
                     stand.setMarker(true);
                     stand.setInvisible(true);
-                    String teamName = "Red";
-                    ProjectileInfo.TornadoTeam.put(stand,teamName);
+                    String teamName = TeamsInit.getTeamName(shooter);
+                    ProjectileInfo.TornadoTeam.put(stand, teamName);
 
                     BukkitTask tick = new BukkitRunnable() {
                         @Override
@@ -450,9 +455,11 @@ public class ProjectileHitListener implements Listener {
                                         entityLocation.setY(l.getY());
                                         if (entityLocation.distance(l) <= 6) {
                                             if (e.getLocation().getY() >= l.getY() - 1) {
-                                                String victimTeam = "Red";
+                                                String victimTeam = TeamsInit.getTeamName(e);
                                                 if (l.getY() >= e.getLocation().getY() - 10) {
-                                                    if (e.getVelocity().getY() <= 1.5) {
+                                                    if (e.getVelocity().getY()<=0){
+                                                        e.setVelocity(e.getVelocity().add(new Vector(0, .4, 0)));
+                                                    } else if (e.getVelocity().getY() <= 1.5) {
                                                         e.setVelocity(e.getVelocity().add(new Vector(0, .2, 0)));
                                                     }
                                                 } else if(!teamName.equals(victimTeam)){

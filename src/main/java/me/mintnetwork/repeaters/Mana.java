@@ -2,6 +2,8 @@ package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.commands.GiveWand;
+import me.mintnetwork.wizard.Wizard;
+import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,56 +19,38 @@ public class Mana{
         this.plugin = plugin;
     };
 
-    private static Map<Player, Integer> playerMana = new HashMap<Player, Integer>();
-    public static Map<Player, Integer> manaCounter = new HashMap<Player, Integer>();
-
-
-    public static Map<Player, Integer> getPlayerMana() {return playerMana; }
-    public static Map<Player, Integer> getManaCounter() {return manaCounter; }
-
-
     public static void tickMana(Player player){
-        if (playerMana.get(player) < 10) {
-            manaCounter.replace(player, manaCounter.get(player) + 1);
+        Wizard wizard = WizardInit.playersWizards.get(player);
+        //if player has less than 10 mana add one to their mana counter
+        if (wizard.Mana < 10) {
+            wizard.ManaTick++;
             //if player has a mana counter of 6 add a mana and set their xp to mana and resets their counter
-            if (manaCounter.get(player) >= 6) {
-                playerMana.replace(player, playerMana.get(player) + 1);
-                player.setLevel(playerMana.get(player));
-                manaCounter.replace(player, 0);;
+
+            if (wizard.ManaTick >= 6||wizard.ClassID.equals("spell slinger")&&wizard.ManaTick >= 5) {
+                wizard.Mana++;
+                player.setLevel(wizard.Mana);
+                wizard.ManaTick = 0;
             }
         }
     }
 
     public static boolean spendMana(Player p, int c) {
-        boolean has = playerMana.get(p)>=c;
+        Wizard wizard = WizardInit.playersWizards.get(p);
+        boolean has = wizard.Mana>=c;
         if (has) {
-            playerMana.replace(p, playerMana.get(p)-c);
-            p.setLevel(playerMana.get(p));
+            wizard.Mana = wizard.Mana-c;
+            p.setLevel(wizard.Mana);
         }
         return has;
     }
 
-    public void mana(Main plugin) {
+    public static void mana(Main plugin) {
         System.out.println("generating mana");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            //on start up add player to the list
-            playerMana.put(player, 0);
-            manaCounter.put(player, 0);
-        }
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for (Player player : playerMana.keySet()) {
-                    //if player has less than 10 mana add one to their mana counter
-                    if (playerMana.get(player) < 10) {
-                        manaCounter.replace(player, manaCounter.get(player) + 1);
-                        //if player has a mana counter of 6 add a mana and set their xp to mana and resets their counter
-                        if (manaCounter.get(player) >= 6) {
-                            playerMana.replace(player, playerMana.get(player) + 1);
-                            player.setLevel(playerMana.get(player));
-                            manaCounter.replace(player, 0);
-                        }
-                    }
+                for (Player player : WizardInit.playersWizards.keySet()) {
+                    tickMana(player);
                 }
             }
         }, 0, 10);

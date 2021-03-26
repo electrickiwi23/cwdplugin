@@ -44,7 +44,7 @@ public class GiveWand implements CommandExecutor {
 
         ItemStack wandone = new ItemStack(Material.STICK);
         ItemMeta meta = wandone.getItemMeta();
-        meta.setDisplayName(Utils.chat("&cTNT Bolt"));
+        meta.setDisplayName(Utils.chat("&rTNT Bolt"));
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add(Utils.chat("&a1mana"));

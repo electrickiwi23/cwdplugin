@@ -1,6 +1,9 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.wizard.Wizard;
+import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -11,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -39,16 +44,30 @@ public class PlayerSneakListener implements Listener {
     public static Map<Player, Float> getPreviousSpeed() {return PreviousSpeed;}
 
 
+
     @EventHandler
     public void PlayerSneaks(PlayerToggleSneakEvent event) {
         Player p = event.getPlayer();
+        Wizard wizard = WizardInit.playersWizards.get(p);
         if (p.isSneaking()){
             if (Zoomed.contains(p)) {
                 p.setWalkSpeed(PreviousSpeed.get(p));
                 p.getInventory().setHelmet(PreviousHelm.get(p));
                 Zoomed.remove(p);
             }
+
+
         }else{
+            if (wizard.ClassID.equals("sky flyer")){
+                if (StatusEffects.cloudFloating.contains(p)){
+                    p.removePotionEffect(PotionEffectType.SLOW_FALLING);
+                    StatusEffects.cloudFloating.remove(p);
+                }else {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 3, false, false));
+                    StatusEffects.cloudFloating.add(p);
+                }
+            }
+
             if (!p.getInventory().getItemInMainHand().getType().isAir()) {
                 if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Sniper Bolt")) {
                     PreviousSpeed.put(p,p.getWalkSpeed());

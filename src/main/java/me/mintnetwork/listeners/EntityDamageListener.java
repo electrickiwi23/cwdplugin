@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Collection;
 import java.util.Map;
 
-public class EntityDamageListener implements Listener {
+public class  EntityDamageListener implements Listener {
 
     private final Main plugin;
 
@@ -63,23 +63,38 @@ public class EntityDamageListener implements Listener {
                     ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
                     speedMap.put((Player) entity, 30);
                 }
-                if (wizard.ClassID.equals("blood mage")){
-                    LivingEntity live = (LivingEntity) entity;
-                    if (StatusEffects.BloodWeak.containsKey(victim)){
-                        for (int i = 0; i < 3; i++) {
+                Player live = (Player) entity;
+                switch (wizard.ClassID) {
+                    case "blood mage":
+                        if (StatusEffects.BloodWeak.containsKey(victim)) {
+                            for (int i = 0; i < 3; i++) {
+                                if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
+                                    live.setHealth(live.getHealth() + 1);
+                                }
+                            }
+                        } else {
                             if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
-                                live.setHealth(live.getHealth()+1);
+                                live.setHealth(live.getHealth() + 1);
                             }
                         }
-                    } else{
-                        if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
-                            live.setHealth(live.getHealth()+1);
+                        break;
+                    case "berserker":
+                        for (int i = 0; i < 2; i++) {
+                            Mana.tickMana((Player) entity);
                         }
-                    }
-                } else if (wizard.ClassID.equals("berserker")){
-                    for (int i = 0; i < 2; i++) {
-                        Mana.tickMana((Player) entity);
-                    }
+                        break;
+                    case "tactician":
+                        if (wizard.PassiveTick>=10){
+                            wizard.PassiveTick = 0;
+                            Wizard victimWiz = WizardInit.playersWizards.get(victim);
+                            live.sendMessage(victim.getName() + ":");
+                            live.sendMessage("Health: " + Math.ceil(((Player) victim).getHealth()));
+                            live.sendMessage("Mana: " + victimWiz.Mana);
+                            live.sendMessage("Ultimate: ");
+
+
+                        }
+                        break;
                 }
             }
         }

@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -112,19 +113,20 @@ public class SkyFlyer {
     }
 
     public static void TornadoBlast(Player p, Plugin plugin) {
-        //Spend Ult
-        Snowball grenade = p.launchProjectile(Snowball.class);
-        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-        velocity.put(grenade, p.getEyeLocation().getDirection());
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-        grenade.setItem(new ItemStack(Material.BONE_MEAL));
-        ID.put(grenade, "TornadoUlt");
-        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                p.getWorld().spawnParticle(Particle.CLOUD, grenade.getLocation(), 3, .2, .2, .2, 0);
-            }
-        }, 1, 1));
+        if (Ultimate.spendUlt(p)) {
+            Snowball grenade = p.launchProjectile(Snowball.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(grenade, p.getEyeLocation().getDirection());
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            grenade.setItem(new ItemStack(Material.BONE_MEAL));
+            ID.put(grenade, "TornadoUlt");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    p.getWorld().spawnParticle(Particle.CLOUD, grenade.getLocation(), 3, .2, .2, .2, 0);
+                }
+            }, 1, 1));
+        }
     }
 }

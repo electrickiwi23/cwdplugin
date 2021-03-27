@@ -3,6 +3,7 @@ package me.mintnetwork.spells;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -171,38 +172,38 @@ public class Builder {
     }
 
     public static void ObsidianWall(Player p, Plugin plugin) {
-        //Spend Ult
-        Map<Block, Integer> decay = StatusEffects.ObsidianDecay;
-        Location l = p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(5));
-        l.getBlock().setType(Material.OBSIDIAN);
-        l.setYaw(l.getYaw()+90);
-        l.setPitch(0);
-        final int[] i = {0};
+        if (Ultimate.spendUlt(p)) {
+            Map<Block, Integer> decay = StatusEffects.ObsidianDecay;
+            Location l = p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(5));
+            l.getBlock().setType(Material.OBSIDIAN);
+            l.setYaw(l.getYaw() + 90);
+            l.setPitch(0);
+            final int[] i = {0};
 
-        BukkitTask task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                Location current = l.clone();
-                current.add(l.getDirection().multiply(i[0]));
-                current.add(0,-6,0);
-                for (int j = 0; j < 13; j++) {
-                    current.getBlock().setType(Material.NETHERITE_BLOCK);
-                    decay.put(current.getBlock(),(int) (Math.random()*160-80));
-                    current = current.add(0,1,0);
-                }
-                current = l.clone();
-                current.add(l.getDirection().multiply(i[0]).multiply(-1));
-                current.add(0,-6,0);
-                for (int j = 0; j < 13; j++) {
-                    current.getBlock().setType(Material.NETHERITE_BLOCK);
-                    decay.put(current.getBlock(), (int) (Math.random()*160-80));
-                    current = current.add(0,1,0);
-                }
-                i[0]++;
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Location current = l.clone();
+                    current.add(l.getDirection().multiply(i[0]));
+                    current.add(0, -6, 0);
+                    for (int j = 0; j < 13; j++) {
+                        current.getBlock().setType(Material.NETHERITE_BLOCK);
+                        decay.put(current.getBlock(), (int) (Math.random() * 160 - 80));
+                        current = current.add(0, 1, 0);
+                    }
+                    current = l.clone();
+                    current.add(l.getDirection().multiply(i[0]).multiply(-1));
+                    current.add(0, -6, 0);
+                    for (int j = 0; j < 13; j++) {
+                        current.getBlock().setType(Material.NETHERITE_BLOCK);
+                        decay.put(current.getBlock(), (int) (Math.random() * 160 - 80));
+                        current = current.add(0, 1, 0);
+                    }
+                    i[0]++;
 
-            }
-        }.runTaskTimer(plugin,1,1);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> task.cancel(),12);
+                }
+            }.runTaskTimer(plugin, 1, 1);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> task.cancel(), 12);
+        }
     }
-
 }

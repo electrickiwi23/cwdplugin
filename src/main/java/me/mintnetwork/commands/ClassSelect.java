@@ -55,6 +55,9 @@ public class ClassSelect implements CommandExecutor {
         ItemStack baseWand = new ItemStack(Material.STICK);
         ItemMeta meta = baseWand.getItemMeta();
 
+        ItemStack ultWand = new ItemStack(Material.DIAMOND_HOE);
+        ItemMeta ultMeta = ultWand.getItemMeta();
+
 
         Wizard wizard = WizardInit.playersWizards.get(sender);
         if (args.length>0) {
@@ -66,6 +69,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rPlague Potion"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Elixir of Immortality"));
                     wizard.ClassID = "alchemist";
                     break;
                 case ("bard"):
@@ -75,6 +79,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rConcussion Ring"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Siren Song"));
                     wizard.ClassID = "bard";
                     break;
                 case ("berserker"):
@@ -82,6 +87,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rForce Pull"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Unleash Rage"));
                     wizard.ClassID = "berserker";
                     break;
                 case ("bloodmage"):
@@ -91,6 +97,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rBlood Tracker"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Life Drain"));
                     wizard.ClassID = "blood mage";
                     break;
                 case ("builder"):
@@ -100,6 +107,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rBridge Bolt"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Netherite Wall"));
                     wizard.ClassID = "builder";
                     break;
                 case ("cleric"):
@@ -109,6 +117,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rPurification Wave"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Divine Intervention"));
                     wizard.ClassID = "cleric";
                     break;
                 case ("skyflyer"):
@@ -118,6 +127,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rAir Needles"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Tornado Blast"));
                     wizard.ClassID = "sky flyer";
                     break;
                 case ("demolitionist"):
@@ -127,6 +137,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rSticky Grenade"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Cluster Bomb"));
                     wizard.ClassID = "demolitionist";
                     break;
                 case ("painter"):
@@ -136,6 +147,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rReveal Paint"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Paint Activate"));
                     wizard.ClassID = "painter";
                     break;
                 case ("pillarman"):
@@ -145,6 +157,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rMana Pillar"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Skeleton Spirit"));
                     wizard.ClassID = "pillar man";
                     break;
                 case ("shadow"):
@@ -155,6 +168,7 @@ public class ClassSelect implements CommandExecutor {
                     meta.setDisplayName(Utils.chat("&rPray Abduction"));
                     wandList.add(meta.clone());
                     p.setCustomNameVisible(false);
+                    ultMeta.setDisplayName(Utils.chat("&r&6Consuming Midnight"));
                     wizard.ClassID = "shadow";
                     break;
                 case ("spellslinger"):
@@ -164,6 +178,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rIce Bolt"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Elemental Blast"));
                     wizard.ClassID = "spell slinger";
                     break;
                 case ("tactician"):
@@ -173,6 +188,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rGrapple Hook"));
                     wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&r&6Air Strike"));
                     wizard.ClassID = "tactician";
                     break;
             }
@@ -196,6 +212,9 @@ public class ClassSelect implements CommandExecutor {
                     wand.setItemMeta(i);
                     p.getInventory().addItem(wand);
                 }
+
+                ultWand.setItemMeta(ultMeta);
+                p.getInventory().addItem(ultWand);
 
                 ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
                 LeatherArmorMeta armorMeta = (LeatherArmorMeta) helm.getItemMeta();

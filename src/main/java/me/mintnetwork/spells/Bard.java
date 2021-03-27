@@ -3,6 +3,7 @@ package me.mintnetwork.spells;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -130,24 +131,25 @@ public class Bard {
 
         }
     }
-        public static void SirenSong(Player p, Plugin plugin){
-        //Spend Ult
-        p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,300,2));
-        StatusEffects.sirenSong.put(p,150);
+        public static void SirenSong(Player p, Plugin plugin) {
+            if (Ultimate.spendUlt(p)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 300, 2));
+                StatusEffects.sirenSong.put(p, 150);
 
-            final int[] count = {0};
-            BukkitTask task = new BukkitRunnable(){
-                @Override
-                public void run() {
-                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BELL_RESONATE,(float)1.6, (float) 0.840896);
-                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BELL_RESONATE,(float)1.6, (float) 0.943874);
-                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BELL_RESONATE,(float)1.6, (float) 1.122462);
-                    count[0]++;
-                    if (count[0] >=240){
-                        this.cancel();
+                final int[] count = {0};
+                BukkitTask task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 0.840896);
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 0.943874);
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 1.122462);
+                        count[0]++;
+                        if (count[0] >= 240) {
+                            this.cancel();
+                        }
                     }
-                }
-            }.runTaskTimer(plugin,1,1);
+                }.runTaskTimer(plugin, 1, 1);
 
-    }
+            }
+        }
 }

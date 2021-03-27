@@ -4,6 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.VortexEffect;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -84,20 +85,20 @@ public class Berserker {
 }
 
     public static void RageUlt(Player p) {
-        //Spend ult
-        for (ItemStack i:p.getInventory().getContents()) {
-            if (i!=null) {
-                if (i.getType().equals(Material.IRON_SWORD)) {
-                    i.addEnchantment(Enchantment.KNOCKBACK, 1);
+        if (Ultimate.spendUlt(p)) {
+            for (ItemStack i : p.getInventory().getContents()) {
+                if (i != null) {
+                    if (i.getType().equals(Material.IRON_SWORD)) {
+                        i.addEnchantment(Enchantment.KNOCKBACK, 1);
+                    }
                 }
             }
+            p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_RAVAGER_ROAR, 3, 1);
+            if (StatusEffects.RageUlt.containsKey(p)) {
+                StatusEffects.RageUlt.replace(p, 150);
+            } else {
+                StatusEffects.RageUlt.put(p, 150);
+            }
         }
-        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_RAVAGER_ROAR,3,1);
-        if (StatusEffects.RageUlt.containsKey(p)){
-            StatusEffects.RageUlt.replace(p,150);
-        }else {
-            StatusEffects.RageUlt.put(p, 150);
-        }
-
     }
 }

@@ -5,6 +5,7 @@ import de.slikey.effectlib.effect.SphereEffect;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -115,44 +116,45 @@ public class Shadow {
         Vector direction = p.getEyeLocation().getDirection();
         RayTraceResult ray =  p.getWorld().rayTrace(p.getEyeLocation().add(direction),direction,50,FluidCollisionMode.NEVER,true,.1,null);
         if (ray != null) {
-            //Spend Ult
-            Location hit = ray.getHitPosition().toLocation(p.getWorld());
+            if (Ultimate.spendUlt(p)) {
+                Location hit = ray.getHitPosition().toLocation(p.getWorld());
 
-            String TeamName = TeamsInit.getTeamName(p);
+                String TeamName = TeamsInit.getTeamName(p);
 
-            SphereEffect sphere = new SphereEffect(em);
-            sphere.radius = 1;
-            sphere.particle = Particle.REDSTONE;
-            sphere.particleSize = 5;
-            sphere.color = Color.BLACK;
-            sphere.radiusIncrease = 1;
-            sphere.setLocation(hit);
-            em.start(sphere);
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-                for (Entity e : p.getWorld().getNearbyEntities(hit,20,20,20)) {
-                    if (e.getLocation().distance(hit)<=20) {
-                        if (e instanceof Player) {
-                            String VictimTeam = TeamsInit.getTeamName(e);
-                            if (TeamName.equals(VictimTeam)) {
-                                Player victim = (Player) e;
-                                if (StatusEffects.ShadowConsumed.containsKey(victim)) {
-                                    StatusEffects.ShadowConsumed.replace(victim, 180);
-                                } else {
-                                    StatusEffects.ShadowConsumed.put(victim, 180);
+                SphereEffect sphere = new SphereEffect(em);
+                sphere.radius = 1;
+                sphere.particle = Particle.REDSTONE;
+                sphere.particleSize = 5;
+                sphere.color = Color.BLACK;
+                sphere.radiusIncrease = 1;
+                sphere.setLocation(hit);
+                em.start(sphere);
+                Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    for (Entity e : p.getWorld().getNearbyEntities(hit, 20, 20, 20)) {
+                        if (e.getLocation().distance(hit) <= 20) {
+                            if (e instanceof Player) {
+                                String VictimTeam = TeamsInit.getTeamName(e);
+                                if (TeamName.equals(VictimTeam)) {
+                                    Player victim = (Player) e;
+                                    if (StatusEffects.ShadowConsumed.containsKey(victim)) {
+                                        StatusEffects.ShadowConsumed.replace(victim, 180);
+                                    } else {
+                                        StatusEffects.ShadowConsumed.put(victim, 180);
+                                    }
+
+                                    victim.setPlayerTime(114000, false);
+
+                                    victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 380, 2));
+                                    victim.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 360, 0));
+
+
                                 }
-
-                                victim.setPlayerTime(114000, false);
-
-                                victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 380, 2));
-                                victim.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 360, 0));
-
-
                             }
                         }
                     }
-                }
-                sphere.cancel();
-            }, 20);
+                    sphere.cancel();
+                }, 20);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.commands.GiveWand;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
@@ -49,8 +50,10 @@ public class Mana{
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for (Player player : WizardInit.playersWizards.keySet()) {
-                    tickMana(player);
+                if (GameStart.gameRunning) {
+                    for (Player player : WizardInit.playersWizards.keySet()) {
+                        tickMana(player);
+                    }
                 }
             }
         }, 0, 10);

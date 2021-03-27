@@ -1,6 +1,7 @@
 package me.mintnetwork.spells;
 
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -136,20 +137,18 @@ public class Demolitionist {
     }
 
     public static void ClusterBomb(Player p, Plugin plugin) {
-        //Spend Ult
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
-        tnt.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
-        tnt.setFuseTicks(120);
-        ID.put(tnt, "Cluster 0");
-        tick.put(tnt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-            tnt.getWorld().spawnParticle(Particle.SMOKE_LARGE, tnt.getLocation(), 1, .4, .4, .4, 0);
-            tnt.getWorld().spawnParticle(Particle.REDSTONE, tnt.getLocation(), 1, .5, .5, .5, 0, dust);
-        }, 1, 1));
-
-
+        if (Ultimate.spendUlt(p)) {
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
+            tnt.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
+            tnt.setFuseTicks(120);
+            ID.put(tnt, "Cluster 0");
+            tick.put(tnt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+                tnt.getWorld().spawnParticle(Particle.SMOKE_LARGE, tnt.getLocation(), 1, .4, .4, .4, 0);
+                tnt.getWorld().spawnParticle(Particle.REDSTONE, tnt.getLocation(), 1, .5, .5, .5, 0, dust);
+            }, 1, 1));
+        }
     }
-
 }

@@ -1,6 +1,7 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
@@ -35,12 +36,14 @@ public class EntityDieListener implements Listener {
         if (e instanceof Player){
             Player p = (Player) e;
             Wizard wizard = WizardInit.playersWizards.get(p);
-            String gameMode = "";
-            if (gameMode.equals("elimination")) {
-                if (wizard.ElimLives > 0) {
-                    wizard.ElimLives--;
-                } else {
-                    p.setGameMode(GameMode.SPECTATOR);
+            String gameMode = GameStart.gameMode;
+            if (GameStart.gameRunning) {
+                if (gameMode.equals("elimination")) {
+                    if (wizard.ElimLives > 0) {
+                        wizard.ElimLives--;
+                    } else {
+                        p.setGameMode(GameMode.SPECTATOR);
+                    }
                 }
             }
 

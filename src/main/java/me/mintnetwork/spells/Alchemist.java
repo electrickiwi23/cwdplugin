@@ -1,6 +1,7 @@
 package me.mintnetwork.spells;
 
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -53,14 +54,15 @@ public class Alchemist {
     }
 
     public static void ImmortalPotionUlt(Player p) {
-        //Spend Ult
-        ThrownPotion potion = p.launchProjectile(ThrownPotion.class);
-        ItemStack item = (new ItemStack(Material.SPLASH_POTION));
-        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-        potionMeta.setColor(Color.fromRGB(255, 215, 0));
-        item.setItemMeta(potionMeta);
-        potion.setItem(item);
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-        ID.put(potion, "Immortal Potion");
+        if (Ultimate.spendUlt(p)) {
+            ThrownPotion potion = p.launchProjectile(ThrownPotion.class);
+            ItemStack item = (new ItemStack(Material.SPLASH_POTION));
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            potionMeta.setColor(Color.fromRGB(255, 215, 0));
+            item.setItemMeta(potionMeta);
+            potion.setItem(item);
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            ID.put(potion, "Immortal Potion");
+        }
     }
 }

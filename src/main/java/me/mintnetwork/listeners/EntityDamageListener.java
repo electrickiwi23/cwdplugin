@@ -3,6 +3,7 @@ package me.mintnetwork.listeners;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
@@ -101,7 +102,7 @@ public class  EntityDamageListener implements Listener {
                             live.sendMessage(victim.getName() + ":");
                             live.sendMessage("Health: " + Math.ceil(((Player) victim).getHealth()));
                             live.sendMessage("Mana: " + victimWiz.Mana);
-                            live.sendMessage("Ultimate: ");
+                            live.sendMessage("Ultimate: " + Ultimate.getUltPercentage((Player) victim));
 
 
                         }

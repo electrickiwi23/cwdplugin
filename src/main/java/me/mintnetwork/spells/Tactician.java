@@ -1,6 +1,7 @@
 package me.mintnetwork.spells;
 
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -175,7 +176,6 @@ public class Tactician {
     }
 
     public static void AirStrike(Player p, Plugin plugin) {
-        //Spend Ult
         Map<Entity, BukkitTask> tick = ProjectileInfo.tickCode;
         Map<Entity, String> ID = ProjectileInfo.projectileID;
         Map<Player, Entity> tracked = ProjectileInfo.StrikeTrackedEntity;
@@ -195,35 +195,37 @@ public class Tactician {
     }
 
     public static void AirStrikeRelease(Player p, Plugin plugin) {
-        Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
-        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        Firework firework = (Firework) p.getWorld().spawnEntity(tracked.get(p).getLocation().add(0, 1, 0), EntityType.FIREWORK);
-        FireworkEffect.Builder effect = FireworkEffect.builder();
-        Random random = new Random();
-        FireworkMeta meta = firework.getFireworkMeta();
-        effect.with(FireworkEffect.Type.BALL);
-        effect.withColor(Color.RED);
-        meta.addEffect(effect.build());
-        meta.setPower(1);
-        firework.setShooter(p);
-        firework.setShotAtAngle(true);
-        firework.setVelocity(new Vector(0, 1, 0));
-        firework.setFireworkMeta(meta);
-        final Location origin = tracked.get(p).getLocation();
+        if (Ultimate.spendUlt(p)) {
+            Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            Firework firework = (Firework) p.getWorld().spawnEntity(tracked.get(p).getLocation().add(0, 1, 0), EntityType.FIREWORK);
+            FireworkEffect.Builder effect = FireworkEffect.builder();
+            Random random = new Random();
+            FireworkMeta meta = firework.getFireworkMeta();
+            effect.with(FireworkEffect.Type.BALL);
+            effect.withColor(Color.RED);
+            meta.addEffect(effect.build());
+            meta.setPower(1);
+            firework.setShooter(p);
+            firework.setShotAtAngle(true);
+            firework.setVelocity(new Vector(0, 1, 0));
+            firework.setFireworkMeta(meta);
+            final Location origin = tracked.get(p).getLocation();
 
-        BukkitTask task = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            Location l = origin.toVector().toLocation(origin.getWorld());
-            Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
-            Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
-            fireball.setVelocity(new Vector(0, -2.5, 0));
-            fireball.setDirection(new Vector(0, -2.5, 0));
-            fireball.setYield(3);
-        }, 40, 2);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-            tick.get(tracked.get(p)).cancel();
-            tracked.get(p).remove();
-            tracked.remove(p);
-            task.cancel();
-        }, 220);
+            BukkitTask task = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                Location l = origin.toVector().toLocation(origin.getWorld());
+                Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
+                Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
+                fireball.setVelocity(new Vector(0, -2.5, 0));
+                fireball.setDirection(new Vector(0, -2.5, 0));
+                fireball.setYield(3);
+            }, 40, 2);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+                tick.get(tracked.get(p)).cancel();
+                tracked.get(p).remove();
+                tracked.remove(p);
+                task.cancel();
+            }, 220);
+        }
     }
 }

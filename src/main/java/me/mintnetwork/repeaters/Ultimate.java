@@ -1,6 +1,7 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
@@ -92,84 +93,93 @@ public class Ultimate {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for (Player player : WizardInit.playersWizards.keySet()) {
-                    Wizard wizard = WizardInit.playersWizards.get(player);
-                    switch (wizard.ClassID) {
-                        case "spell slinger":
-                        case "painter":
-                            if (wizard.Ult < 480) {
-                                wizard.Ult++;
-                                break;
-                            }
-                            if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                for (ItemStack i : player.getInventory().getContents()) {
-                                    if (i != null) {
-                                        if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                            ItemMeta itemMeta = i.getItemMeta();
-                                            if (((Damageable) itemMeta).getDamage() < 1560) {
-                                                ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage()+16);
-                                            } else {
-                                                ((Damageable) itemMeta).setDamage(1561);
+//                if (GameStart.gameRunning) {
+                    for (Player player : WizardInit.playersWizards.keySet()) {
+                        Wizard wizard = WizardInit.playersWizards.get(player);
+                        switch (wizard.ClassID) {
+                            case "spell slinger":
+                            case "painter":
+                                if (wizard.Ult < 480) {
+                                    wizard.Ult++;
+                                }
+                                if (wizard.Ult == 479){
+                                    player.sendMessage("ULTIMATE CHARGED");
+                                }
+
+                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                    for (ItemStack i : player.getInventory().getContents()) {
+                                        if (i != null) {
+                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                ItemMeta itemMeta = i.getItemMeta();
+                                                if (((Damageable) itemMeta).getDamage() < 1560) {
+                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 16);
+                                                } else {
+                                                    ((Damageable) itemMeta).setDamage(1561);
+                                                }
+                                                i.setItemMeta(itemMeta);
                                             }
-                                            i.setItemMeta(itemMeta);
                                         }
                                     }
                                 }
-                            }
-                            break;
-                        case "demolitionist":
-                        case "sky flyer":
-                        case "berserker":
-                        case "alchemist":
-                        case "bard":
-                        case "blood mage":
-                        case "builder":
-                        case "cleric":
-                        case "tactician":
-                            if (wizard.Ult < 720) {
-                                wizard.Ult++;
                                 break;
-                            }
-                            if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                for (ItemStack i : player.getInventory().getContents()) {
-                                    if (i != null) {
-                                        if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                            ItemMeta itemMeta = i.getItemMeta();
-                                            if (((Damageable) itemMeta).getDamage() < 1551) {
-                                                ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage()+11);
-                                            } else {
-                                                ((Damageable) itemMeta).setDamage(1561);
+                            case "demolitionist":
+                            case "sky flyer":
+                            case "berserker":
+                            case "alchemist":
+                            case "bard":
+                            case "blood mage":
+                            case "builder":
+                            case "cleric":
+                            case "tactician":
+                                if (wizard.Ult < 720) {
+                                    wizard.Ult++;
+                                }
+                                if (wizard.Ult == 719){
+                                    player.sendMessage("ULTIMATE CHARGED");
+                                }
+                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                    for (ItemStack i : player.getInventory().getContents()) {
+                                        if (i != null) {
+                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                ItemMeta itemMeta = i.getItemMeta();
+                                                if (((Damageable) itemMeta).getDamage() < 1551) {
+                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 11);
+                                                } else {
+                                                    ((Damageable) itemMeta).setDamage(1561);
+                                                }
+                                                i.setItemMeta(itemMeta);
                                             }
-                                            i.setItemMeta(itemMeta);
                                         }
                                     }
                                 }
-                            }
-                            break;
-                        case "shadow":
-                        case "pillar man":
-                            if (wizard.Ult < 960) {
-                                wizard.Ult++;
                                 break;
-                            }
-                            if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                for (ItemStack i : player.getInventory().getContents()) {
-                                    if (i != null) {
-                                        if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                            ItemMeta itemMeta = i.getItemMeta();
-                                            if (((Damageable) itemMeta).getDamage() < 1536) {
-                                                ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage()+8);
-                                            } else {
-                                                ((Damageable) itemMeta).setDamage(1561);
+                            case "shadow":
+                            case "pillar man":
+                                if (wizard.Ult < 960) {
+                                    wizard.Ult++;
+                                }
+                                if (wizard.Ult == 959){
+                                    player.sendMessage("ULTIMATE CHARGED");
+                                }
+                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                    for (ItemStack i : player.getInventory().getContents()) {
+                                        if (i != null) {
+                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                ItemMeta itemMeta = i.getItemMeta();
+                                                if (((Damageable) itemMeta).getDamage() < 1536) {
+                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 8);
+                                                } else {
+                                                    ((Damageable) itemMeta).setDamage(1561);
+                                                }
+                                                i.setItemMeta(itemMeta);
                                             }
-                                            i.setItemMeta(itemMeta);
                                         }
                                     }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
-                }
+//                }
             }
             }, 0, 5);
         }

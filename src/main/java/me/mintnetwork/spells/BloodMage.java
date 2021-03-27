@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
@@ -132,24 +133,25 @@ public class BloodMage {
     }
 
     public static void BloodUlt(Player p, Plugin plugin) {
-        //Spend Ult
-        Snowball bolt = p.launchProjectile(Snowball.class);
-        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-        velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.5));
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-        bolt.setItem(new ItemStack(Material.RED_DYE));
-        bolt.setGravity(false);
-        ID.put(bolt, "BloodUlt");
-        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
-            bolt.setVelocity(velocity1.get(bolt));
-            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
-            bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
-        }, 1, 1));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-            tick.get(bolt).cancel();
-            bolt.remove();
-        }, 160);
+        if (Ultimate.spendUlt(p)) {
+            Snowball bolt = p.launchProjectile(Snowball.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.5));
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            bolt.setItem(new ItemStack(Material.RED_DYE));
+            bolt.setGravity(false);
+            ID.put(bolt, "BloodUlt");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
+                bolt.setVelocity(velocity1.get(bolt));
+                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
+                bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
+            }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+                tick.get(bolt).cancel();
+                bolt.remove();
+            }, 160);
+        }
     }
 }

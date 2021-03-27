@@ -6,6 +6,7 @@ import de.slikey.effectlib.effect.SphereEffect;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -187,16 +188,17 @@ public class Cleric {
     }
 
     public static void TeamHeal(Player p){
-        String teamName = TeamsInit.getTeamName(p);
+        if (Ultimate.spendUlt(p)) {
+            String teamName = TeamsInit.getTeamName(p);
 
 
-        for (Player e:Bukkit.getOnlinePlayers()) {
-            if (TeamsInit.getTeamName(e).equals(teamName)){
-                if (e.getLocation().distance(p.getLocation())<=40){
-                    StatusEffects.healTeam.put(e,0);
+            for (Player e : Bukkit.getOnlinePlayers()) {
+                if (TeamsInit.getTeamName(e).equals(teamName)) {
+                    if (e.getLocation().distance(p.getLocation()) <= 40) {
+                        StatusEffects.healTeam.put(e, 0);
+                    }
                 }
             }
         }
-
     }
 }

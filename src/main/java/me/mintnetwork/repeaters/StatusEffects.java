@@ -1,6 +1,7 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.wizard.WizardInit;
@@ -464,6 +465,7 @@ public class StatusEffects {
         if (ShadowGrappler.containsKey(p)) return false;
         if (stunSong.containsKey(p)) return false;
         if (ShadowConsumed.containsKey(p)) return false;
+        if (!GameStart.gameRunning) return false;
 
         for (Player e:Bukkit.getOnlinePlayers()) {
             if (sirenSong.containsKey(e)) {

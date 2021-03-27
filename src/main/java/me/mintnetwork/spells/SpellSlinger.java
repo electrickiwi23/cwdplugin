@@ -3,6 +3,7 @@ package me.mintnetwork.spells;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.LineEffect;
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -154,45 +155,46 @@ public class SpellSlinger {
     }
 
     public static void ElementBlast(Player p, Plugin plugin, EffectManager em) {
-        //Spend Ult
-        Snowball bolt = p.launchProjectile(Snowball.class);
-        Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-        velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.7));
-        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-        bolt.setItem(new ItemStack(Material.FIREWORK_STAR));
-        bolt.setGravity(false);
-        ID.put(bolt, "Element Blast");
-        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+        if (Ultimate.spendUlt(p)) {
+            Snowball bolt = p.launchProjectile(Snowball.class);
+            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.7));
+            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+            bolt.setItem(new ItemStack(Material.FIREWORK_STAR));
+            bolt.setGravity(false);
+            ID.put(bolt, "Element Blast");
+            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
-        tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
-            bolt.setVelocity(velocity1.get(bolt));
-            bolt.getWorld().spawnParticle(Particle.FLAME,bolt.getLocation(),20,.2,.2,.2,0);
-            bolt.getWorld().spawnParticle(Particle.SNOW_SHOVEL,bolt.getLocation(),20,.3,.3,.3,0);
-            LineEffect line = new LineEffect(em);
-            line.setLocation(bolt.getLocation());
-            line.setTargetLocation(bolt.getLocation().add( Math.random()*4-2,Math.random()*4-2,Math.random()*4-2));
-            line.isZigZag = true;
-            line.zigZags = 2;
-            line.zigZagOffset = new Vector(Math.random()*.06-.03,Math.random()*.06-.03,Math.random()*.06-.03);
-            line.particle = Particle.REDSTONE;
-            line.color = Color.YELLOW;
-            line.start();
-            for (Entity e:bolt.getNearbyEntities(5,5,5)) {
-                if (e.getLocation().distance(bolt.getLocation())<=4){
-                    if (e instanceof LivingEntity){
-                        if (!(e.equals(p))) {
-                            ((LivingEntity) e).damage(1);
-                            ((LivingEntity) e).setNoDamageTicks(0);
-                            e.setVelocity(new Vector(0, 0, 0));
+            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
+                bolt.setVelocity(velocity1.get(bolt));
+                bolt.getWorld().spawnParticle(Particle.FLAME, bolt.getLocation(), 20, .2, .2, .2, 0);
+                bolt.getWorld().spawnParticle(Particle.SNOW_SHOVEL, bolt.getLocation(), 20, .3, .3, .3, 0);
+                LineEffect line = new LineEffect(em);
+                line.setLocation(bolt.getLocation());
+                line.setTargetLocation(bolt.getLocation().add(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2));
+                line.isZigZag = true;
+                line.zigZags = 2;
+                line.zigZagOffset = new Vector(Math.random() * .06 - .03, Math.random() * .06 - .03, Math.random() * .06 - .03);
+                line.particle = Particle.REDSTONE;
+                line.color = Color.YELLOW;
+                line.start();
+                for (Entity e : bolt.getNearbyEntities(5, 5, 5)) {
+                    if (e.getLocation().distance(bolt.getLocation()) <= 4) {
+                        if (e instanceof LivingEntity) {
+                            if (!(e.equals(p))) {
+                                ((LivingEntity) e).damage(1);
+                                ((LivingEntity) e).setNoDamageTicks(0);
+                                e.setVelocity(new Vector(0, 0, 0));
+                            }
                         }
                     }
                 }
-            }
-        }, 1, 1));
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-            tick.get(bolt).cancel();
-            bolt.remove();
-        }, 100);
+            }, 1, 1));
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+                tick.get(bolt).cancel();
+                bolt.remove();
+            }, 100);
+        }
     }
 }

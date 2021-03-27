@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -188,62 +189,63 @@ public class Painter {
     public static void PaintActivateUlt(Player p, Plugin plugin) {
         Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
         if (painted.keySet().size() > 0) {
-            //Spend Ult
-            ArrayList<LivingEntity> list = new ArrayList<>(painted.keySet());
-            for (LivingEntity e : list) {
-                e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 100, 1));
-                e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 3));
-            }
-            final int[] paintActivateCount = {0};
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    paintActivateCount[0]++;
-                    for (LivingEntity e : list) {
-                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                        dust = new Particle.DustOptions(Color.ORANGE, 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                        dust = new Particle.DustOptions(Color.YELLOW, 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                        dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                        dust = new Particle.DustOptions(Color.BLUE, 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                        dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
-                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
-                    }
-                    if(paintActivateCount[0]>=20){
+            if (Ultimate.spendUlt(p)) {
+                ArrayList<LivingEntity> list = new ArrayList<>(painted.keySet());
+                for (LivingEntity e : list) {
+                    e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 100, 1));
+                    e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 3));
+                }
+                final int[] paintActivateCount = {0};
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        paintActivateCount[0]++;
                         for (LivingEntity e : list) {
-                            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            dust = new Particle.DustOptions(Color.ORANGE, 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            dust = new Particle.DustOptions(Color.YELLOW, 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            dust = new Particle.DustOptions(Color.BLUE, 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
-                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
-                            for (Entity entity : e.getWorld().getNearbyEntities(e.getLocation(), 6, 6, 6)) {
-                                if (entity instanceof LivingEntity) {
-                                    LivingEntity live = (LivingEntity) entity;
-                                    if (entity.getLocation().distance(e.getLocation()) <= 5) {
-                                        live.setNoDamageTicks(0);
-                                        live.damage(5, p);
-                                        live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
-                                        live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
-                                        painted.remove(live);
+                            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                            dust = new Particle.DustOptions(Color.ORANGE, 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                            dust = new Particle.DustOptions(Color.YELLOW, 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                            dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                            dust = new Particle.DustOptions(Color.BLUE, 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                            dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
+                            e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 10, .2, .4, .2, 0, dust, true);
+                        }
+                        if (paintActivateCount[0] >= 20) {
+                            for (LivingEntity e : list) {
+                                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                dust = new Particle.DustOptions(Color.ORANGE, 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                dust = new Particle.DustOptions(Color.YELLOW, 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                dust = new Particle.DustOptions(Color.BLUE, 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 20, 2, 2, 2, 0, dust);
+                                for (Entity entity : e.getWorld().getNearbyEntities(e.getLocation(), 6, 6, 6)) {
+                                    if (entity instanceof LivingEntity) {
+                                        LivingEntity live = (LivingEntity) entity;
+                                        if (entity.getLocation().distance(e.getLocation()) <= 5) {
+                                            live.setNoDamageTicks(0);
+                                            live.damage(5, p);
+                                            live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 40, 2));
+                                            live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
+                                            painted.remove(live);
+                                        }
                                     }
                                 }
                             }
+                            this.cancel();
                         }
-                        this.cancel();
                     }
-                }
-            }.runTaskTimer(plugin,1,1);
+                }.runTaskTimer(plugin, 1, 1);
+            }
         }
     }
 }

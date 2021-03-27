@@ -6,10 +6,6 @@ import me.mintnetwork.wizard.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class Ultimate {
 
     private final Main plugin;
@@ -18,31 +14,54 @@ public class Ultimate {
             this.plugin = plugin;
     }
 
-    private static Map<Player, Integer> playerUlt = new HashMap<>();
+    public static boolean spendUlt(Player p) {
 
-    public static boolean spendUlt(Player p, int c) {
-        boolean has = playerUlt.get(p)>=c;
-        if (has) {
-            playerUlt.replace(p, 0);
+        Wizard wizard = WizardInit.playersWizards.get(p);
+        boolean has = false;
+
+        switch (wizard.ClassID) {
+            case "spell slinger":
+            case "painter":
+                if (wizard.Ult == 120) {
+                    has = true;
+                    break;
+                }
+                break;
+            case "demolitionist":
+            case "sky flyer":
+            case "berserker":
+            case "alchemist":
+            case "bard":
+            case "blood mage":
+            case "builder":
+            case "cleric":
+            case "tactician":
+                if (wizard.Ult == 180) {
+                    has = true;
+                }
+                break;
+            case "shadow":
+            case "pillar man":
+                if (wizard.Ult == 240) {
+                    has = true;
+                }
+                break;
         }
         return has;
     }
 
     public static void ult(Main plugin) {
         System.out.println("generating ult");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            playerUlt.put(player, 0);
-        }
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for (Player player : playerUlt.keySet()) {
+                for (Player player : WizardInit.playersWizards.keySet()) {
                     Wizard wizard = WizardInit.playersWizards.get(player);
                     switch (wizard.ClassID) {
                         case "spell slinger":
                         case "painter":
-                            if (playerUlt.get(player) < 120) {
-                                playerUlt.replace(player, playerUlt.get(player) + 1);
+                            if (wizard.Ult < 120) {
+                                wizard.Ult = wizard.Ult + 5;
                                 break;
                             }
                             break;
@@ -55,21 +74,21 @@ public class Ultimate {
                         case "builder":
                         case "cleric":
                         case "tactician":
-                            if (playerUlt.get(player) < 180) {
-                                playerUlt.replace(player, playerUlt.get(player) + 1);
+                            if (wizard.Ult < 180) {
+                                wizard.Ult = wizard.Ult + 5;
                                 break;
                             }
                             break;
                         case "shadow":
                         case "pillar man":
-                            if (playerUlt.get(player) < 240) {
-                                playerUlt.replace(player, playerUlt.get(player) + 1);
+                            if (wizard.Ult < 240) {
+                                wizard.Ult = wizard.Ult + 5;
                                 break;
                             }
                             break;
                     }
                 }
             }
-            }, 0, 10);
+            }, 0, 5);
         }
     }

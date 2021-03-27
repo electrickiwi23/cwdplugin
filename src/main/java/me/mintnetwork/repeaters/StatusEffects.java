@@ -11,6 +11,8 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -155,16 +157,50 @@ public class StatusEffects {
                     paintTimer.replace(e, paintTimer.get(e) - 1);
                     double r = (Math.ceil(Math.random() * 6));
 
-                    Particle.DustOptions dust = null;
-                    if (r == 1.0) dust = new Particle.DustOptions(Color.RED, 1);
-                    if (r == 2.0) dust = new Particle.DustOptions(Color.ORANGE, 1);
-                    if (r == 3.0) dust = new Particle.DustOptions(Color.YELLOW, 1);
-                    if (r == 4.0) dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 1);
-                    if (r == 5.0) dust = new Particle.DustOptions(Color.BLUE, 1);
-                    if (r == 6.0) dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 1);
+                    if (paintTimer.get(e)>=1200){
+                        e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,1));
+                        paintTimer.replace(e, paintTimer.get(e) - 600);
 
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 1, .25, .45, .25, 0, dust);
+                        BukkitTask task = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                                dust = new Particle.DustOptions(Color.ORANGE, 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                                dust = new Particle.DustOptions(Color.YELLOW, 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                                dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                                dust = new Particle.DustOptions(Color.BLUE, 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                                dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
+                                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 5, .2, .4, .2, 0, dust, true);
+                            }
+                        }.runTaskTimer(plugin, 1, 1);
+                        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                            @Override
+                            public void run() {
+                                e.damage(5);
+                                task.cancel();
+                            }
+                        }, 25);
 
+                    }
+
+                    for (int i = 0; i <Math.ceil(paintTimer.get(e)/500.0); i++) {
+
+                        Particle.DustOptions dust = null;
+                        if (r == 1.0) dust = new Particle.DustOptions(Color.RED, 1);
+                        if (r == 2.0) dust = new Particle.DustOptions(Color.ORANGE, 1);
+                        if (r == 3.0) dust = new Particle.DustOptions(Color.YELLOW, 1);
+                        if (r == 4.0) dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 1);
+                        if (r == 5.0) dust = new Particle.DustOptions(Color.BLUE, 1);
+                        if (r == 6.0) dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 1);
+
+                        e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 1, .25, .45, .25, 0, dust);
+
+                    }
                     if (paintTimer.get(e) <= 0) {
                         paintTimer.remove(e);
                     }

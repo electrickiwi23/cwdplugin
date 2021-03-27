@@ -47,6 +47,17 @@ public class  EntityDamageListener implements Listener {
             if (StatusEffects.RageUlt.containsKey(p)) {
                 event.setDamage(event.getDamage()+2);
             }
+            Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
+            if (victim instanceof LivingEntity) {
+                LivingEntity liveVictim = (LivingEntity) victim;
+                if (wizard.ClassID.equals("painter")) {
+                    if (painted.containsKey(liveVictim)) {
+                        painted.replace(liveVictim, painted.get(liveVictim) + 80);
+                    } else {
+                        painted.put(liveVictim, 80);
+                    }
+                }
+            }
 
             if (StatusEffects.bardInspiration.containsKey(p)){
                 p.getWorld().spawnParticle(Particle.NOTE, p.getEyeLocation().add(0, 1, 0), 0, .1, .2, .92, 1, null);

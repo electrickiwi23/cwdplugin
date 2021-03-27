@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SkyFlyer {
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, 3)) {
             Arrow arrow = p.launchProjectile(Arrow.class);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             ID.put(arrow, "Wind Arrow");
@@ -73,10 +73,9 @@ public class SkyFlyer {
 
     public static void CloudBurst(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
-            Location l = p.getLocation();
             p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
             final int[] count = {0};
-            p.setVelocity(new Vector(0, 2, 0));
+            p.setVelocity(new Vector(0, 1.4, 0));
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -93,11 +92,11 @@ public class SkyFlyer {
     public static void AirDash(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             p.setGravity(false);
-            p.setVelocity(p.getEyeLocation().getDirection().multiply(1.7));
+            p.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.setVelocity(p.getEyeLocation().getDirection().multiply(1.7));
+                    p.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
                     p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .1, .1, .1, 0);
                 }
             }.runTaskTimer(plugin, 1, 1);

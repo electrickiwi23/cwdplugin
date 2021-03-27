@@ -40,8 +40,8 @@ public class Berserker {
     }
 
     public static void ForcePull(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 2)) {
-        int distance = 15;
+        if (Mana.spendMana(p, 4)) {
+        int distance = 12;
         Location start = p.getEyeLocation();
         RayTraceResult ray = p.getWorld().rayTraceBlocks(start, start.getDirection(), distance, FluidCollisionMode.NEVER, true);
         if (ray != null) {
@@ -69,7 +69,7 @@ public class Berserker {
                     if (e instanceof LivingEntity) {
                         if (!(e instanceof ArmorStand)) {
                             if (!CantHit.contains(e)) {
-                                e.setVelocity(e.getVelocity().add(e.getLocation().toVector().subtract(start.toVector()).multiply(-1).add(new Vector(0, 1, 0)).normalize().multiply(1.5)));
+                                e.setVelocity(e.getVelocity().add(e.getLocation().toVector().subtract(start.toVector()).multiply(-1).add(new Vector(0, 1, 0)).normalize().multiply(1.3)));
                                 CantHit.add(e);
                             }
                         }

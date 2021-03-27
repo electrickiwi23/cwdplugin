@@ -1,5 +1,6 @@
 package me.mintnetwork.spells;
 
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
@@ -62,6 +63,8 @@ public class BloodMage {
 
     public static void BloodTracker(Player p,Plugin plugin){
         if (Mana.spendMana(p, 3)) {
+            String teamName = TeamsInit.getTeamName(p);
+
             Vex vex = (Vex) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.VEX);
             vex.setHealth(1);
             vex.setCharging(false);
@@ -78,14 +81,14 @@ public class BloodMage {
 
                         for (Entity e : vex.getNearbyEntities(20, 20, 20)) {
                             if (e instanceof Player) {
-//                                if (e != p) {
                                 if (e.getLocation().distance(vex.getLocation()) <= 20) {
-                                    if (Math.ceil(((Player) e).getMaxHealth()) > Math.ceil(((Player) e).getHealth())) {
-                                        vex.setTarget((LivingEntity) e);
-                                        vex.setCharging(true);
-                                        locked[0] = (Player) e;
+                                    if (!teamName.equals(TeamsInit.getTeamName(e))) {
+                                        if (Math.ceil(((Player) e).getMaxHealth()) > Math.ceil(((Player) e).getHealth())) {
+                                            vex.setTarget((LivingEntity) e);
+                                            vex.setCharging(true);
+                                            locked[0] = (Player) e;
+                                        }
                                     }
-//                                }
                                 }
                             }
                         }

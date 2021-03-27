@@ -214,22 +214,21 @@ public class GenericCast {
                     }
                 }
             }.runTaskTimer(plugin,1,1);
-
-
         }
     }
 
     public static void TNTRing(Player p ){
-        for (int i = 0; i < 8; i++) {
-            TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
-            Location location = p.getLocation();
-            location.setYaw(location.getYaw() + (45 * i));
-            location.setPitch(0);
-            tnt.setFuseTicks(120);
-            tnt.setSource(p);
-            tnt.setVelocity(location.getDirection().add(new Vector(0,1,0)).multiply(.22));
+        if (Mana.spendMana(p,3)) {
+            for (int i = 0; i < 8; i++) {
+                TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
+                Location location = p.getLocation();
+                location.setYaw(location.getYaw() + (45 * i));
+                location.setPitch(0);
+                tnt.setFuseTicks(120);
+                tnt.setSource(p);
+                tnt.setVelocity(location.getDirection().add(new Vector(0, 1, 0)).multiply(.22));
+            }
         }
-
     }
 
     public static void BeeBolt(Player p,Plugin plugin) {

@@ -31,7 +31,7 @@ import java.util.Map;
 public class Cleric {
 
     public static void HealBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, 3)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());

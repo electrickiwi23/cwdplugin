@@ -134,7 +134,7 @@ public class Shadow {
                         if (e.getLocation().distance(hit) <= 20) {
                             if (e instanceof Player) {
                                 String VictimTeam = TeamsInit.getTeamName(e);
-                                if (TeamName.equals(VictimTeam)) {
+                                if (!TeamName.equals(VictimTeam)) {
                                     Player victim = (Player) e;
                                     if (StatusEffects.ShadowConsumed.containsKey(victim)) {
                                         StatusEffects.ShadowConsumed.replace(victim, 180);

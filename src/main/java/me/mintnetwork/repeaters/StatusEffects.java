@@ -157,10 +157,10 @@ public class StatusEffects {
                 }
 
                 for (LivingEntity e : paintTimer.keySet()) {
-                    paintTimer.replace(e, paintTimer.get(e) - 1);
+                    paintTimer.replace(e, paintTimer.get(e) - 2);
                     double r = (Math.ceil(Math.random() * 6));
 
-                    if (paintTimer.get(e)>=1200){
+                    if (paintTimer.get(e)>=1500){
                         e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,1));
                         paintTimer.replace(e, paintTimer.get(e) - 600);
 

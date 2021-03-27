@@ -98,11 +98,11 @@ public class Builder {
 
                             }
                         }
-                        for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(.5, .5 + finalI, .5), 2.5, .5, 2.5)) {
+                        for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(.5, .5 + finalI, .5), 2.5, 1, 2.5)) {
                             if (finalI == 5) {
                                 if (e instanceof LivingEntity) e.setVelocity(new Vector(0, .6, 0));
                             }else {
-                                if (e instanceof LivingEntity) e.setVelocity(new Vector(0, 1, 0));
+                                if (e instanceof LivingEntity) e.setVelocity(new Vector(0, 1.2, 0));
                             }
                         }
                     }

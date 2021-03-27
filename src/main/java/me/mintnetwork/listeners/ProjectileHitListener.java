@@ -176,7 +176,7 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
-                        hit.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 3));
+                        hit.damage(4);
                         shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                     }
                     task.get(snow).cancel();
@@ -216,7 +216,7 @@ public class ProjectileHitListener implements Listener {
                 }
                 if (ID.get(snow).equals("HealBolt")) {
                     if (hit != null) {
-                        hit.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 1));
+                        hit.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0));
                     }
                     task.get(snow).cancel();
                 }

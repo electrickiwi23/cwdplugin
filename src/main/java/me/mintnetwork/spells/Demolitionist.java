@@ -142,7 +142,7 @@ public class Demolitionist {
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
             tnt.setVelocity(p.getEyeLocation().getDirection().multiply(1.5));
-            tnt.setFuseTicks(120);
+            tnt.setFuseTicks(100);
             ID.put(tnt, "Cluster 0");
             tick.put(tnt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
                 Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);

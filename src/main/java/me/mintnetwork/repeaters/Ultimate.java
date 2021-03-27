@@ -93,7 +93,7 @@ public class Ultimate {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-//                if (GameStart.gameRunning) {
+                if (GameStart.gameRunning) {
                     for (Player player : WizardInit.playersWizards.keySet()) {
                         Wizard wizard = WizardInit.playersWizards.get(player);
                         switch (wizard.ClassID) {
@@ -179,7 +179,7 @@ public class Ultimate {
                                 break;
                         }
                     }
-//                }
+                }
             }
             }, 0, 5);
         }

@@ -13,6 +13,8 @@ public class Wizard {
     public int Ult = 0;
     public String ClassID = "";
     public int PassiveTick = 0;
+
+    public int ElimLives = 0;
     ArrayList<Integer> ChosenSpells = new ArrayList<>();
 
     public Wizard(Player p){

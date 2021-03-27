@@ -57,10 +57,11 @@ public class Painter {
                                             }
                                             Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
                                             if (painted.containsKey(hitEntity)) {
-                                                painted.replace(hitEntity, painted.get(hitEntity) + 80);
+                                                painted.replace(hitEntity, painted.get(hitEntity) + 60);
                                             } else {
-                                                painted.put(hitEntity, 80);
+                                                painted.put(hitEntity, 60);
                                             }
+                                            hasHit = true;
                                             hitEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
                                         }
                                     }
@@ -68,7 +69,7 @@ public class Painter {
 
                             }
                             if (!hasHit) {
-                                p.getWorld().playSound(current, Sound.ENTITY_CAT_HISS, 1, 1);
+                                p.getWorld().playSound(current, Sound.ENTITY_CAT_HISS, (float) .5, 1);
 
                                 current = current.add(direction);
                                 Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
@@ -91,15 +92,6 @@ public class Painter {
                                 p.getWorld().spawnParticle(Particle.REDSTONE, current, 1, .1, .1, .1, 0, dust);
                                 range++;
                                 if (range >= 5) hasHit = true;
-
-                                for (Entity e : current.getWorld().getNearbyEntities(current, 3, 3, 3)) {
-                                    if (e instanceof LivingEntity) {
-                                        LivingEntity live = (LivingEntity) e;
-                                        if (current.distance(live.getEyeLocation()) < 1) {
-
-                                        }
-                                    }
-                                }
 
                                 Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                                 for (Entity stand : current.getWorld().getNearbyEntities(current, 5, 5, 5)) {

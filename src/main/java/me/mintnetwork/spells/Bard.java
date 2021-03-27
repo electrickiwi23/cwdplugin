@@ -24,12 +24,9 @@ public class Bard {
     public static void SpeedSong(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 4)) {
             String teamName = TeamsInit.getTeamName(p);
-            List<Entity> entities = p.getNearbyEntities(5, 5, 5);
-            entities.add(p);
-            for (Entity e : entities) {
-                if (e instanceof Player) {
-                    Player victim = (Player) e;
-                    String victimTeam = TeamsInit.getTeamName(e);
+            for (Player victim:Bukkit.getOnlinePlayers() ) {
+                if (victim.getLocation().distance(p.getLocation())<=7) {
+                    String victimTeam = TeamsInit.getTeamName(victim);
                     if (teamName.matches(victimTeam)) {
                         victim.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 1, false, false));
                         if (StatusEffects.speedSong.containsKey(victim)) {
@@ -63,12 +60,9 @@ public class Bard {
     public static void HealSong(Player p,Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             String teamName = TeamsInit.getTeamName(p);
-            List<Entity> entities = p.getNearbyEntities(5, 5, 5);
-            entities.add(p);
-            for (Entity e : entities) {
-                if (e instanceof Player) {
-                    Player victim = (Player) e;
-                    String victimTeam = TeamsInit.getTeamName(e);
+            for (Player victim:Bukkit.getOnlinePlayers() ) {
+                if (victim.getLocation().distance(p.getLocation())<=7) {
+                    String victimTeam = TeamsInit.getTeamName(victim);
                     if (teamName.matches(victimTeam)) {
                         victim.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0, false, false));
                         if (StatusEffects.healSong.containsKey(victim)) {
@@ -76,7 +70,6 @@ public class Bard {
                         } else {
                             StatusEffects.healSong.put(victim, 100);
                         }
-
                     }
                 }
             }

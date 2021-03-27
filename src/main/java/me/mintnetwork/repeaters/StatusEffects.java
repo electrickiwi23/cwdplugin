@@ -327,14 +327,19 @@ public class StatusEffects {
 
                 for(Player p: sirenSong.keySet()){
                     p.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,p.getLocation().add(0,1,0),2,.3,.5,.3,0);
+                    String teamName = TeamsInit.getTeamName(p);
 
 
                     for (Entity e:p.getNearbyEntities(30,30,30)){
                         if (e instanceof LivingEntity){
-                            if (e.getLocation().distance(p.getLocation())<=30){
-                                if (((LivingEntity) e).hasLineOfSight(p)){
-                                    e.teleport(e.getLocation().setDirection(p.getLocation().toVector().subtract(e.getLocation().toVector()).normalize()));
-                                    e.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,((LivingEntity) e).getEyeLocation(),1,.25,.25,.25,0);
+                            if (!teamName.equals(TeamsInit.getTeamName(p))) {
+                                if (e.getLocation().distance(p.getLocation()) <= 30) {
+                                    if (((LivingEntity) e).hasLineOfSight(p)) {
+                                        Vector v = e.getVelocity();
+                                        e.teleport(e.getLocation().setDirection(p.getLocation().toVector().subtract(e.getLocation().toVector()).normalize()));
+                                        e.setVelocity(v);
+                                        e.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, ((LivingEntity) e).getEyeLocation(), 1, .25, .25, .25, 0);
+                                    }
                                 }
                             }
                         }

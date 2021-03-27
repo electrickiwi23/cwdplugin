@@ -176,21 +176,23 @@ public class Tactician {
     }
 
     public static void AirStrike(Player p, Plugin plugin) {
-        Map<Entity, BukkitTask> tick = ProjectileInfo.tickCode;
-        Map<Entity, String> ID = ProjectileInfo.projectileID;
-        Map<Player, Entity> tracked = ProjectileInfo.StrikeTrackedEntity;
-        if (tracked.containsKey(p)) {
-            AirStrikeRelease(p, plugin);
-        } else {
-            Arrow arrow = p.launchProjectile(Arrow.class);
-            tracked.put(p, arrow);
-            ID.put(arrow, "Tracker Arrow");
-            arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
-            arrow.setDamage(.35);
-            tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                arrow.getWorld().spawnParticle(Particle.REDSTONE, tracked.get(p).getLocation(), 1, .1, .1, .1, 0, dust);
-            }, 20, 20));
+        if (Ultimate.hasUlt(p)) {
+            Map<Entity, BukkitTask> tick = ProjectileInfo.tickCode;
+            Map<Entity, String> ID = ProjectileInfo.projectileID;
+            Map<Player, Entity> tracked = ProjectileInfo.StrikeTrackedEntity;
+            if (tracked.containsKey(p)) {
+                AirStrikeRelease(p, plugin);
+            } else {
+                Arrow arrow = p.launchProjectile(Arrow.class);
+                tracked.put(p, arrow);
+                ID.put(arrow, "Tracker Arrow");
+                arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+                arrow.setDamage(.35);
+                tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
+                    arrow.getWorld().spawnParticle(Particle.REDSTONE, tracked.get(p).getLocation(), 1, .1, .1, .1, 0, dust);
+                }, 20, 20));
+            }
         }
     }
 

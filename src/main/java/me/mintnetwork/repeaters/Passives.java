@@ -3,17 +3,15 @@ package me.mintnetwork.repeaters;
 import jdk.vm.ci.aarch64.AArch64;
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.utils.Utils;
 import me.mintnetwork.wizard.Wizard;
 import me.mintnetwork.wizard.WizardInit;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +40,51 @@ public class Passives {
                     String teamName = TeamsInit.getTeamName(p);
                     Wizard wizard = WizardInit.playersWizards.get(p);
                     switch (wizard.ClassID) {
+                        case "alchemist":
+                            if (!p.getInventory().contains(Material.SPLASH_POTION)) {
+                                wizard.PassiveTick++;
+                                if (wizard.PassiveTick >= 20) {
+                                    wizard.PassiveTick = 0;
+                                    ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+                                    PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+
+                                    switch ((int) Math.ceil(Math.random()*4)){
+                                        case (1):
+                                            potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Swiftness"));
+                                            potionMeta.setColor(Color.fromRGB(124, 175, 198));
+                                            potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED,200,1),false);
+                                            break;
+                                        case (2):
+                                            potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Regeneration"));
+                                            potionMeta.setColor(Color.fromRGB(205, 92, 171));
+                                            potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION,200,1),false);
+                                            break;
+                                        case (3):
+                                            potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Poison"));
+                                            potionMeta.setColor(Color.fromRGB(78, 147, 49));
+                                            potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.POISON,200,1),false);
+                                            break;
+                                        case (4):
+                                            potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Slowness"));
+                                            potionMeta.setColor(Color.fromRGB(90, 108, 129));
+                                            potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SLOW,200,1),false);
+                                            break;
+
+                                    }
+
+
+
+                                    potion.setItemMeta(potionMeta);
+                                    p.getInventory().addItem(potion);
+                                }
+                            }
+                            break;
                         case "builder":
                             wizard.PassiveTick++;
                             if (wizard.PassiveTick >= 2) {
                                 wizard.PassiveTick = 0;
-                                String TeamName = TeamsInit.getTeamName(p);
                                 ItemStack wool = new ItemStack(Material.GRAY_WOOL);
-                                switch (TeamName) {
+                                switch (teamName) {
                                     case ("red"):
                                         wool.setType(Material.RED_WOOL);
                                         break;
@@ -71,6 +107,11 @@ public class Passives {
                         case "cleric":
                             if (p.getMaxHealth() - .20 >= Math.ceil(p.getHealth())) {
                                 p.setHealth(p.getHealth() + .20);
+                            }
+                            break;
+                        case "tactician":
+                            if (wizard.PassiveTick < 10) {
+                                wizard.PassiveTick++;
                             }
                             break;
                         case "bard":

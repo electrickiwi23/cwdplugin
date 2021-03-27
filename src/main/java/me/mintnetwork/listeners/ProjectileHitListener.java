@@ -99,7 +99,7 @@ public class ProjectileHitListener implements Listener {
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
                     cloud.setParticle(Particle.REDSTONE, dust);
                     cloud.setRadius(4);
-                    cloud.setRadiusPerTick((float) -.01);
+                    cloud.setRadiusPerTick((float) -.005);
                     cloud.setDuration(200);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, true, true), false);
                     cloud.setReapplicationDelay(10);

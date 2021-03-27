@@ -65,6 +65,8 @@ public class StatusEffects {
 
     public static  Map<Player, Integer> RageUlt = new HashMap<>();
 
+    public static Map<Player, Integer> healTeam = new HashMap<>();
+
     public void statusEffects(Main plugin) {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
@@ -311,6 +313,36 @@ public class StatusEffects {
                 }
 
 //end of bard songs---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                List<Player> removeHealUlt = new ArrayList<>();
+                for (Player p : healTeam.keySet()) {
+                    long x = p.getWorld().getFullTime();
+                    Location direction = p.getLocation().clone();
+                    direction.setPitch(0);
+                    direction.setYaw((x % 20) * 18 - 180);
+
+                    p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(direction.getDirection()).add(0,healTeam.get(p)/12.0,0),1,.1,.1,.1,0);
+                    p.playSound(p.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) .4, (float) (healTeam.get(p)/20.0+.5));
+
+                    healTeam.replace(p, healTeam.get(p) + 1);
+
+                    if (healTeam.get(p) >= 30) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL,1,10));
+                        p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(0,1,0),10,.3,.4,.3,0);
+
+
+
+
+                        removeHealUlt.add(p);
+                    }
+                    if (p.isDead()) {
+                        removeHealUlt.add(p);
+                    }
+                }
+                for (Player r: removeHealUlt) {
+                    healTeam.remove(r);
+                }
+                removeHealUlt.clear();
 
                 for (LivingEntity e : speedTimer.keySet()) {
                     speedTimer.replace(e, speedTimer.get(e) - 1);

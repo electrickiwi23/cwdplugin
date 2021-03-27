@@ -185,4 +185,18 @@ public class Cleric {
             }.runTaskLater(plugin,  8);
         }
     }
+
+    public static void TeamHeal(Player p){
+        String teamName = TeamsInit.getTeamName(p);
+
+
+        for (Player e:Bukkit.getOnlinePlayers()) {
+            if (TeamsInit.getTeamName(e).equals(teamName)){
+                if (e.getLocation().distance(p.getLocation())<=40){
+                    StatusEffects.healTeam.put(e,0);
+                }
+            }
+        }
+
+    }
 }

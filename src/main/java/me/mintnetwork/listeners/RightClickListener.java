@@ -104,6 +104,9 @@ public class RightClickListener implements Listener {
                                         case ("Purification Wave"):
                                             Cleric.PurificationWave(p,plugin,em);
                                             break;
+                                        case ("Divine Intervention"):
+                                            Cleric.TeamHeal(p);
+                                            break;
 
                                         case("TNT Line"):
                                             Demolitionist.TNTLine(p,plugin);

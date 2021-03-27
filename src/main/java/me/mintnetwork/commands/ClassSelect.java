@@ -202,15 +202,20 @@ public class ClassSelect implements CommandExecutor {
 
                 String TeamName = TeamsInit.getTeamName(p);
 
-                if (TeamName.equals("blue")) {
-                    armorMeta.setColor(Color.fromRGB(60, 68, 170));
-                } else if (TeamName.equals("red")) {
-                    armorMeta.setColor(Color.fromRGB(176, 46, 38));
-                } else if (TeamName.equals("green")) {
-                    armorMeta.setColor(Color.fromRGB(128, 199, 31));
-                } else if (TeamName.equals("yellow")) {
-                    armorMeta.setColor(Color.fromRGB(120, 120, 2));
-                }
+                    switch (TeamName) {
+                        case "blue":
+                            armorMeta.setColor(Color.fromRGB(60, 68, 170));
+                            break;
+                        case "red":
+                            armorMeta.setColor(Color.fromRGB(176, 46, 38));
+                            break;
+                        case "green":
+                            armorMeta.setColor(Color.fromRGB(128, 199, 31));
+                            break;
+                        case "yellow":
+                            armorMeta.setColor(Color.fromRGB(120, 120, 2));
+                            break;
+                    }
 
                 if (wizard.ClassID.equals("demolitionist")){
                     armorMeta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS,1,true);

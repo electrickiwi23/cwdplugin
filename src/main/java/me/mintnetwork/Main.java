@@ -1,6 +1,7 @@
 package me.mintnetwork;
 
 import me.mintnetwork.commands.*;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.listeners.*;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.listeners.ProjectileHitListener;
@@ -20,6 +21,8 @@ public final class Main extends JavaPlugin {
         // Plugin startup logic
         new GiveWand(this);
         new RightClickListener(this);
+        new CancelTill(this);
+        new GameStart(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
         Mana.mana(this);

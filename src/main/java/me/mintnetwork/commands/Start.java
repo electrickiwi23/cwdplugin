@@ -14,7 +14,7 @@ public class Start implements CommandExecutor {
 
     public Start(Main plugin) {
         this.plugin = plugin;
-        plugin.getCommand("test").setExecutor(this);
+        plugin.getCommand("start").setExecutor(this);
     }
 
 

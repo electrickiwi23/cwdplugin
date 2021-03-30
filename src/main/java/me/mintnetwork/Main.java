@@ -25,13 +25,13 @@ public final class Main extends JavaPlugin {
         new GameStart(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
-        Mana.mana(this);
         Passives.PassivesStart(this);
         StatusEffects statuses = new StatusEffects();
         statuses.statusEffects(this);
 
         new ClassSelect(this);
         new DebugCommand(this);
+        new Start(this);
         new EntityDamageListener(this);
         new ProjectileHitListener(this);
         new EntityDieListener(this);
@@ -43,7 +43,6 @@ public final class Main extends JavaPlugin {
         getCommand("class").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         new TeamsInit(this);
-        Ultimate.ult(this);
         //hello
 
 

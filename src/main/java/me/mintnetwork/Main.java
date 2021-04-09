@@ -6,13 +6,13 @@ import me.mintnetwork.listeners.*;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.listeners.ProjectileHitListener;
 import me.mintnetwork.listeners.RightClickListener;
-import me.mintnetwork.repeaters.Mana;
 //import me.mintnetwork.spells.projectiles.BloodBolt;
 import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
-import me.mintnetwork.repeaters.Ultimate;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+
 
 public final class Main extends JavaPlugin {
 
@@ -25,7 +25,6 @@ public final class Main extends JavaPlugin {
         new GameStart(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
-        Mana.mana(this);
         Passives.PassivesStart(this);
         StatusEffects statuses = new StatusEffects();
         statuses.statusEffects(this);
@@ -43,7 +42,6 @@ public final class Main extends JavaPlugin {
         getCommand("class").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         new TeamsInit(this);
-        Ultimate.ult(this);
         //hello
 
 

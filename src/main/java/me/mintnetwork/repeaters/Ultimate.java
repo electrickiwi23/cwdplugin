@@ -2,11 +2,10 @@ package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.GameStart;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;

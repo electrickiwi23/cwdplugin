@@ -2,8 +2,8 @@ package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.utils.Utils;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GiveWand implements CommandExecutor {
 

@@ -1,4 +1,4 @@
-package me.mintnetwork.wizard;
+package me.mintnetwork.Objects;
 
 import org.bukkit.entity.Player;
 

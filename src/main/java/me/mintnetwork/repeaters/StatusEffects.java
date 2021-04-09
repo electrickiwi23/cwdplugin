@@ -4,7 +4,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;

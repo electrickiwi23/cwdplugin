@@ -1,12 +1,11 @@
-package me.mintnetwork.wizard;
+package me.mintnetwork.initialization;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Wizard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class WizardInit{
 

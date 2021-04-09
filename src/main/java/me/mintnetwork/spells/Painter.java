@@ -14,7 +14,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
 import java.util.Map;
 

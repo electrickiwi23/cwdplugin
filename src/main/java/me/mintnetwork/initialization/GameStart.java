@@ -3,8 +3,7 @@ package me.mintnetwork.initialization;
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
 import org.bukkit.entity.Player;
 
 public class GameStart {

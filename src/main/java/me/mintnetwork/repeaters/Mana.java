@@ -1,17 +1,11 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
-import me.mintnetwork.commands.GiveWand;
 import me.mintnetwork.initialization.GameStart;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.*;
 
 public class Mana{
     private final Main plugin;

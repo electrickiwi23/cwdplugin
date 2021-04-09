@@ -2,22 +2,18 @@ package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;

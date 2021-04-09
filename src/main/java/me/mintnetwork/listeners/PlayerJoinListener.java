@@ -1,17 +1,13 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
-import me.mintnetwork.repeaters.Mana;
-import me.mintnetwork.wizard.Wizard;
-import me.mintnetwork.wizard.WizardInit;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerJoinListener implements Listener {
 

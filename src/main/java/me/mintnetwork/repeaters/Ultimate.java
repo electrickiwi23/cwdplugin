@@ -60,12 +60,13 @@ public class Ultimate {
         Wizard wizard = WizardInit.playersWizards.get(p);
         boolean has = false;
 
+        p.sendMessage(String.valueOf(wizard.Ult));
+
         switch (wizard.ClassID) {
             case "spell slinger":
             case "painter":
-                if (wizard.Ult == 120) {
+                if (wizard.Ult >= 480) {
                     has = true;
-                    break;
                 }
                 break;
             case "demolitionist":
@@ -77,17 +78,21 @@ public class Ultimate {
             case "builder":
             case "cleric":
             case "tactician":
-                if (wizard.Ult == 180) {
+                if (wizard.Ult >= 720) {
                     has = true;
                 }
                 break;
             case "shadow":
             case "pillar man":
-                if (wizard.Ult == 240) {
+                if (wizard.Ult >= 960) {
                     has = true;
                 }
                 break;
         }
+        if (has){
+            wizard.Ult = 0;
+        }
+
         return has;
     }
 
@@ -99,7 +104,7 @@ public class Ultimate {
         switch (wizard.ClassID) {
             case "spell slinger":
             case "painter":
-                percentage = wizard.Ult/120;
+                percentage = wizard.Ult/480 * 100;
                 break;
             case "demolitionist":
             case "sky flyer":
@@ -110,11 +115,11 @@ public class Ultimate {
             case "builder":
             case "cleric":
             case "tactician":
-                percentage = wizard.Ult/180;
+                percentage = wizard.Ult/720 * 100;
                 break;
             case "shadow":
             case "pillar man":
-                percentage = wizard.Ult/240;
+                percentage = wizard.Ult/960 * 100;
                 break;
         }
 
@@ -146,7 +151,7 @@ public class Ultimate {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() < 1560) {
+                                                if (((Damageable) itemMeta).getDamage() > 1560) {
                                                     ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 16);
                                                 } else {
                                                     ((Damageable) itemMeta).setDamage(1561);
@@ -177,7 +182,7 @@ public class Ultimate {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() < 1551) {
+                                                if (((Damageable) itemMeta).getDamage() > 1551) {
                                                     ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 11);
                                                 } else {
                                                     ((Damageable) itemMeta).setDamage(1561);
@@ -201,7 +206,7 @@ public class Ultimate {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() < 1536) {
+                                                if (((Damageable) itemMeta).getDamage() > 1536) {
                                                     ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 8);
                                                 } else {
                                                     ((Damageable) itemMeta).setDamage(1561);

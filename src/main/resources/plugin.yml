@@ -12,3 +12,5 @@ commands:
     description: admin command to assign teams for game
   class:
     description: A command to select your class
+  start:
+    description: starts the game

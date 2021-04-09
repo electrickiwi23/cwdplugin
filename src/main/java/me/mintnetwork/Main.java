@@ -31,6 +31,7 @@ public final class Main extends JavaPlugin {
 
         new ClassSelect(this);
         new DebugCommand(this);
+        new Start(this);
         new EntityDamageListener(this);
         new ProjectileHitListener(this);
         new EntityDieListener(this);

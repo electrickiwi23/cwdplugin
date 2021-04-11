@@ -360,8 +360,8 @@ public class ProjectileHitListener implements Listener {
                                     l = hitBlock.getLocation();
                                 }
                                 if (living.getLocation().distance(l) <= 3) {
-                                    Vector v = l.toVector().subtract(living.getLocation().toVector()).normalize().multiply(-1.3);
-                                    living.setVelocity(v.add(new Vector(0, .5, 0)));
+                                    Vector v = l.toVector().subtract(living.getLocation().toVector()).normalize().multiply(-1);
+                                    living.setVelocity(v.add(new Vector(0, .4, 0)));
                                 }
                             }
                         }
@@ -510,7 +510,7 @@ public class ProjectileHitListener implements Listener {
                                 }
 
                             }
-                        }, i * 2);
+                        }, i * 4);
 
                     }
                     snow.remove();

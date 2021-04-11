@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.LineEffect;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -57,6 +58,10 @@ public class SpellSlinger {
                                 }
                                 if (hitLocation != null && hitEntity == null) {
                                     hasHit = true;
+                                    if (BlockDecay.decay.containsKey(ray.getHitBlock())){
+                                        BlockDecay.decay.get(ray.getHitBlock()).age = BlockDecay.decay.get(ray.getHitBlock()).age+120;
+                                    }
+
                                 }
                                 if (hitEntity != null) {
                                     hasHit = true;

@@ -1,5 +1,6 @@
 package me.mintnetwork.spells;
 
+import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
@@ -44,11 +45,17 @@ public class Builder {
                             current[0].getBlock().setType(Material.GRAY_WOOL);
                         }
 
-                        current[0] = current[0].add(face.getDirection().normalize());
+                        new DecayBlock(200,current[0].getBlock());
 
-                        for (Entity e : block.getWorld().getNearbyEntities(current[0].clone().add(.5, .5, .5), .5, .5, .5)) {
+                        for (Entity e : block.getWorld().getNearbyEntities(current[0].clone().add(.5, .5, .5), .6, .5, .6)) {
                             if (e instanceof LivingEntity) e.setVelocity(face.getDirection());
                         }
+
+
+                        current[0] = current[0].add(face.getDirection().normalize());
+
+
+
 
                         count[0]++;
                         if (count[0] >=4){
@@ -114,6 +121,7 @@ public class Builder {
     public static void BuildBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
+            bolt.teleport(bolt.getLocation().add(0,-1,0));
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.4));
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
@@ -135,7 +143,7 @@ public class Builder {
 
             bolt.setGravity(false);
             ID.put(bolt, "BuildBolt");
-            p.teleport(p.getLocation().add(0, 2.5, 0));
+            p.teleport(p.getLocation().add(0, 1.5, 0));
 
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -144,18 +152,21 @@ public class Builder {
                     Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
                     Vector v = velocity.get(bolt);
                     bolt.setVelocity(v);
-                    if (bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().isPassable()) {
+                    Block b = bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock();
+                    if (b.isPassable()) {
                         if (TeamName.equals("blue")){
-                            bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().setType(Material.BLUE_WOOL);
+                            b.setType(Material.BLUE_WOOL);
                         } else if (TeamName.equals("red")){
-                            bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().setType(Material.RED_WOOL);
+                            b.setType(Material.RED_WOOL);
                         } else if (TeamName.equals("green")){
-                            bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().setType(Material.LIME_WOOL);
+                            b.setType(Material.LIME_WOOL);
                         } else if (TeamName.equals("yellow")){
-                            bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().setType(Material.YELLOW_WOOL);
+                            b.setType(Material.YELLOW_WOOL);
                         } else {
-                            bolt.getLocation().subtract(v).subtract(v).subtract(v).getBlock().setType(Material.GRAY_WOOL);
+                            b.setType(Material.GRAY_WOOL);
                         }
+
+                        new DecayBlock(100,b);
 
                     }
                 }

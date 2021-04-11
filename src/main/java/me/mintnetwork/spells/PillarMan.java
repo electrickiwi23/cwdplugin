@@ -4,6 +4,8 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.CircleEffect;
 import de.slikey.effectlib.effect.LineEffect;
 import de.slikey.effectlib.effect.SphereEffect;
+import me.mintnetwork.Objects.DecayBlock;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -177,120 +179,131 @@ public class PillarMan {
 
     public static void BeamPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
         if (face.getDirection().equals(new Vector(0, 1, 0))) {
-            if (Mana.spendMana(p, 4)) {
-                for (int i = 1; i < 4; i++) {
-                    Block currentBlock = block.getLocation().add(face.getDirection().normalize().multiply(i)).getBlock();
-                    if (currentBlock.isPassable()) {
-                        currentBlock.setType(Material.BLACK_CONCRETE);
+            if (p.getWorld().rayTraceBlocks(block.getLocation().add(face.getDirection()), face.getDirection(), 3, FluidCollisionMode.NEVER, true) == null) {
+                if (Mana.spendMana(p, 4)) {
+                    for (int i = 1; i < 4; i++) {
+                        Block currentBlock = block.getLocation().add(face.getDirection().normalize().multiply(i)).getBlock();
+                        if (currentBlock.isPassable()) {
+                            currentBlock.setType(Material.BLACK_CONCRETE);
+                            new DecayBlock(400, currentBlock);
+                        }
                     }
-                }
 
-                EnderCrystal pillar = (EnderCrystal) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize().multiply(4)).add(.5, .5, .5), EntityType.ENDER_CRYSTAL);
-                pillar.setShowingBottom(false);
-                Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-                ID.put(pillar, "BeamPillar");
-                boolean[] coolDown = {true};
-                Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-                tick.put(pillar, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        Entity aimed = null;
-                        double aimedDistance = 20.0;
-                        for (Entity e : pillar.getNearbyEntities(9, 9, 9)) {
-                            if (e instanceof LivingEntity) {
-                                if (pillar.getLocation().distance(e.getLocation()) < aimedDistance) {
-                                    if (!(e instanceof ArmorStand)) {
-                                        Vector direction = pillar.getLocation().toVector().subtract(e.getLocation().toVector()).normalize().multiply(-.8);
-                                        RayTraceResult ray = pillar.getWorld().rayTrace(pillar.getLocation(), direction, 18, FluidCollisionMode.NEVER, true, .1, Predicate.isEqual(e));
-                                        Vector eyeDirection = pillar.getLocation().toVector().subtract(((LivingEntity) e).getEyeLocation().toVector()).normalize().multiply(-.8);
-                                        RayTraceResult eyeRay = pillar.getWorld().rayTrace(pillar.getLocation(), eyeDirection, 18, FluidCollisionMode.NEVER, true, .1, Predicate.isEqual(e));
-                                        if (ray != null) {
-                                            if (ray.getHitEntity() != null) {
-                                                if (e instanceof Player) {
-                                                    if (!((Player) e).isInvisible()) {
+                    EnderCrystal pillar = (EnderCrystal) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize().multiply(4)).add(.5, .5, .5), EntityType.ENDER_CRYSTAL);
+                    pillar.setShowingBottom(false);
+                    Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+                    ID.put(pillar, "BeamPillar");
+                    boolean[] coolDown = {true};
+                    Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+                    tick.put(pillar, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            Entity aimed = null;
+                            double aimedDistance = 20.0;
+                            for (Entity e : pillar.getNearbyEntities(9, 9, 9)) {
+                                if (e instanceof LivingEntity) {
+                                    if (pillar.getLocation().distance(e.getLocation()) < aimedDistance) {
+                                        if (!(e instanceof ArmorStand)) {
+                                            Vector direction = pillar.getLocation().toVector().subtract(e.getLocation().toVector()).normalize().multiply(-.8);
+                                            RayTraceResult ray = pillar.getWorld().rayTrace(pillar.getLocation(), direction, 18, FluidCollisionMode.NEVER, true, .1, Predicate.isEqual(e));
+                                            Vector eyeDirection = pillar.getLocation().toVector().subtract(((LivingEntity) e).getEyeLocation().toVector()).normalize().multiply(-.8);
+                                            RayTraceResult eyeRay = pillar.getWorld().rayTrace(pillar.getLocation(), eyeDirection, 18, FluidCollisionMode.NEVER, true, .1, Predicate.isEqual(e));
+                                            if (ray != null) {
+                                                if (ray.getHitEntity() != null) {
+                                                    if (e instanceof Player) {
+                                                        if (!((Player) e).isInvisible()) {
+                                                            aimed = e;
+                                                            aimedDistance = pillar.getLocation().distance(e.getLocation());
+
+                                                        }
+                                                    } else {
                                                         aimed = e;
                                                         aimedDistance = pillar.getLocation().distance(e.getLocation());
-
                                                     }
-                                                } else {
-                                                    aimed = e;
-                                                    aimedDistance = pillar.getLocation().distance(e.getLocation());
-                                                }
 
-                                            }
-                                        } else if (eyeRay != null) {
-                                            if (eyeRay.getHitEntity() != null) {
-                                                if (e instanceof Player) {
-                                                    if (!((Player) e).isInvisible()) {
+                                                }
+                                            } else if (eyeRay != null) {
+                                                if (eyeRay.getHitEntity() != null) {
+                                                    if (e instanceof Player) {
+                                                        if (!((Player) e).isInvisible()) {
+                                                            aimed = e;
+                                                            aimedDistance = pillar.getLocation().distance(e.getLocation());
+
+                                                        }
+                                                    } else {
                                                         aimed = e;
                                                         aimedDistance = pillar.getLocation().distance(e.getLocation());
-
                                                     }
-                                                } else {
-                                                    aimed = e;
-                                                    aimedDistance = pillar.getLocation().distance(e.getLocation());
-                                                }
 
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
-                        if (aimed != null) {
-                            pillar.setBeamTarget(aimed.getLocation().subtract(0, 2, 0));
-                            if (!coolDown[0]) {
+                            if (aimed != null) {
+                                pillar.setBeamTarget(aimed.getLocation().subtract(0, 2, 0));
+                                if (!coolDown[0]) {
 
-                                Vector aimedDirection = pillar.getLocation().toVector().subtract(aimed.getLocation().toVector()).normalize().multiply(-.8);
-                                RayTraceResult aimedRay = pillar.getWorld().rayTrace(pillar.getLocation(), aimedDirection, 18, FluidCollisionMode.NEVER, true, .1, Predicate.isEqual(aimed));
-                                Vector aimedEyeDirection = pillar.getLocation().toVector().subtract(((LivingEntity) aimed).getEyeLocation().toVector()).normalize().multiply(-.8);
+                                    Vector aimedDirection = pillar.getLocation().toVector().subtract(aimed.getLocation().toVector()).normalize().multiply(-.8);
+                                    RayTraceResult aimedRay = pillar.getWorld().rayTrace(pillar.getLocation(), aimedDirection, 18, FluidCollisionMode.NEVER, true, 0, Predicate.isEqual(aimed));
+                                    Vector aimedEyeDirection = pillar.getLocation().toVector().subtract(((LivingEntity) aimed).getEyeLocation().toVector()).normalize().multiply(-.8);
 
-                                Firework firework = (Firework) pillar.getWorld().spawnEntity(pillar.getLocation().add(aimedDirection.multiply(2)), EntityType.FIREWORK);
-                                FireworkEffect.Builder effect = FireworkEffect.builder();
-                                FireworkMeta meta = firework.getFireworkMeta();
-                                effect.with(FireworkEffect.Type.BALL);
-                                effect.withColor(Color.fromBGR(255, 20, 255));
-                                meta.addEffect(effect.build());
-                                firework.setShotAtAngle(true);
-                                boolean hitFeet = false;
-                                if (aimedRay != null) {
-                                    if (aimedRay.getHitEntity() != null) {
-                                        firework.setVelocity(aimedDirection);
-                                        hitFeet = true;
+                                    Firework firework = (Firework) pillar.getWorld().spawnEntity(pillar.getLocation().add(aimedDirection.multiply(2)), EntityType.FIREWORK);
+                                    FireworkEffect.Builder effect = FireworkEffect.builder();
+                                    FireworkMeta meta = firework.getFireworkMeta();
+                                    effect.with(FireworkEffect.Type.BALL);
+                                    effect.withColor(Color.fromBGR(255, 20, 255));
+                                    meta.addEffect(effect.build());
+                                    firework.setShotAtAngle(true);
+                                    boolean hitFeet = false;
+                                    if (aimedRay != null) {
+                                        if (aimedRay.getHitEntity() != null) {
+                                            firework.setVelocity(aimedDirection);
+                                            hitFeet = true;
+                                        }
                                     }
-                                }
-                                if (!hitFeet) {
-                                    firework.setVelocity(aimedEyeDirection);
-                                }
-                                firework.setFireworkMeta(meta);
-
-                                coolDown[0] = true;
-                                Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        coolDown[0] = false;
+                                    if (!hitFeet) {
+                                        firework.setVelocity(aimedEyeDirection);
                                     }
-                                }, 30);
+                                    firework.setFireworkMeta(meta);
+
+                                    coolDown[0] = true;
+                                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            coolDown[0] = false;
+                                        }
+                                    }, 30);
+                                }
+                            } else {
+                                pillar.setBeamTarget(null);
                             }
-                        } else {
-                            pillar.setBeamTarget(null);
-                        }
 
-                        if (coolDown[0]) {
-                            pillar.getWorld().spawnParticle(Particle.PORTAL, pillar.getLocation().add(0, .5, 0), 2, 0, 0, 0, 2);
-                        }
+                            if (coolDown[0]) {
+                                pillar.getWorld().spawnParticle(Particle.PORTAL, pillar.getLocation().add(0, .5, 0), 2, 0, 0, 0, 2);
+                            }
 
-                        if (pillar.isDead()) {
-                            tick.get(pillar).cancel();
+                            if (pillar.isDead()) {
+                                tick.get(pillar).cancel();
+                            }
+
+                            if (BlockDecay.decay.containsKey(pillar.getLocation().add(0, -2, 0).getBlock())) {
+                                if (BlockDecay.decay.get(pillar.getLocation().add(0, -2, 0).getBlock()).age >= 399) {
+                                    pillar.remove();
+                                    tick.get(pillar).cancel();
+                                }
+                            }
+
                         }
-                    }
-                }, 1, 1));
-                Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        coolDown[0] = false;
-                    }
-                }, 100);
+                    }, 1, 1));
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            coolDown[0] = false;
+                        }
+                    }, 100);
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package me.mintnetwork.spells;
 
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -48,6 +50,9 @@ public class Tactician {
                         }
                         if (hitLocation != null && hitEntity == null) {
                             hasHit = true;
+                            if (BlockDecay.decay.containsKey(ray.getHitBlock())){
+                                BlockDecay.decay.get(ray.getHitBlock()).age = BlockDecay.decay.get(ray.getHitBlock()).age+120;
+                            }
                         }
                         if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
                             hasHit = true;
@@ -214,19 +219,26 @@ public class Tactician {
             firework.setFireworkMeta(meta);
             final Location origin = tracked.get(p).getLocation();
 
-            BukkitTask task = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-                Location l = origin.toVector().toLocation(origin.getWorld());
-                Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
-                Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
-                fireball.setVelocity(new Vector(0, -2.5, 0));
-                fireball.setDirection(new Vector(0, -2.5, 0));
-                fireball.setYield(3);
-            }, 40, 2);
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-                tick.get(tracked.get(p)).cancel();
-                tracked.get(p).remove();
-                tracked.remove(p);
-                task.cancel();
+            BukkitTask task = new BukkitRunnable(){
+                @Override
+                public void run() {
+                    Location l = origin.toVector().toLocation(origin.getWorld());
+                    Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
+                    Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
+                    fireball.setVelocity(new Vector(0, -2.5, 0));
+                    fireball.setDirection(new Vector(0, -2.5, 0));
+                    fireball.setYield(3);
+                }
+            }.runTaskTimer(plugin, 40, 2);
+
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    tick.get(tracked.get(p)).cancel();
+                    tracked.get(p).remove();
+                    tracked.remove(p);
+                    task.cancel();
+                }
             }, 220);
         }
     }

@@ -268,6 +268,9 @@ public class RightClickListener implements Listener {
                                         case("Slime Ball"):
                                             GenericCast.SlimeBomb(p,plugin);
                                             break;
+                                        case("Volt Step"):
+                                            GenericCast.VoltStep(p,plugin);
+                                            break;
                                     }
 //                                        }
                                 }

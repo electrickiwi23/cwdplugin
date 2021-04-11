@@ -1,6 +1,7 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -80,6 +81,7 @@ public class StatusEffects {
                     ObsidianDecay.replace(b, ObsidianDecay.get(b) + 1);
                     if (ObsidianDecay.get(b) == 700) {
                         b.setType(Material.BLACKSTONE);
+                        new DecayBlock(400,b);
                         removeObsidian.add(b);
                     }
                     if (b.getType().isAir()) removeObsidian.add(b);

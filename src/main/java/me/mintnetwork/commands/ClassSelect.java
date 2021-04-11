@@ -194,10 +194,10 @@ public class ClassSelect implements CommandExecutor {
             } else {
                 if (!wizard.ClassID.equals("shadow")) p.setCustomNameVisible(true);
 
-                ItemStack sword = new ItemStack(Material.STONE_SWORD);
+                ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
                 ItemMeta swordMeta = sword.getItemMeta();
                 if (wizard.ClassID.equals("berserker")){
-                    sword.setType(Material.IRON_SWORD);
+                    sword.setType(Material.STONE_SWORD);
                     swordMeta.setDisplayName((Utils.chat("&rBerserker Blade")));
                 }
                 swordMeta.setUnbreakable(true);

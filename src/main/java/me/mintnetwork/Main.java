@@ -7,6 +7,7 @@ import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.listeners.ProjectileHitListener;
 import me.mintnetwork.listeners.RightClickListener;
 //import me.mintnetwork.spells.projectiles.BloodBolt;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.initialization.WizardInit;
@@ -19,19 +20,26 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        new GiveWand(this);
         new RightClickListener(this);
         new CancelTill(this);
         new GameStart(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
         Passives.PassivesStart(this);
+        BlockDecay.decayRepeater(this);
         StatusEffects statuses = new StatusEffects();
         statuses.statusEffects(this);
 
         new ClassSelect(this);
         new DebugCommand(this);
         new Start(this);
+        new GiveWand(this);
+
+        getCommand("class").setTabCompleter(new ClassAutoCompleter());
+        getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
+
+
+        new FireworkExpolodeListener(this);
         new EntityDamageListener(this);
         new ProjectileHitListener(this);
         new EntityDieListener(this);
@@ -40,8 +48,7 @@ public final class Main extends JavaPlugin {
         new PlayerSneakListener(this);
         new TakeDamageListener(this);
         new EntityExplodeListener(this);
-        getCommand("class").setTabCompleter(new ClassAutoCompleter());
-        getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
+
         new TeamsInit(this);
         //hello
 

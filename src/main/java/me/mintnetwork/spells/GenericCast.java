@@ -5,6 +5,7 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.AtomEffect;
 import de.slikey.effectlib.effect.SphereEffect;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
@@ -19,12 +20,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class GenericCast {
-
 
 
     public static void ShieldDome(Player p, EffectManager em, Plugin plugin) {
@@ -74,7 +76,7 @@ public class GenericCast {
     }
 
     public static Firework FireworkBolt(Player p) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, 3)) {
             Firework firework = (Firework) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.FIREWORK);
             FireworkEffect.Builder effect = FireworkEffect.builder();
             FireworkMeta meta = firework.getFireworkMeta();
@@ -119,8 +121,8 @@ public class GenericCast {
 
                 if (e instanceof LivingEntity) {
                     LivingEntity living = (LivingEntity) e;
-                    Vector v = center.toVector().subtract(e.getLocation().toVector()).multiply(center.distance(e.getLocation()) * -.4);
-                    living.setVelocity(v.add(new Vector(0, .8, 0)));
+                    Vector v = center.toVector().subtract(e.getLocation().toVector()).multiply(center.distance(e.getLocation()) * -.3);
+                    living.setVelocity(v.add(new Vector(0, .6, 0)));
 
                 }
             }
@@ -176,9 +178,9 @@ public class GenericCast {
         }
     }
 
-    public static void BatSonar(Player p,Plugin plugin){
-        if (Mana.spendMana(p,3)){
-            Bat bat = (Bat) p.getWorld().spawnEntity(p.getEyeLocation(),EntityType.BAT);
+    public static void BatSonar(Player p, Plugin plugin) {
+        if (Mana.spendMana(p, 3)) {
+            Bat bat = (Bat) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.BAT);
             bat.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0);
             bat.setGlowing(true);;
             Vector v = p.getEyeLocation().getDirection().multiply(.4);
@@ -188,37 +190,39 @@ public class GenericCast {
                 @Override
                 public void run() {
                     age[0]++;
-                    if (age[0]==100) { set[0] = bat.getLocation(); }
-                    if (age[0]<100){
+                    if (age[0] == 100) {
+                        set[0] = bat.getLocation();
+                    }
+                    if (age[0] < 100) {
                         bat.setVelocity(v);
                     } else {
-                        if (set[0] !=null) {
+                        if (set[0] != null) {
                             bat.teleport(set[0]);
                             bat.setVelocity(new Vector(0, 0, 0));
                         }
                     }
 
-                    if (age[0]>30){
-                        for (Entity e:bat.getWorld().getNearbyEntities(bat.getLocation(),9,9,9)) {
-                            if (e instanceof LivingEntity){
-                                if (!(e instanceof ArmorStand)){
-                                    ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,20,1));
+                    if (age[0] > 30) {
+                        for (Entity e : bat.getWorld().getNearbyEntities(bat.getLocation(), 9, 9, 9)) {
+                            if (e instanceof LivingEntity) {
+                                if (!(e instanceof ArmorStand)) {
+                                    ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20, 1));
                                 }
                             }
 
                         }
                     }
-                    if (age[0]>300){
+                    if (age[0] > 300) {
                         bat.remove();
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(plugin,1,1);
+            }.runTaskTimer(plugin, 1, 1);
         }
     }
 
-    public static void TNTRing(Player p ){
-        if (Mana.spendMana(p,3)) {
+    public static void TNTRing(Player p) {
+        if (Mana.spendMana(p, 3)) {
             for (int i = 0; i < 8; i++) {
                 TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
                 Location location = p.getLocation();
@@ -231,7 +235,7 @@ public class GenericCast {
         }
     }
 
-    public static void BeeBolt(Player p,Plugin plugin) {
+    public static void BeeBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
@@ -269,7 +273,7 @@ public class GenericCast {
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             Map<Entity, Effect> effectMap = ProjectileInfo.getVisualEffect();
 
-            Snowball bolt = p.launchProjectile(Snowball.class,p.getEyeLocation().getDirection().multiply(.05));
+            Snowball bolt = p.launchProjectile(Snowball.class, p.getEyeLocation().getDirection().multiply(.05));
             velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.05));
             bolt.setItem(new ItemStack(Material.BLACK_DYE));
             bolt.setGravity(false);
@@ -288,8 +292,8 @@ public class GenericCast {
                                     Vector suck = entity.getVelocity().add(n).multiply(.5).normalize().multiply(len);
 
                                     entity.setVelocity(suck);
-                                    if (velocity.containsKey(entity)){
-                                        velocity.replace(entity,suck);
+                                    if (velocity.containsKey(entity)) {
+                                        velocity.replace(entity, suck);
                                     }
                                 }
 
@@ -302,31 +306,31 @@ public class GenericCast {
                                     }
                                 }
                             }
-                        } else{
-                            bolt.getWorld().spawnParticle(Particle.SQUID_INK, bolt.getLocation(),10,.2,.2,.2,0);
+                        } else {
+                            bolt.getWorld().spawnParticle(Particle.SQUID_INK, bolt.getLocation(), 10, .2, .2, .2, 0);
                         }
                     }
                 }
             }, 1, 1));
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            AtomEffect effect = new AtomEffect(em);
-                            effect.setLocation(p.getEyeLocation().add(0, 0, 0));
-                            effect.yaw = p.getEyeLocation().getYaw();
-                            effect.pitch = p.getEyeLocation().getPitch();
-                            effect.setEntity(bolt);
-                            effect.particleNucleus = Particle.SQUID_INK;
-                            effect.particlesNucleus = 30;
-                            effect.radiusNucleus = (float) .3;
-                            effect.particleOrbital = Particle.FLAME;
-                            effect.orbitals = 3;
-                            effect.duration = 15;
-                            em.start(effect);
-                            effectMap.put(bolt,effect);
-                            active[0] = true;
-                        }
-                    },70);
+                @Override
+                public void run() {
+                    AtomEffect effect = new AtomEffect(em);
+                    effect.setLocation(p.getEyeLocation().add(0, 0, 0));
+                    effect.yaw = p.getEyeLocation().getYaw();
+                    effect.pitch = p.getEyeLocation().getPitch();
+                    effect.setEntity(bolt);
+                    effect.particleNucleus = Particle.SQUID_INK;
+                    effect.particlesNucleus = 30;
+                    effect.radiusNucleus = (float) .3;
+                    effect.particleOrbital = Particle.FLAME;
+                    effect.orbitals = 3;
+                    effect.duration = 15;
+                    em.start(effect);
+                    effectMap.put(bolt, effect);
+                    active[0] = true;
+                }
+            }, 70);
 
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -342,7 +346,7 @@ public class GenericCast {
         }
     }
 
-    public static void EndWarp(Player p,Plugin plugin){
+    public static void EndWarp(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             EnderPearl bolt = p.launchProjectile(EnderPearl.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
@@ -397,7 +401,7 @@ public class GenericCast {
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
             boots.setItemMeta(meta);
 
-            ItemStack[] armor = {boots,legs,chest,new ItemStack(Material.TNT)};
+            ItemStack[] armor = {boots, legs, chest, new ItemStack(Material.TNT)};
 
             zombie.getEquipment().setArmorContents(armor);
             zombie.setBaby();
@@ -412,19 +416,19 @@ public class GenericCast {
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    zombie.getWorld().spawnParticle(Particle.SMOKE_NORMAL,zombie.getEyeLocation(),1,.1,.1,.1,.1);
-                    if (age[0] >=140){
-                        zombie.getWorld().createExplosion(zombie.getEyeLocation(),3);
+                    zombie.getWorld().spawnParticle(Particle.SMOKE_NORMAL, zombie.getEyeLocation(), 1, .1, .1, .1, .1);
+                    if (age[0] >= 140) {
+                        zombie.getWorld().createExplosion(zombie.getEyeLocation(), 3);
                         this.cancel();
                         zombie.remove();
                     }
-                    if (zombie.isDead()){
+                    if (zombie.isDead()) {
                         this.cancel();
                     }
 
                     age[0]++;
                 }
-            }.runTaskTimer(plugin,1,1);
+            }.runTaskTimer(plugin, 1, 1);
 
 
         }
@@ -451,7 +455,7 @@ public class GenericCast {
 
                 Zombie zombie = (Zombie) p.getWorld().spawnEntity(p.getLocation(), EntityType.ZOMBIE);
 
-                TeamsInit.addToTeam(zombie,TeamName);
+                TeamsInit.addToTeam(zombie, TeamName);
 
 
                 helm.setItemMeta(meta);
@@ -462,7 +466,7 @@ public class GenericCast {
                 ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
                 boots.setItemMeta(meta);
 
-                ItemStack[] armor = {boots,legs,chest,helm};
+                ItemStack[] armor = {boots, legs, chest, helm};
 
                 zombie.getEquipment().setArmorContents(armor);
                 zombie.setAdult();
@@ -475,7 +479,7 @@ public class GenericCast {
         }
     }
 
-    public static void SlimeBomb(Player p, Plugin plugin){
+    public static void SlimeBomb(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 2)) {
             Snowball grenade = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
@@ -487,4 +491,66 @@ public class GenericCast {
         }
     }
 
+    public static void VoltStep(Player p, Plugin plugin) {
+        if (Mana.spendMana(p, 2)) {
+            Vector direction = p.getEyeLocation().getDirection();
+            Location current = p.getLocation().add(direction).add(0,.3,0);
+            ArrayList<LivingEntity> damage = new ArrayList<>();
+            int range = 0;
+            boolean hasHit = false;
+            while (!hasHit) {
+                if (current.isWorldLoaded()) {
+                    RayTraceResult ray = p.getWorld().rayTraceBlocks(current, direction, 1, FluidCollisionMode.NEVER, true);
+                    Location hitLocation = null;
+                    if (ray != null) {
+                        try {
+                            hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                        } catch (Exception ignore) {
+                        }
+                        if (hitLocation != null) {
+                            hasHit = true;
+                        }
+                    }
+                    if (!hasHit) {
+                        current = current.add(direction);
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.YELLOW,2);
+                        p.getWorld().spawnParticle(Particle.REDSTONE, current, 4, .2, .4, .2, 0,dust);
+                        range++;
+                        if (range >= 6) hasHit = true;
+                        for (Entity e : current.getWorld().getNearbyEntities(current,1,2,1)) {
+                            if (e instanceof LivingEntity){
+                                if (!(e instanceof ArmorStand)){
+                                    if (!(TeamsInit.getTeamName(p).equals(TeamsInit.getTeamName(e)))){
+                                        damage.add((LivingEntity) e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    hasHit = true;
+                }
+            }
+            Vector v = p.getVelocity();
+            p.teleport(current.subtract(direction));
+            p.setVelocity(v);
+            Particle.DustOptions dust = new Particle.DustOptions(Color.YELLOW,2);
+            p.getWorld().spawnParticle(Particle.REDSTONE, current, 12, .2, .4, .2, 0,dust);
+            final int[] hits = {0};
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    hits[0]++;
+                    for (LivingEntity e:damage) {
+                        e.setNoDamageTicks(0);
+                        e.damage(1, p);
+                        e.setVelocity(new Vector(0,0,0));
+                    }
+                    if (hits[0]>=3) this.cancel();
+
+                }
+            }.runTaskTimer(plugin,0,3);
+
+        }
+    }
 }

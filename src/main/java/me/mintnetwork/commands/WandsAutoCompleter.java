@@ -26,7 +26,7 @@ public class WandsAutoCompleter implements TabCompleter {
         list.add("babyboomer");
         list.add("zombiesummon");
         list.add("slimeball");
-
+        list.add("voltstep");
 
         return list;
     }

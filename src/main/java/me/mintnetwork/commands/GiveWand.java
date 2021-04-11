@@ -94,6 +94,11 @@ public class GiveWand implements CommandExecutor {
                                 meta.setDisplayName(Utils.chat("&rSlime Ball"));
                                 wandList.add(meta.clone());
                                 break;
+                            case ("voltstep"):
+                                meta.setDisplayName(Utils.chat("&rVolt Step"));
+                                wandList.add(meta.clone());
+                                break;
+
 
                         }
                     }

@@ -186,7 +186,7 @@ public class PillarMan {
                         Block currentBlock = block.getLocation().add(face.getDirection().normalize().multiply(i)).getBlock();
                         if (currentBlock.isPassable()) {
                             currentBlock.setType(Material.BLACK_CONCRETE);
-                            new DecayBlock(400, currentBlock);
+                            new DecayBlock(400,1, currentBlock);
                         }
                     }
 
@@ -290,7 +290,7 @@ public class PillarMan {
                             }
 
                             if (BlockDecay.decay.containsKey(pillar.getLocation().add(0, -2, 0).getBlock())) {
-                                if (BlockDecay.decay.get(pillar.getLocation().add(0, -2, 0).getBlock()).age >= 399) {
+                                if (BlockDecay.decay.get(pillar.getLocation().add(0, -2, 0).getBlock()).health <= 0) {
                                     pillar.remove();
                                     tick.get(pillar).cancel();
                                 }

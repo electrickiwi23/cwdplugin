@@ -4,7 +4,9 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.TornadoEffect;
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
@@ -378,7 +380,10 @@ public class ProjectileHitListener implements Listener {
                                     }
                                     if (!b.getType().isAir()) {
                                         if (b.getType().getBlastResistance() < 500) {
+                                            Material temp = b.getType();
+                                            if (BlockDecay.decay.containsKey(b)) temp = BlockDecay.decay.get(b).decayInto;
                                             b.setType(Material.SLIME_BLOCK);
+                                            new DecayBlock(30,.2F, b,temp);
                                         }
                                     }
                                 }

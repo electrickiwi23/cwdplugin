@@ -33,8 +33,9 @@ public class FireworkExpolodeListener implements Listener {
 
         HashMap<Block, DecayBlock> decayList = BlockDecay.decay;
         for (Block b:decayList.keySet()) {
-            if (b.getLocation().add(.5,.5,.5).distance(firework.getLocation())<=2){
-                decayList.get(b).age = decayList.get(b).age + 50;
+            if (b.getLocation().add(.5,.5,.5).distance(firework.getLocation())<=3){
+                decayList.get(b).damage((int) (10 + (75.0/b.getLocation().add(.5,.5,.5).distanceSquared(firework.getLocation()))));
+                decayList.get(b).setForceful(true);
             }
         }
     }

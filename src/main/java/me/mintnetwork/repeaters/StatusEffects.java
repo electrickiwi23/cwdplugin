@@ -75,7 +75,7 @@ public class StatusEffects {
                     ObsidianDecay.replace(b, ObsidianDecay.get(b) + 1);
                     if (ObsidianDecay.get(b) == 700) {
                         b.setType(Material.BLACKSTONE);
-                        new DecayBlock(400,b);
+                        new DecayBlock(200,.5F,b);
                         removeObsidian.add(b);
                     }
                     if (b.getType().isAir()) removeObsidian.add(b);

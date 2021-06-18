@@ -22,19 +22,14 @@ public class BlockDecay {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                List<Block> list = new ArrayList<>();
-                for (DecayBlock block:decay.values()) {
-                    block.tickBlock();
-
-                    if (block.age>=block.decayTime){
-                        block.block.breakNaturally();
-                        list.add(block.block);
+                ArrayList<Block> arr = new ArrayList<>(decay.keySet());
+                for (int i = 0; i < arr.size(); i++) {
+                    if (decay.get(arr.get(i)).tickBlock()){
+                        arr.remove(i);
+                        i--;
                     }
                 }
 
-                for (Block r : list) {
-                    decay.remove(r);
-                }
 
             }
         }, 0, 2);

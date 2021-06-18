@@ -1,7 +1,10 @@
 package me.mintnetwork.repeaters;
 
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.effect.LineEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.DecayBlock;
+import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -31,22 +34,6 @@ public class StatusEffects {
 
     public static Map<LivingEntity, Integer> speedTimer = new HashMap<>();
 
-    public static Map<Player, LivingEntity> ShadowGrappled = new HashMap<>();
-
-    public static Map<Player, LivingEntity> getShadowGrappled(){return ShadowGrappled; }
-
-    public static Map<LivingEntity, Player> ShadowGrappler = new HashMap<>();
-
-    public static Map<LivingEntity, Player> getShadowGrappler(){ return  ShadowGrappler; }
-
-    public static Map<LivingEntity, Integer> ShadowGrappleTimer = new HashMap<>();
-
-    public static Map<LivingEntity, Integer> getShadowGrappleTimer(){return ShadowGrappleTimer; }
-
-    public static Map<LivingEntity, Entity> ShadowGrappleStand = new HashMap<>();
-
-    public static Map<LivingEntity, Entity> getShadowGrappleStand(){return ShadowGrappleStand;}
-
     public static Map<Block, Integer> ObsidianDecay = new HashMap<>();
 
     public static Map<Block, Integer> SnowSlow = new HashMap<>();
@@ -63,15 +50,22 @@ public class StatusEffects {
 
     public static Map<Player, Integer> sirenSong = new HashMap<>();
 
+    public static Map<Player, Integer> protectionAura = new HashMap<>();
+
     public static Map<Player, Integer> ShadowConsumed = new HashMap<>();
 
     public static ArrayList<Player> cloudFloating = new ArrayList<>();
+
+    public static ArrayList<Player> slamLunging = new ArrayList<>();
+
+    public static ArrayList<Player> EnergyShield = new ArrayList<>();
 
     public static  Map<Player, Integer> RageUlt = new HashMap<>();
 
     public static Map<Player, Integer> healTeam = new HashMap<>();
 
     public void statusEffects(Main plugin) {
+        EffectManager em = new EffectManager(plugin);
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
@@ -90,6 +84,15 @@ public class StatusEffects {
                     ObsidianDecay.remove(r);
                 }
                 removeObsidian.clear();
+
+                for (int i = 0; i < EnergyShield.size(); i++) {
+                    Player p = EnergyShield.get(i);
+                    p.getWorld().spawnParticle(Particle.WAX_OFF, p.getLocation().add(0, 1, 0), 1, -.2, .4, -.2, 0);
+                    if (!p.hasPotionEffect(PotionEffectType.ABSORPTION)){
+                        EnergyShield.remove(p);
+                        i--;
+                    }
+                }
 
                 List<Block> removeSnow = new ArrayList<>();
                 for (Block b : SnowSlow.keySet()) {
@@ -115,6 +118,37 @@ public class StatusEffects {
                     SnowSlow.remove(r);
                 }
                 removeSnow.clear();
+
+                List<Player> removeProtection = new ArrayList<>();
+                for (Player p:protectionAura.keySet()) {
+                    for (Player victim:Bukkit.getOnlinePlayers()) {
+                        if (victim.getLocation().distance(p.getLocation())<15&&TeamsInit.getTeamName(p).equals(TeamsInit.getTeamName(victim))){
+                            LineEffect line = new LineEffect(em);
+                            line.particle = Particle.ELECTRIC_SPARK;
+                            line.setEntity(p);
+                            line.setLocation(p.getLocation().add(0,1,0));
+                            line.setTargetEntity(victim);
+                            line.setTargetLocation(victim.getLocation().add(0,1,0));
+                            line.targetOffset = new Vector(0,-1,0);
+                            line.iterations=2;
+                            em.start(line);
+                        }
+                    }
+
+                    protectionAura.replace(p,protectionAura.get(p)-1);
+
+                    if (protectionAura.get(p) <= 0) {
+                        removeProtection.add(p);
+                    }
+                    if (p.isDead()) {
+                        removeProtection.add(p);
+                    }
+                }
+                for (Player r : removeProtection) {
+                    protectionAura.remove(r);
+                }
+                removeProtection.clear();
+
 
                 for (Player p : cloudFloating) {
                     p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation().add(0,-1,0), 1, .1, .1, .1, 0);
@@ -157,6 +191,8 @@ public class StatusEffects {
                         BloodWeak.remove(e);
                     }
                 }
+
+                List<LivingEntity> removePaintTimer = new ArrayList<>();
 
                 for (LivingEntity e : paintTimer.keySet()) {
                     paintTimer.replace(e, paintTimer.get(e) - 2);
@@ -207,12 +243,16 @@ public class StatusEffects {
 
                     }
                     if (paintTimer.get(e) <= 0) {
-                        paintTimer.remove(e);
+                        removePaintTimer.add(e);
                     }
                     if (e.isDead()) {
-                        paintTimer.remove(e);
+                        removePaintTimer.add(e);
                     }
                 }
+                for (LivingEntity r : removePaintTimer) {
+                    paintTimer.remove(r);
+                }
+                removePaintTimer.clear();
 
 //start of bard song code------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -334,7 +374,7 @@ public class StatusEffects {
 
                     for (Entity e:p.getNearbyEntities(30,30,30)){
                         if (e instanceof LivingEntity){
-                            if (!teamName.equals(TeamsInit.getTeamName(p))) {
+                            if (!teamName.equals(TeamsInit.getTeamName(e))) {
                                 if (e.getLocation().distance(p.getLocation()) <= 30) {
                                     if (((LivingEntity) e).hasLineOfSight(p)) {
                                         Vector v = e.getVelocity();
@@ -400,11 +440,13 @@ public class StatusEffects {
 
                 }
 
-                for (LivingEntity e : ShadowGrappleTimer.keySet()) {
-                    ShadowGrappleTimer.replace(e, ShadowGrappleTimer.get(e) + 1);
-                    if (ShadowGrappleTimer.get(e) >= 60) {
-                        ShadowGrappleCancel(e);
+                for (int i = 0; i < ShadowGrapple.allGrapples.size(); i++) {
+                    ShadowGrapple grapple = ShadowGrapple.allGrapples.get(i);
+                    if (grapple.tick()){
+                        i--;
                     }
+                    if (grapple.getVictim() instanceof Player) grapple.getShadow().spawnParticle(Particle.SQUID_INK,grapple.getShadow().getEyeLocation().add(0,2,0),2,.2,.2,.2,0);
+
                 }
 
                 List<Player> removeShadowConsume = new ArrayList<>();
@@ -469,26 +511,34 @@ public class StatusEffects {
 
     public static boolean CanCast(Player p){
 
-        if (ShadowGrappler.containsKey(p)) return false;
+        String teamName = TeamsInit.getTeamName(p);
+
+        for (ShadowGrapple grapple:ShadowGrapple.allGrapples) {
+            if (grapple.getVictim()==p) return false;
+        }
+
         if (stunSong.containsKey(p)) return false;
         if (ShadowConsumed.containsKey(p)) return false;
+        if (slamLunging.contains(p)) return false;
         if (!GameStart.gameRunning) return false;
 
         for (Player e:Bukkit.getOnlinePlayers()) {
             if (sirenSong.containsKey(e)) {
-                if (e.getLocation().distance(p.getLocation()) <= 30) {
-                    if (e.hasLineOfSight(p)) {
-                        return false;
+                if (!teamName.equals(TeamsInit.getTeamName(e))) {
+                    if (e.getLocation().distance(p.getLocation()) <= 30) {
+                        if (e.hasLineOfSight(p)) {
+                            return false;
+                        }
                     }
                 }
             }
         }
 
-        //ugly code for if you are in a tornado
+//        ugly code for if you are in a tornado
+
         for (Entity e : p.getWorld().getNearbyEntities(p.getLocation(),7,16,7)) {
             if (e instanceof ArmorStand) {
                 if (ProjectileInfo.TornadoTeam.containsKey(e)) {
-                    String teamName = TeamsInit.getTeamName(e);
                     if (!ProjectileInfo.TornadoTeam.get(e).equals(teamName)) {
 
                         Location entityLocation = p.getLocation().clone();
@@ -506,23 +556,5 @@ public class StatusEffects {
         return true;
     }
 
-    public static void ShadowGrappleCancel(LivingEntity e){
-        e.setCustomNameVisible(true);
-
-        e.removePotionEffect(PotionEffectType.BLINDNESS);
-        e.removePotionEffect(PotionEffectType.WEAKNESS);
-        ShadowGrappler.get(e).removePotionEffect(PotionEffectType.WEAKNESS);
-
-        if (e.getVehicle()!=null){
-            Entity vehicle = e.getVehicle();
-            vehicle.eject();
-            vehicle.remove();
-
-        }
-
-        ShadowGrappleTimer.remove(e);
-        ShadowGrappled.remove(ShadowGrappler.get(e));
-        ShadowGrappler.remove(e);
-    }
 
 }

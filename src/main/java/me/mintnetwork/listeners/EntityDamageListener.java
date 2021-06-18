@@ -70,29 +70,40 @@ public class  EntityDamageListener implements Listener {
             }
 
             if (victim instanceof Player) {
+                Wizard victimWizard = WizardInit.playersWizards.get(victim);
+
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
                     ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
                     speedMap.put((Player) entity, 30);
                 }
+
+                if (victimWizard.ClassID.equals("berserker")){
+                    Mana.addMana((Player) victim,(int)Math.round(event.getDamage()));
+                }
+
+
+
                 Player live = (Player) entity;
+
+                Mana.addMana(live,(int)Math.round(event.getDamage()));
+
                 switch (wizard.ClassID) {
                     case "blood mage":
                         if (StatusEffects.BloodWeak.containsKey(victim)) {
                             for (int i = 0; i < 3; i++) {
+                                if (!live.isDead()) {
+                                    if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
+                                        live.setHealth(live.getHealth() + 2);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (!live.isDead()) {
                                 if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
                                     live.setHealth(live.getHealth() + 1);
                                 }
                             }
-                        } else {
-                            if (live.getMaxHealth() - 1 >= Math.ceil(live.getHealth())) {
-                                live.setHealth(live.getHealth() + 1);
-                            }
-                        }
-                        break;
-                    case "berserker":
-                        for (int i = 0; i < 2; i++) {
-                            Mana.tickMana((Player) entity);
                         }
                         break;
                     case "tactician":

@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scoreboard.*;
 
@@ -58,7 +59,7 @@ public class TeamsInit implements Listener {
 
 //  Individual Scoreboard Pause ----------------------------------------------------------------------------------------
 
-    public static void initializeTeams(int teamAmount) {
+    public static void initializeTeams(int teamAmount,char team1,char team2) {
 
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -77,11 +78,6 @@ public class TeamsInit implements Listener {
 
 
         // Setting player prefixes and team characteristics
-        board.getTeam("red").setPrefix(ChatColor.RED + "[RED] " + ChatColor.WHITE);
-        board.getTeam("blue").setPrefix(ChatColor.BLUE + "[BLUE] " + ChatColor.WHITE);
-        board.getTeam("yellow").setPrefix(ChatColor.YELLOW + "[YELLOW] " + ChatColor.WHITE);
-        board.getTeam("green").setPrefix(ChatColor.GREEN + "[GREEN] " + ChatColor.WHITE);
-
         board.getTeam("red").setColor(ChatColor.RED);
         board.getTeam("blue").setColor(ChatColor.BLUE);
         board.getTeam("yellow").setColor(ChatColor.YELLOW);
@@ -91,26 +87,60 @@ public class TeamsInit implements Listener {
         board.getTeam("blue").setAllowFriendlyFire(false);
         board.getTeam("yellow").setAllowFriendlyFire(false);
         board.getTeam("green").setAllowFriendlyFire(false);
+        ArrayList<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        Collections.shuffle(players);
 
 
         if (teamAmount == 2) {
+            String teamName1 = "red";
+            switch (team1){
+                case ('r'):
+                    teamName1 = "red";
+                    break;
+                case ('b'):
+                    teamName1 = "blue";
+                    break;
+                case ('y'):
+                    teamName1 = "yellow";
+                    break;
+                case ('g'):
+                    teamName1 = "green";
+                    break;
+            }
+            String teamName2 = "blue";
+            switch (team2){
+                case ('r'):
+                    teamName2 = "red";
+                    break;
+                case ('b'):
+                    teamName2 = "blue";
+                    break;
+                case ('y'):
+                    teamName2 = "yellow";
+                    break;
+                case ('g'):
+                    teamName2 = "green";
+                    break;
+            }
+
+
 
             int count = 0;
-            for (Player online : Bukkit.getOnlinePlayers()) {
+
+            for (Player online : players) {
                 count++;
                 if (count % 2 == 0) {
-                    board.getTeam("red").addEntry(online.getName());
+                    board.getTeam(teamName1).addEntry(online.getName());
                 } else {
-                    board.getTeam("blue").addEntry(online.getName());
+                    board.getTeam(teamName2).addEntry(online.getName());
                 }
                 updateArmor(online);
             }
         } else if (teamAmount == 4) {
             System.out.println("seventh");
             int count = 0;
-            ArrayList<Player> onlinePlayerList = new ArrayList<>(Bukkit.getOnlinePlayers());
-            Collections.shuffle(onlinePlayerList);
-            for (Player online : onlinePlayerList) {
+            for (Player online : players) {
                 count++;
                 switch (count % 4) {
                     case (1):
@@ -155,23 +185,30 @@ public class TeamsInit implements Listener {
 
     public static void updateArmor(Player p) {
         String teamName = getTeamName(p);
-        for (ItemStack i : p.getInventory().getArmorContents()) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) i.getItemMeta();
-            switch (teamName) {
-                case ("blue"):
-                    armorMeta.setColor(Color.fromRGB(60, 68, 170));
-                    break;
-                case ("red"):
-                    armorMeta.setColor(Color.fromRGB(176, 46, 38));
-                    break;
-                case ("green"):
-                    armorMeta.setColor(Color.fromRGB(128, 199, 31));
-                    break;
-                case ("yellow"):
-                    armorMeta.setColor(Color.fromRGB(120, 120, 2));
-                    break;
+        ItemStack[] Armor = p.getInventory().getArmorContents();
+        for (int i = 0; i < Armor.length; i++) {
+            if (Armor[i]!=null) {
+                ItemStack item = Armor[i];
+                ItemMeta itemMeta = item.getItemMeta();
+                if (itemMeta instanceof LeatherArmorMeta) {
+                    LeatherArmorMeta armorMeta = (LeatherArmorMeta) itemMeta;
+                    switch (teamName) {
+                        case ("blue"):
+                            armorMeta.setColor(Color.fromRGB(60, 68, 170));
+                            break;
+                        case ("red"):
+                            armorMeta.setColor(Color.fromRGB(176, 46, 38));
+                            break;
+                        case ("green"):
+                            armorMeta.setColor(Color.fromRGB(128, 199, 31));
+                            break;
+                        case ("yellow"):
+                            armorMeta.setColor(Color.fromRGB(120, 120, 2));
+                            break;
+                    }
+                    item.setItemMeta(armorMeta);
+                }
             }
-            i.setItemMeta(armorMeta);
         }
     }
 

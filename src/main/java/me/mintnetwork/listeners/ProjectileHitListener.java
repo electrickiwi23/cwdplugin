@@ -82,6 +82,8 @@ public class ProjectileHitListener implements Listener {
                         Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
                         for (Player p :tracked.keySet()) {
                             if (tracked.get(p)==e){
+                                if (!task.containsKey(hit)) task.put(hit,task.get(e));
+
                                 tracked.replace(p, hit);
                             }
                         }
@@ -176,7 +178,7 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
-                        hit.damage(4);
+                        hit.damage(5);
                         shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                     }
                     task.get(snow).cancel();
@@ -360,8 +362,8 @@ public class ProjectileHitListener implements Listener {
                                     l = hitBlock.getLocation();
                                 }
                                 if (living.getLocation().distance(l) <= 3) {
-                                    Vector v = l.toVector().subtract(living.getLocation().toVector()).normalize().multiply(-1);
-                                    living.setVelocity(v.add(new Vector(0, .4, 0)));
+                                    Vector v = l.toVector().subtract(living.getLocation().toVector()).normalize().multiply(-1.25);
+                                    living.setVelocity(v.add(new Vector(0, .3, 0)));
                                 }
                             }
                         }

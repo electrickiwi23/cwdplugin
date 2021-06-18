@@ -50,6 +50,9 @@ public class Start implements CommandExecutor {
                             sender.sendMessage(Utils.chat("&cYou must enter an amount of lives."));
                         }
                         break;
+                    case("br"):
+                    case("battleroyale"):
+                        GameStart.startBR(plugin,((Player) sender).getWorld());
                 }
             }
         }

@@ -110,8 +110,10 @@ public class Cleric {
                             for (Entity e : pillarLocation.getWorld().getNearbyEntities(pillarLocation.getLocation().add(.5,.5,.5), 6, 6, 6)) {
                                 if (e instanceof LivingEntity) {
                                     LivingEntity live = (LivingEntity) e;
-                                    if (live.getMaxHealth() - .033 >= Math.ceil(live.getHealth())) {
-                                        live.setHealth(live.getHealth()+.033);
+                                    if (!live.isDead()) {
+                                        if (live.getMaxHealth() - .033 >= Math.ceil(live.getHealth())) {
+                                            live.setHealth(live.getHealth() + .033);
+                                        }
                                     }
                                 }
                             }

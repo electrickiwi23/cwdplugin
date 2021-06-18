@@ -25,7 +25,7 @@ public class BloodMage {
         if (Mana.spendMana(p, 3)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(bolt, p.getEyeLocation().getDirection());
+            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.3));
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             bolt.setItem(new ItemStack(Material.RED_DYE));
             bolt.setGravity(false);

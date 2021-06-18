@@ -7,6 +7,8 @@ import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,35 +192,71 @@ public class ClassSelect implements CommandExecutor {
                     ultMeta.setDisplayName(Utils.chat("&rAir Strike"));
                     wizard.ClassID = "tactician";
                     break;
+                case ("protector"):
+                    meta.setDisplayName(Utils.chat("&rArial Slam"));
+                    wandList.add(meta.clone());
+                    meta.setDisplayName(Utils.chat("&rDome of Safety"));
+                    wandList.add(meta.clone());
+                    meta.setDisplayName(Utils.chat("&rArmor Aura"));
+                    wandList.add(meta.clone());
+                    ultMeta.setDisplayName(Utils.chat("&rAura of Protection"));
+                    wizard.ClassID = "protector";
+                    break;
             }
             if (wandList.isEmpty()) {
                 sender.sendMessage(args[0] + " is not a valid Class");
             } else {
-                if (!wizard.ClassID.equals("shadow")) p.setCustomNameVisible(true);
-
-                ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
-                ItemMeta swordMeta = sword.getItemMeta();
-                if (wizard.ClassID.equals("berserker")){
-                    sword.setType(Material.STONE_SWORD);
-                    swordMeta.setDisplayName((Utils.chat("&rBerserker Blade")));
-                }
-                swordMeta.setUnbreakable(true);
-                sword.setItemMeta(swordMeta);
-                p.getInventory().addItem(sword);
-
-                for (ItemMeta i : wandList) {
-                    ItemStack wand = new ItemStack(Material.STICK);
-                    wand.setItemMeta(i);
-                    p.getInventory().addItem(wand);
+                boolean uniqueClass = true;
+                for (Player player : WizardInit.playersWizards.keySet()) {
+                    Wizard tempWizard = WizardInit.playersWizards.get(player);
+                    if (tempWizard.ClassID.matches(wizard.ClassID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player!=p) {
+                        uniqueClass = false;
+                    }
                 }
 
-                ultWand.setItemMeta(ultMeta);
-                p.getInventory().addItem(ultWand);
+                if (uniqueClass) {
+                    p.getInventory().clear();
 
-                ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
-                LeatherArmorMeta armorMeta = (LeatherArmorMeta) helm.getItemMeta();
+                    p.setCustomNameVisible(!wizard.ClassID.equals("shadow"));
 
-                String TeamName = TeamsInit.getTeamName(p);
+                    if (wizard.ClassID.equals("protector")){
+                        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(24);
+                        p.setHealth(24);
+                        p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).addModifier(new AttributeModifier("ProtectorSlow",p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()*-.15,AttributeModifier.Operation.ADD_NUMBER));
+                    } else {
+                        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+                        p.setHealth(20);
+                        for (AttributeModifier modifier : p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getModifiers()) {
+                            if (modifier.getName().equals("ProtectorSlow")) {
+
+                                p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).removeModifier(modifier);
+                            }
+                        }
+                    }
+
+                    ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
+                    ItemMeta swordMeta = sword.getItemMeta();
+                    if (wizard.ClassID.equals("berserker")) {
+                        sword.setType(Material.STONE_SWORD);
+                        swordMeta.setDisplayName((Utils.chat("&rBerserker Blade")));
+                    }
+                    swordMeta.setUnbreakable(true);
+                    sword.setItemMeta(swordMeta);
+                    p.getInventory().addItem(sword);
+
+                    for (ItemMeta i : wandList) {
+                        ItemStack wand = new ItemStack(Material.STICK);
+                        wand.setItemMeta(i);
+                        p.getInventory().addItem(wand);
+                    }
+
+                    ultWand.setItemMeta(ultMeta);
+                    p.getInventory().addItem(ultWand);
+
+                    ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
+                    LeatherArmorMeta armorMeta = (LeatherArmorMeta) helm.getItemMeta();
+
+                    String TeamName = TeamsInit.getTeamName(p);
 
                     switch (TeamName) {
                         case "blue":
@@ -233,24 +273,27 @@ public class ClassSelect implements CommandExecutor {
                             break;
                     }
 
-                if (wizard.ClassID.equals("demolitionist")){
-                    armorMeta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS,1,true);
+                    if (wizard.ClassID.equals("demolitionist")) {
+                        armorMeta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 1, true);
+                    }
+
+                    armorMeta.setUnbreakable(true);
+
+                    helm.setItemMeta(armorMeta);
+                    ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
+                    chest.setItemMeta(armorMeta);
+                    ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS);
+                    legs.setItemMeta(armorMeta);
+                    ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+                    boots.setItemMeta(armorMeta);
+
+                    ItemStack[] armor = {boots, legs, chest, helm};
+
+                    p.getInventory().setArmorContents(armor);
+
+                }else{
+                    sender.sendMessage("A player on your team already has chosen that class");
                 }
-
-                armorMeta.setUnbreakable(true);
-
-                helm.setItemMeta(armorMeta);
-                ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
-                chest.setItemMeta(armorMeta);
-                ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS);
-                legs.setItemMeta(armorMeta);
-                ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-                boots.setItemMeta(armorMeta);
-
-                ItemStack[] armor = {boots,legs,chest,helm};
-
-                p.getInventory().setArmorContents(armor);
-
             }
         }else{
             sender.sendMessage("You must input a class.");

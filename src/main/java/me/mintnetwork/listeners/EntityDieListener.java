@@ -38,10 +38,10 @@ public class EntityDieListener implements Listener {
             Wizard wizard = WizardInit.playersWizards.get(p);
             String gameMode = GameStart.gameMode;
             if (GameStart.gameRunning) {
-                if (gameMode.equals("elimination")) {
+                if (gameMode.equals("elimination")||gameMode.equals("battle royale")) {
                     wizard.Mana = 3;
                     p.setLevel(3);
-                    if (wizard.ElimLives >= 0) {
+                    if (wizard.ElimLives > 1) {
                         wizard.ElimLives--;
                     } else {
                         p.setGameMode(GameMode.SPECTATOR);

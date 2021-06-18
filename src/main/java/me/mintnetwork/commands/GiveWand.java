@@ -27,7 +27,7 @@ public class GiveWand implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player) sender;
-        if (p.hasPermission("cwd.cangivewands")) {
+//        if (p.hasPermission("cwd.cangivewands")) {
             if (args.length==3) {
                 if (!(args[0].equals(args[1])||args[1].equals(args[2])||args[0].equals(args[2]))) {
 
@@ -44,10 +44,6 @@ public class GiveWand implements CommandExecutor {
                         switch (args[i].toLowerCase()) {
                             case ("fireworkbolt"):
                                 meta.setDisplayName(Utils.chat("&rFirework Bolt"));
-                                wandList.add(meta.clone());
-                                break;
-                            case ("blinkstep"):
-                                meta.setDisplayName(Utils.chat("&rBlink Step"));
                                 wandList.add(meta.clone());
                                 break;
                             case ("jumpboost"):
@@ -94,8 +90,20 @@ public class GiveWand implements CommandExecutor {
                                 meta.setDisplayName(Utils.chat("&rSlime Ball"));
                                 wandList.add(meta.clone());
                                 break;
-                            case ("voltstep"):
-                                meta.setDisplayName(Utils.chat("&rVolt Step"));
+                            case ("flashstep"):
+                                meta.setDisplayName(Utils.chat("&rFlash Step"));
+                                wandList.add(meta.clone());
+                                break;
+                            case ("shoulderblitz"):
+                                meta.setDisplayName(Utils.chat("&rShoulder Blitz"));
+                                wandList.add(meta.clone());
+                                break;
+                            case ("anviltoss"):
+                                meta.setDisplayName(Utils.chat("&rAnvil Toss"));
+                                wandList.add(meta.clone());
+                                break;
+                            case ("stormstrike"):
+                                meta.setDisplayName(Utils.chat("&rStorm Strike"));
                                 wandList.add(meta.clone());
                                 break;
 
@@ -117,7 +125,7 @@ public class GiveWand implements CommandExecutor {
             } else{
                 p.sendMessage(Utils.chat("&cYou must select 3 spells."));
             }
-        }
+//        }
         return false;
     }
 

@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.LineEffect;
+import me.mintnetwork.Objects.Shield;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
@@ -87,17 +88,9 @@ public class SpellSlinger {
                                 range++;
                                 if (range >= 80) hasHit = true;
                                 Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-                                for (Entity stand : current.getWorld().getNearbyEntities(current, 5, 5, 5)) {
-                                    if (ID.containsKey(stand)) {
-                                        if (ID.get(stand).equals("ShieldDome")) {
-                                            if (current.distance(stand.getLocation()) <= 4.5) {
-                                                Vector d = direction;
-                                                Vector n = stand.getLocation().toVector().subtract(current.toVector()).normalize().multiply(-1);
-                                                if (d.dot(n) <= 0 && current.distance(stand.getLocation()) >= 3)
-                                                    direction = (d.subtract(n.multiply(d.dot(n) * 2)));
-                                            }
-
-                                        }
+                                for (Entity shield : Shield.shieldMap.keySet()) {
+                                    if (shield.getLocation().distance(current)<Shield.shieldMap.get(shield).getRadius()+.5){
+                                        direction = Shield.shieldMap.get(shield).reflectVector(current,direction);
                                     }
                                 }
                             }

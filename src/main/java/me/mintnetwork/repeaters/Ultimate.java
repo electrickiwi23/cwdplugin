@@ -27,9 +27,8 @@ public class Ultimate {
         switch (wizard.ClassID) {
             case "spell slinger":
             case "painter":
-                if (wizard.Ult == 120) {
+                if (wizard.Ult >= 480) {
                     has = true;
-                    break;
                 }
                 break;
             case "demolitionist":
@@ -41,13 +40,14 @@ public class Ultimate {
             case "builder":
             case "cleric":
             case "tactician":
-                if (wizard.Ult == 180) {
+            case "protector":
+                if (wizard.Ult >= 720) {
                     has = true;
                 }
                 break;
             case "shadow":
             case "pillar man":
-                if (wizard.Ult == 240) {
+                if (wizard.Ult >= 960) {
                     has = true;
                 }
                 break;
@@ -60,7 +60,6 @@ public class Ultimate {
         Wizard wizard = WizardInit.playersWizards.get(p);
         boolean has = false;
 
-        p.sendMessage(String.valueOf(wizard.Ult));
 
         switch (wizard.ClassID) {
             case "spell slinger":
@@ -78,6 +77,7 @@ public class Ultimate {
             case "builder":
             case "cleric":
             case "tactician":
+            case "protector":
                 if (wizard.Ult >= 720) {
                     has = true;
                 }
@@ -96,15 +96,15 @@ public class Ultimate {
         return has;
     }
 
-    public static int getUltPercentage(Player p) {
+    public static double getUltPercentage(Player p) {
 
         Wizard wizard = WizardInit.playersWizards.get(p);
-        int percentage = 0;
+        double percentage = 0;
 
         switch (wizard.ClassID) {
             case "spell slinger":
             case "painter":
-                percentage = wizard.Ult/480 * 100;
+                percentage = wizard.Ult/480.0;
                 break;
             case "demolitionist":
             case "sky flyer":
@@ -115,11 +115,12 @@ public class Ultimate {
             case "builder":
             case "cleric":
             case "tactician":
-                percentage = wizard.Ult/720 * 100;
+            case "protector":
+                percentage = wizard.Ult/720.0;
                 break;
             case "shadow":
             case "pillar man":
-                percentage = wizard.Ult/960 * 100;
+                percentage = wizard.Ult/960.0;
                 break;
         }
 
@@ -150,12 +151,9 @@ public class Ultimate {
                                     for (ItemStack i : player.getInventory().getContents()) {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                System.out.println(getUltPercentage(player));
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() > 1560) {
-                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 16);
-                                                } else {
-                                                    ((Damageable) itemMeta).setDamage(1561);
-                                                }
+                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
                                                 i.setItemMeta(itemMeta);
                                             }
                                         }
@@ -171,6 +169,7 @@ public class Ultimate {
                             case "builder":
                             case "cleric":
                             case "tactician":
+                            case "protector":
                                 if (wizard.Ult < 720) {
                                     wizard.Ult++;
                                 }
@@ -182,11 +181,7 @@ public class Ultimate {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() > 1551) {
-                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 11);
-                                                } else {
-                                                    ((Damageable) itemMeta).setDamage(1561);
-                                                }
+                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
                                                 i.setItemMeta(itemMeta);
                                             }
                                         }
@@ -206,11 +201,7 @@ public class Ultimate {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
                                                 ItemMeta itemMeta = i.getItemMeta();
-                                                if (((Damageable) itemMeta).getDamage() > 1536) {
-                                                    ((Damageable) itemMeta).setDamage(((Damageable) itemMeta).getDamage() + 8);
-                                                } else {
-                                                    ((Damageable) itemMeta).setDamage(1561);
-                                                }
+                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
                                                 i.setItemMeta(itemMeta);
                                             }
                                         }

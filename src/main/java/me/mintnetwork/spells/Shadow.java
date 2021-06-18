@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.SphereEffect;
+import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
@@ -21,17 +22,19 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Shadow {
-    public static void ShadowRetreat(Player p, Plugin plugin){
-        for (Entity e:p.getNearbyEntities(4,4,4)) {
-            if (e instanceof LivingEntity){
-                //TEAM CODE make it only effect enemies
+    public static void ShadowRetreat(Player p) {
+        if (Mana.spendMana(p, 3)) {
+            for (Entity e : p.getNearbyEntities(4, 4, 4)) {
+                if (e instanceof LivingEntity) {
+                    //TEAM CODE make it only effect enemies
 
 
-                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,60,1));
+                    ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+                }
             }
+            p.getWorld().spawnParticle(Particle.SQUID_INK, p.getEyeLocation(), 30, .1, .1, .1, .5);
+            p.setVelocity(p.getEyeLocation().getDirection().multiply(-1).add(new Vector(0, .5, 0)).normalize().multiply(1.5));
         }
-        p.getWorld().spawnParticle(Particle.SQUID_INK,p.getEyeLocation(),30,.1,.1,.1,.5);
-        p.setVelocity(p.getEyeLocation().getDirection().multiply(-1).add(new Vector(0,.5,0)).normalize().multiply(1.5));
     }
 
     public static void ShadowInvis(Player p, Plugin plugin) {
@@ -63,7 +66,7 @@ public class Shadow {
                 CancelMap.put(p, InvisCancel);
                 BukkitTask InvisCancelTask = Bukkit.getServer().getScheduler().runTaskLater(plugin, InvisCancel, 100);
 
-                BukkitTask checker = new BukkitRunnable() {
+                new BukkitRunnable() {
                     public void run() {
                         if (!status.contains(p)) {
                             InvisCancelTask.cancel();
@@ -75,37 +78,26 @@ public class Shadow {
         }
     }
 
-    public static void ShadowGrapple(Player p) {
+    public static void ShadowGrapple(Player p,Plugin plugin) {
         Vector direction = p.getEyeLocation().getDirection();
         RayTraceResult ray = p.getWorld().rayTrace(p.getEyeLocation().add(direction), direction, 5, FluidCollisionMode.NEVER, true, .1, null);
-        int distance = 5;
         Particle.DustOptions dust = new Particle.DustOptions(Color.BLACK, 3);
         Entity hit = null;
         p.getWorld().spawnParticle(Particle.REDSTONE, p.getEyeLocation().add(direction.multiply(3)), 25, 1, 1, 1, 0, dust);
         if (ray != null) {
-            distance = (int) Math.ceil(ray.getHitPosition().distance(p.getEyeLocation().toVector()));
+
             try {
                 hit = ray.getHitEntity();
             } catch (Exception ignore) {
             }
             if (hit != null) {
-                if (hit instanceof LivingEntity) {
-                    ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
-                    stand.setSmall(true);
-                    stand.setInvisible(true);
-                    stand.setInvulnerable(true);
-                    p.addPassenger(stand);
-                    stand.addPassenger(hit);
-                    Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
-                    Map<LivingEntity, Integer> ShadowTimer = StatusEffects.getShadowGrappleTimer();
-                    Map<Player, LivingEntity> ShadowGrappled = StatusEffects.getShadowGrappled();
+                if (hit instanceof LivingEntity && Mana.spendMana(p,3)) {
+
+                    new ShadowGrapple(p, (LivingEntity) hit,plugin);
+
                     ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,120,1,true,true));
                     ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
-                    ShadowGrappler.put((LivingEntity) hit,p);
-                    ShadowGrappled.put(p,(LivingEntity) hit);
-                    ShadowTimer.put((LivingEntity) hit, 0);
-                    hit.setCustomNameVisible(false);
 
                 }
             }

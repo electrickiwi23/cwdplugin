@@ -1,5 +1,6 @@
 package me.mintnetwork.Objects;
 
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Array;
@@ -13,6 +14,8 @@ public class Wizard {
     public int Ult = 0;
     public String ClassID = "";
     public int PassiveTick = 0;
+
+    public FallingBlock thrownAnvil = null;
 
     public int ElimLives = 0;
     ArrayList<Integer> ChosenSpells = new ArrayList<>();

@@ -1,6 +1,7 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.CloneNPC;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
@@ -22,6 +23,11 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
+        if (CloneNPC.getNPCS() != null){
+            if (!CloneNPC.getNPCS().isEmpty()) {
+                CloneNPC.addJoinPacket(p);
+            }
+        }
         WizardInit.playersWizards.put(p, new Wizard(p));
         System.out.println(p.getName() + " created Wizard");
     }

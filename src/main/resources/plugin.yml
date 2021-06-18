@@ -1,14 +1,14 @@
 name: CWD
 version: ${project.version}
 main: me.mintnetwork.Main
-api-version: 1.16
+api-version: 1.17
 authors: [ ElectricKiwi ]
 commands:
   givewands:
     description: gives you the wand
   test:
     description: test!
-  assign:
+  assignteams:
     description: admin command to assign teams for game
   class:
     description: A command to select your class

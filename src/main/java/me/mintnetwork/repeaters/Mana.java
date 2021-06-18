@@ -1,8 +1,8 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
-import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,6 +13,12 @@ public class Mana{
     public Mana(Main plugin) {
         this.plugin = plugin;
     };
+
+    public static void addMana(Player player,int amount){
+        for (int i = 0; i < amount; i++) {
+            tickMana(player);
+        }
+    }
 
     public static void tickMana(Player player){
         Wizard wizard = WizardInit.playersWizards.get(player);
@@ -46,6 +52,7 @@ public class Mana{
             public void run() {
                 if (GameStart.gameRunning) {
                     for (Player player : WizardInit.playersWizards.keySet()) {
+                        player.setFoodLevel(19);
                         tickMana(player);
                     }
                 }

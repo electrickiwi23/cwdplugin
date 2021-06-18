@@ -14,7 +14,6 @@ public class WandsAutoCompleter implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command cde, String arg, String[] args) {
         List<String> list = new ArrayList<String>();
         list.add("fireworkbolt");
-        list.add("blinkstep");
         list.add("jumpboost");
         list.add("engineblast");
         list.add("dragonorb");
@@ -26,7 +25,10 @@ public class WandsAutoCompleter implements TabCompleter {
         list.add("babyboomer");
         list.add("zombiesummon");
         list.add("slimeball");
-        list.add("voltstep");
+        list.add("flashstep");
+        list.add("shoulderblitz");
+        list.add("anviltoss");
+        list.add("stormstrike");
 
         return list;
     }

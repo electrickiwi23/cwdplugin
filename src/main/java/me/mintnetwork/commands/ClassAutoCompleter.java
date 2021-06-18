@@ -26,6 +26,7 @@ public class ClassAutoCompleter implements TabCompleter {
         list.add("shadow");
         list.add("spellslinger");
         list.add("tactician");
+        list.add("protector");
 
         return list;
     }

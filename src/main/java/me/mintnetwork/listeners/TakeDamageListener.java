@@ -1,8 +1,13 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.ShadowGrapple;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -33,7 +38,33 @@ public class TakeDamageListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player){
             Player p = (Player) entity;
+            for (Player victim:StatusEffects.protectionAura.keySet()) {
+                if (victim.getLocation().distance(p.getLocation()) < 15 && TeamsInit.getTeamName(p).equals(TeamsInit.getTeamName(victim))&&!StatusEffects.protectionAura.containsKey(p)) {
+                    victim.damage(event.getDamage());
+                    event.setCancelled(true);
+                }
+            }
             Collection<Player> shadowList = StatusEffects.ShadowInvis;
+            if (StatusEffects.EnergyShield.contains(p)){
+                Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (p.getAbsorptionAmount()<=0){
+                            p.getWorld().playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK,.3F,1);
+                            for (AttributeModifier attributeModifier:p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getModifiers()){
+                                if (attributeModifier.getName().equals("EnergyShield")){
+                                    p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).removeModifier(attributeModifier);
+                                }
+                            }
+                            StatusEffects.EnergyShield.remove(p);
+                        }
+                    }
+                }
+                );
+
+            }
+
+
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 System.out.println("invis damage");
@@ -46,10 +77,12 @@ public class TakeDamageListener implements Listener {
             }
 
 
-            LivingEntity living = (LivingEntity) entity;
-            Map<LivingEntity, Player> ShadowGrappler = StatusEffects.getShadowGrappler();
-            if (ShadowGrappler.containsKey(living)) {
-                StatusEffects.ShadowGrappleCancel(living);
+            for (int i = 0; i < ShadowGrapple.allGrapples.size(); i++) {
+                ShadowGrapple grapple = ShadowGrapple.allGrapples.get(i);
+                if (grapple.getVictim() == entity) {
+                    grapple.disband();
+                    i--;
+                }
             }
         }
 

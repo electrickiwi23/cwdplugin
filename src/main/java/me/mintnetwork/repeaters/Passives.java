@@ -104,8 +104,10 @@ public class Passives {
                                 }
                                 break;
                             case "cleric":
-                                if (p.getMaxHealth() - .20 >= Math.ceil(p.getHealth())) {
-                                    p.setHealth(p.getHealth() + .20);
+                                if (!p.isDead()) {
+                                    if (p.getMaxHealth() - .20 >= Math.ceil(p.getHealth())) {
+                                        p.setHealth(p.getHealth() + .20);
+                                    }
                                 }
                                 break;
                             case "tactician":

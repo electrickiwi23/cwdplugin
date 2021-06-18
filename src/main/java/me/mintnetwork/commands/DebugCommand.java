@@ -25,8 +25,7 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        System.out.println("first");
-        TeamsInit.initializeTeams(2);
+        System.out.println(":)");
 
         return false;
     }

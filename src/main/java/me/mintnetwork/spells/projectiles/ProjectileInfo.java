@@ -52,10 +52,6 @@ public class ProjectileInfo {
 
     public static Map<Entity, List<Double>> getStickyOffset() {return stickyOffset;}
 
-    public static Map<Entity, Boolean> pillarCoolDown = new HashMap<>();
-
-    public static Map<Entity, Boolean> getPillarCoolDown() {return pillarCoolDown;}
-
     public static Map<Entity, Effect> visualEffect = new HashMap<>();
 
     public static Map<Entity, Effect> getVisualEffect() {return visualEffect;}

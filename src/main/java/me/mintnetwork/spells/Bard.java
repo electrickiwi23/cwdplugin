@@ -26,7 +26,7 @@ public class Bard {
         if (Mana.spendMana(p, 4)) {
             String teamName = TeamsInit.getTeamName(p);
             for (Player victim:Bukkit.getOnlinePlayers() ) {
-                if (victim.getLocation().distance(p.getLocation())<=7) {
+                if (victim.getLocation().distance(p.getLocation())<=10) {
                     String victimTeam = TeamsInit.getTeamName(victim);
                     if (teamName.matches(victimTeam)) {
                         victim.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 1, false, false));
@@ -62,7 +62,7 @@ public class Bard {
         if (Mana.spendMana(p, 3)) {
             String teamName = TeamsInit.getTeamName(p);
             for (Player victim:Bukkit.getOnlinePlayers() ) {
-                if (victim.getLocation().distance(p.getLocation())<=7) {
+                if (victim.getLocation().distance(p.getLocation())<=10) {
                     String victimTeam = TeamsInit.getTeamName(victim);
                     if (teamName.matches(victimTeam)) {
                         victim.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0, false, false));

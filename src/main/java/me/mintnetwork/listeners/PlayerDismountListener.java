@@ -1,6 +1,7 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -29,12 +30,24 @@ public class PlayerDismountListener implements Listener {
 
     @EventHandler
     public void onDismount(EntityDismountEvent e) {
-        Entity entity = e.getDismounted();
-        Map<LivingEntity, Integer> shadowTimer = StatusEffects.getShadowGrappleTimer();
+        Entity entity = e.getEntity();
         if (entity instanceof LivingEntity) {
-            if (shadowTimer.containsKey(entity)) {
-                shadowTimer.replace((LivingEntity) entity,shadowTimer.get(entity)+2);
-                e.setCancelled(true);
+            for (int i = 0; i < ShadowGrapple.allGrapples.size(); i++) {
+                ShadowGrapple grapple = ShadowGrapple.allGrapples.get(i);
+                if (grapple.getVictim()==entity){
+                    if (grapple.tick(2)){
+                        i--;
+                    }
+
+                    Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            grapple.getShadow().addPassenger(entity);
+                        }
+                    });
+                    e.setCancelled(true);
+
+                }
             }
         }
 

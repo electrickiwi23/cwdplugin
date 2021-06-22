@@ -138,9 +138,10 @@ public class Tactician {
             slime.setInvisible(true);
             slime.setMaxHealth(100);
             slime.setHealth(100);
+
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.6));
+            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.8));
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             bolt.setItem(new ItemStack(Material.SLIME_BALL));
             bolt.setGravity(false);
@@ -156,8 +157,9 @@ public class Tactician {
                 public void run() {
                     Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
                     bolt.setVelocity(velocity.get(bolt));
-                    slime.teleport(bolt);
+                    if (!bolt.isDead())  slime.teleport(bolt);
                     if (p.isDead()){
+                        p.setGravity(true);
                         bolt.remove();
                         slime.remove();
                         tick.get(bolt).cancel();
@@ -167,7 +169,8 @@ public class Tactician {
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    if (!bolt.isDead()) {
+                    if (!bolt.isDead())
+                        p.setGravity(true);{
                         bolt.remove();
                         slime.remove();
                     }
@@ -176,7 +179,7 @@ public class Tactician {
                     }
 
                 }
-            }, 12);
+            }, 10);
         }
     }
 
@@ -219,15 +222,28 @@ public class Tactician {
             firework.setFireworkMeta(meta);
             final Location origin = tracked.get(p).getLocation();
 
+
             BukkitTask task = new BukkitRunnable(){
                 @Override
                 public void run() {
                     Location l = origin.toVector().toLocation(origin.getWorld());
                     Location strike = l.add((random.nextGaussian() * 15), 80, (random.nextGaussian() * 15));
-                    Fireball fireball = (Fireball) strike.getWorld().spawnEntity(strike, EntityType.FIREBALL);
-                    fireball.setVelocity(new Vector(0, -2.5, 0));
-                    fireball.setDirection(new Vector(0, -2.5, 0));
-                    fireball.setYield(3);
+                    Snowball snowball = (Snowball) strike.getWorld().spawnEntity(strike,EntityType.SNOWBALL);
+                    snowball.setItem(new ItemStack(Material.FIRE_CHARGE));
+                    snowball.setVelocity(new Vector(0, -2.5, 0));
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            snowball.getWorld().spawnParticle(Particle.DUST_COLOR_TRANSITION, snowball.getLocation(), 2, .2, .4, .2,0, new Particle.DustTransition(Color.RED, Color.fromRGB(100,100,100), 3),true);
+                            if (snowball.isDead()) {
+                                snowball.remove();
+                                snowball.getWorld().createExplosion(snowball.getLocation(), 4);
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(plugin,1,1);
+
                 }
             }.runTaskTimer(plugin, 40, 2);
 

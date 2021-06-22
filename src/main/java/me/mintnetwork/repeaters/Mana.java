@@ -7,12 +7,9 @@ import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class Mana{
-    private final Main plugin;
+import java.util.UUID;
 
-    public Mana(Main plugin) {
-        this.plugin = plugin;
-    };
+public class Mana{
 
     public static void addMana(Player player,int amount){
         for (int i = 0; i < amount; i++) {
@@ -21,7 +18,7 @@ public class Mana{
     }
 
     public static void tickMana(Player player){
-        Wizard wizard = WizardInit.playersWizards.get(player);
+        Wizard wizard = WizardInit.playersWizards.get(player.getUniqueId());
         //if player has less than 10 mana add one to their mana counter
         if (wizard.Mana < 10) {
             wizard.ManaTick++;
@@ -36,7 +33,7 @@ public class Mana{
     }
 
     public static boolean spendMana(Player p, int c) {
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         boolean has = wizard.Mana>=c;
         if (has) {
             wizard.Mana = wizard.Mana-c;
@@ -51,7 +48,8 @@ public class Mana{
             @Override
             public void run() {
                 if (GameStart.gameRunning) {
-                    for (Player player : WizardInit.playersWizards.keySet()) {
+                    for (UUID uuid: WizardInit.playersWizards.keySet()) {
+                        Player player = Bukkit.getPlayer(uuid);
                         player.setFoodLevel(19);
                         tickMana(player);
                     }

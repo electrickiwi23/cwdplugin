@@ -36,7 +36,7 @@ public class  EntityDamageListener implements Listener {
         Entity victim = event.getEntity();
         if (entity instanceof Player) {
             Player p = (Player) entity;
-            Wizard wizard = WizardInit.playersWizards.get(entity);
+            Wizard wizard = WizardInit.playersWizards.get(entity.getUniqueId());
             Collection<Player> shadowList = StatusEffects.ShadowInvis;
 
             if (shadowList.contains(p)) {
@@ -46,7 +46,7 @@ public class  EntityDamageListener implements Listener {
             }
 
             if (StatusEffects.RageUlt.containsKey(p)) {
-                event.setDamage(event.getDamage()+2);
+                event.setDamage(event.getDamage()+3);
             }
             Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
             if (victim instanceof LivingEntity) {
@@ -70,7 +70,7 @@ public class  EntityDamageListener implements Listener {
             }
 
             if (victim instanceof Player) {
-                Wizard victimWizard = WizardInit.playersWizards.get(victim);
+                Wizard victimWizard = WizardInit.playersWizards.get(victim.getUniqueId());
 
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
@@ -109,7 +109,7 @@ public class  EntityDamageListener implements Listener {
                     case "tactician":
                         if (wizard.PassiveTick>=10){
                             wizard.PassiveTick = 0;
-                            Wizard victimWiz = WizardInit.playersWizards.get(victim);
+                            Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
                             live.sendMessage(victim.getName() + ":");
                             live.sendMessage("Health: " + Math.ceil(((Player) victim).getHealth()));
                             live.sendMessage("Mana: " + victimWiz.Mana);

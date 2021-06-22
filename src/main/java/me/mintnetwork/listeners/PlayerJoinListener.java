@@ -28,7 +28,9 @@ public class PlayerJoinListener implements Listener {
                 CloneNPC.addJoinPacket(p);
             }
         }
-        WizardInit.playersWizards.put(p, new Wizard(p));
-        System.out.println(p.getName() + " created Wizard");
+        if (!WizardInit.playersWizards.containsKey(p.getUniqueId())) {
+            WizardInit.playersWizards.put(p.getUniqueId(), new Wizard(p));
+            System.out.println(p.getName() + " created Wizard");
+        }
     }
 }

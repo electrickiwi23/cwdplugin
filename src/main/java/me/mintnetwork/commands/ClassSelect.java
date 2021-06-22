@@ -5,6 +5,7 @@ import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -23,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ClassSelect implements CommandExecutor {
 
@@ -60,7 +62,7 @@ public class ClassSelect implements CommandExecutor {
         ItemMeta ultMeta = ultWand.getItemMeta();
 
 
-        Wizard wizard = WizardInit.playersWizards.get(sender);
+        Wizard wizard = WizardInit.playersWizards.get(((Player) sender).getUniqueId());
         if (args.length>0) {
             switch (args[0].toLowerCase()) {
                 case ("alchemist"):
@@ -207,8 +209,9 @@ public class ClassSelect implements CommandExecutor {
                 sender.sendMessage(args[0] + " is not a valid Class");
             } else {
                 boolean uniqueClass = true;
-                for (Player player : WizardInit.playersWizards.keySet()) {
-                    Wizard tempWizard = WizardInit.playersWizards.get(player);
+                for (UUID uuid: WizardInit.playersWizards.keySet()) {
+                    Player player = Bukkit.getPlayer(uuid);
+                    Wizard tempWizard = WizardInit.playersWizards.get(uuid);
                     if (tempWizard.ClassID.matches(wizard.ClassID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player!=p) {
                         uniqueClass = false;
                     }

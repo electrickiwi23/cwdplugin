@@ -21,33 +21,48 @@ public class SkyFlyer {
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             Arrow arrow = p.launchProjectile(Arrow.class);
+            arrow.setVelocity(arrow.getVelocity().multiply(1.5));
+            arrow.setGravity(false);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             ID.put(arrow, "Wind Arrow");
-            arrow.setDamage(.35 );
+            arrow.setDamage(.4);
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                    if (!arrow.isDead()) {
+                        arrow.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, arrow.getLocation(), 2, .1, .1, .1, 0, null, true);
+                        arrow.remove();
+                        tick.remove(arrow);
+                    }
                 }
-            }, 1, 1));
+            }, 10);
+
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
 
                     Arrow arrow = p.launchProjectile(Arrow.class);
+                    arrow.setVelocity(arrow.getVelocity().multiply(1.5));
+                    arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.35);
+                    arrow.setDamage(.45);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-                    tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                         @Override
                         public void run() {
-                            arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                            if (!arrow.isDead()) {
+                                arrow.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, arrow.getLocation(), 2, .1, .1, .1, 0, null, true);
+                                arrow.remove();
+                                tick.remove(arrow);
+                            }
                         }
-                    }, 1, 1));
+                    }, 10);
 
                 }
             }, 3);
@@ -55,17 +70,23 @@ public class SkyFlyer {
                 @Override
                 public void run() {
                     Arrow arrow = p.launchProjectile(Arrow.class);
+                    arrow.setVelocity(arrow.getVelocity().multiply(1.5));
+                    arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.35);
+                    arrow.setDamage(.45);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-                    tick.put(arrow, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                         @Override
                         public void run() {
-                            arrow.getWorld().spawnParticle(Particle.SPELL, arrow.getLocation(), 1, .1, .1, .1, 0);
+                            if (!arrow.isDead()) {
+                                arrow.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, arrow.getLocation(), 2, .1, .1, .1, 0, null, true);
+                                arrow.remove();
+                                tick.remove(arrow);
+                            }
                         }
-                    }, 1, 1));
+                    }, 10);
                 }
             }, 6);
         }

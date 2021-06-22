@@ -44,8 +44,9 @@ public class DecayBlock {
         BlockDecay.decay.put(block,this);
     }
 
-    public void damage(int amount){
+    public void damage(float amount){
         health-= amount;
+        setForceful(true);
     }
 
     public boolean tickBlock() {

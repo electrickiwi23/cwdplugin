@@ -51,7 +51,7 @@ public class BloodMage {
     }
 
     public static void BloodSacrifice(Player p) {
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         wizard.Mana = wizard.Mana + 3;
         p.damage(6);
         if (wizard.Mana > 10) {

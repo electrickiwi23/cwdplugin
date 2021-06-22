@@ -37,9 +37,6 @@ public class GiveWand implements CommandExecutor {
                     ItemStack baseWand = new ItemStack(Material.STICK);
                     ItemMeta meta = baseWand.getItemMeta();
 
-
-                    Wizard wizard = WizardInit.playersWizards.get(sender);
-
                     for (int i = 0; i < 3; i++) {
                         switch (args[i].toLowerCase()) {
                             case ("fireworkbolt"):

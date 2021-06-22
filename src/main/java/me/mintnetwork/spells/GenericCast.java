@@ -3,6 +3,7 @@ package me.mintnetwork.spells;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.AtomEffect;
+import me.mintnetwork.Objects.BlackHole;
 import me.mintnetwork.Objects.Shield;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.TeamsInit;
@@ -35,7 +36,7 @@ public class GenericCast {
 
 
     public static void FireworkBolt(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, 2)) {
             Firework firework = (Firework) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.FIREWORK);
             FireworkEffect.Builder effect = FireworkEffect.builder();
             FireworkMeta meta = firework.getFireworkMeta();
@@ -48,7 +49,7 @@ public class GenericCast {
             if (r == 5.0) effect.withColor(Color.BLUE);
             if (r == 6.0) effect.withColor(Color.fromBGR(255, 0, 255));
             meta.addEffect(effect.build());
-            meta.setPower(2);
+            meta.setPower(1);
             firework.setShooter(p);
             firework.setShotAtAngle(true);
             firework.setVelocity(p.getEyeLocation().getDirection());
@@ -228,14 +229,13 @@ public class GenericCast {
     }
 
     public static void BlackHole(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, 4)) {
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            Map<Entity, Effect> effectMap = ProjectileInfo.getVisualEffect();
 
-            Snowball bolt = p.launchProjectile(Snowball.class, p.getEyeLocation().getDirection().multiply(.05));
-            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(.05));
+            Snowball bolt = p.launchProjectile(Snowball.class, p.getEyeLocation().getDirection());
+            velocity.put(bolt, p.getEyeLocation().getDirection());
             bolt.setItem(new ItemStack(Material.BLACK_DYE));
             bolt.setGravity(false);
             ID.put(bolt, "Black Hole");
@@ -244,68 +244,35 @@ public class GenericCast {
                 @Override
                 public void run() {
                     bolt.setVelocity(velocity.get(bolt));
-                    for (Entity entity : bolt.getNearbyEntities(12, 12, 12)) {
-                        if (active[0]) {
-                            if (entity instanceof Projectile) {
-                                if (entity.getLocation().distance(bolt.getLocation()) <= 9) {
-                                    Vector n = bolt.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(2 - (bolt.getLocation().distance(entity.getLocation())) / 10);
-                                    double len = entity.getVelocity().length();
-                                    Vector suck = entity.getVelocity().add(n).multiply(.5).normalize().multiply(len);
+                    bolt.getWorld().spawnParticle(Particle.SQUID_INK, bolt.getLocation(), 5, .05, .05, .05, 0);
 
-                                    entity.setVelocity(suck);
-                                    if (velocity.containsKey(entity)) {
-                                        velocity.replace(entity, suck);
-                                    }
-                                }
-
-                            } else if (entity instanceof Damageable) {
-                                if (entity.getLocation().distance(bolt.getLocation()) <= 8) {
-                                    Vector n = bolt.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.015 * (1 - (bolt.getLocation().distance(entity.getLocation())) / 10));
-                                    entity.setVelocity(entity.getVelocity().add(n));
-                                    if (entity.getLocation().distance(bolt.getLocation()) <= 3) {
-                                        ((Damageable) entity).damage(3, bolt);
-                                    }
-                                }
-                            }
-                        } else {
-                            bolt.getWorld().spawnParticle(Particle.SQUID_INK, bolt.getLocation(), 10, .2, .2, .2, 0);
-                        }
-                    }
                 }
             }, 1, 1));
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    AtomEffect effect = new AtomEffect(em);
-                    effect.setLocation(p.getEyeLocation().add(0, 0, 0));
-                    effect.yaw = p.getEyeLocation().getYaw();
-                    effect.pitch = p.getEyeLocation().getPitch();
-                    effect.setEntity(bolt);
-                    effect.particleNucleus = Particle.SQUID_INK;
-                    effect.particlesNucleus = 30;
-                    effect.radiusNucleus = (float) .3;
-                    effect.particleOrbital = Particle.FLAME;
-                    effect.orbitals = 3;
-                    effect.duration = 15;
-                    em.start(effect);
-                    effectMap.put(bolt, effect);
-                    active[0] = true;
-                }
-            }, 70);
-
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    if (!bolt.isDead()) {
-                        bolt.remove();
+                    if (!bolt.isDead()){
                         tick.get(bolt).cancel();
-                        effectMap.get(bolt).cancel();
+                        new BlackHole(bolt.getLocation(),em,plugin);
+                        bolt.remove();
                     }
                 }
-            }, 460);
+            }, 12);
+
+
+//            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (!bolt.isDead()) {
+//                        bolt.remove();
+//                        tick.get(bolt).cancel();
+//                    }
+//                }
+//            }, 460);
         }
     }
+
 
     public static void EndWarp(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
@@ -513,7 +480,7 @@ public class GenericCast {
                                             e.setVelocity(v.multiply(1.3).add(new Vector(0,.4,0)).multiply(1-((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
                                             p.setVelocity(v.multiply(-.2).add(new Vector(0,.4,0)));
 
-                                            ((LivingEntity) e).damage(5);
+                                            ((LivingEntity) e).damage(6);
                                             p.damage(2);
                                             p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
                                             hasHit[0] = true;
@@ -568,7 +535,7 @@ public class GenericCast {
     }
 
     public static void AnvilLaunch(Player p, Plugin plugin){
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         if (wizard.thrownAnvil==null) {
             if (Mana.spendMana(p, 4)) {
                 Location start = p.getEyeLocation().add(0, 1, 0);

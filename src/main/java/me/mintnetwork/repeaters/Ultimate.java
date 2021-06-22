@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.UUID;
+
 public class Ultimate {
 
     private final Main plugin;
@@ -21,7 +23,7 @@ public class Ultimate {
 
     public static boolean hasUlt(Player p) {
 
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         boolean has = false;
 
         switch (wizard.ClassID) {
@@ -57,7 +59,7 @@ public class Ultimate {
 
     public static boolean spendUlt(Player p) {
 
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         boolean has = false;
 
 
@@ -98,7 +100,7 @@ public class Ultimate {
 
     public static double getUltPercentage(Player p) {
 
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         double percentage = 0;
 
         switch (wizard.ClassID) {
@@ -135,8 +137,9 @@ public class Ultimate {
             @Override
             public void run() {
                 if (GameStart.gameRunning) {
-                    for (Player player : WizardInit.playersWizards.keySet()) {
-                        Wizard wizard = WizardInit.playersWizards.get(player);
+                    for (UUID uuid: WizardInit.playersWizards.keySet()) {
+                        Player player = Bukkit.getPlayer(uuid);
+                        Wizard wizard = WizardInit.playersWizards.get(uuid);
                         switch (wizard.ClassID) {
                             case "spell slinger":
                             case "painter":
@@ -151,7 +154,6 @@ public class Ultimate {
                                     for (ItemStack i : player.getInventory().getContents()) {
                                         if (i != null) {
                                             if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                System.out.println(getUltPercentage(player));
                                                 ItemMeta itemMeta = i.getItemMeta();
                                                 ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
                                                 i.setItemMeta(itemMeta);

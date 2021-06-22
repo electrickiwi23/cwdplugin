@@ -29,7 +29,7 @@ public class Builder {
             final Location[] current = {block.getLocation().add(face.getDirection().normalize())};
             final int[] count = {0};
             String TeamName = TeamsInit.getTeamName(p);
-            BukkitTask tick = new BukkitRunnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     if (current[0].getBlock().isPassable()) {
@@ -51,11 +51,7 @@ public class Builder {
                             if (e instanceof LivingEntity) e.setVelocity(face.getDirection());
                         }
 
-
                         current[0] = current[0].add(face.getDirection().normalize());
-
-
-
 
                         count[0]++;
                         if (count[0] >=4){

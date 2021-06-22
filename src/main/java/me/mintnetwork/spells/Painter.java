@@ -108,39 +108,110 @@ public class Painter {
         }
     }
 
-    public static void PaintBomb(Player p, Plugin plugin){
+    public static void PaintBomb(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
-            Snowball grenade = p.launchProjectile(Snowball.class);
-            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(grenade, p.getEyeLocation().getDirection());
-            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-            grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
-            grenade.setCustomName("A Paint Canister");
-            ID.put(grenade, "PaintBomb");
-            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-                @Override
-                public void run() {
 
-                    Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
+                ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
+                stand.setMarker(true);
+                stand.setInvisible(true);
+                Snowball grenade = p.launchProjectile(Snowball.class);
+                Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+                velocity.put(grenade, p.getEyeLocation().getDirection());
+                Map<Entity, String> ID = ProjectileInfo.getProjectileID();
 
-                    dust = new Particle.DustOptions(Color.ORANGE, 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
+                grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
+                grenade.setBounce(true);
 
-                    dust = new Particle.DustOptions(Color.YELLOW, 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
+                Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
+                linked.put(stand, grenade);
+                linked.put(grenade, stand);
+                ID.put(stand, "PaintGrenade");
+                Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+                Map<Entity, BukkitTask> activate = ProjectileInfo.getActivateCode();
+                tick.put(stand, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
+                        stand.teleport(linked.get(stand));
 
-                    dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
 
-                    dust = new Particle.DustOptions(Color.BLUE, 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
+                        dust = new Particle.DustOptions(Color.ORANGE, 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
 
-                    dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
-                }
-            },1,1));
+                        dust = new Particle.DustOptions(Color.YELLOW, 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+
+                        dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+
+                        dust = new Particle.DustOptions(Color.BLUE, 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+
+                        dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 1);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                    }
+                }, 1, 1));
+                activate.put(stand, Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.ORANGE, 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.YELLOW, 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.BLUE, 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
+                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
+                        for (Entity entity : stand.getWorld().getNearbyEntities(stand.getLocation(), 6, 6, 6)) {
+                            if (entity instanceof LivingEntity) {
+                                if (!(entity instanceof ArmorStand)) {
+                                    LivingEntity live = (LivingEntity) entity;
+                                    if (entity.getLocation().distance(stand.getLocation()) <= 5) {
+                                        live.damage(3, stand);
+                                        live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 50, 1));
+                                        live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
+                                        Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
+                                        if (painted.containsKey(live)) {
+                                            painted.replace(live, painted.get(live) + 300);
+                                        } else {
+                                            painted.put(live, 300);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
+                        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
+
+                        Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
+                        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+                        linked.get(stand).remove();
+                        tick.get(stand).cancel();
+                        stand.remove();
+
+                    }
+                }, 60));
+
+//            Snowball grenade = p.launchProjectile(Snowball.class);
+//            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
+//            velocity.put(grenade, p.getEyeLocation().getDirection());
+//            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+//            grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
+//            grenade.setCustomName("A Paint Canister");
+//            ID.put(grenade, "PaintBomb");
+//            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
+//            tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            },1,1));
         }
     }
 

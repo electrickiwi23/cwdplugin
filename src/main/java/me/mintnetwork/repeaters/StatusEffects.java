@@ -346,7 +346,7 @@ public class StatusEffects {
                     String teamName = TeamsInit.getTeamName(p);
                     for (Player b:Bukkit.getOnlinePlayers()) {
 
-                        if (WizardInit.playersWizards.get(b).ClassID.equals("bard")){
+                        if (WizardInit.playersWizards.get(b.getUniqueId()).ClassID.equals("bard")){
                             String bardTeamName = TeamsInit.getTeamName(b);
                             if (bardTeamName.equals(teamName)){
                                 if (b.getLocation().distance(p.getLocation())<=6) {

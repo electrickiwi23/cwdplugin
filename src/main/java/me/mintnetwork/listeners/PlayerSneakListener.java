@@ -45,7 +45,7 @@ public class PlayerSneakListener implements Listener {
     @EventHandler
     public void PlayerSneaks(PlayerToggleSneakEvent event) {
         Player p = event.getPlayer();
-        Wizard wizard = WizardInit.playersWizards.get(p);
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         if (p.isSneaking()){
             if (Zoomed.contains(p)) {
                 p.setWalkSpeed(PreviousSpeed.get(p));

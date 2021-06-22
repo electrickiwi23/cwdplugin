@@ -35,7 +35,7 @@ public class EntityDieListener implements Listener {
 
         if (e instanceof Player){
             Player p = (Player) e;
-            Wizard wizard = WizardInit.playersWizards.get(p);
+            Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
             String gameMode = GameStart.gameMode;
             if (GameStart.gameRunning) {
                 if (gameMode.equals("elimination")||gameMode.equals("battle royale")) {

@@ -1,11 +1,14 @@
 package me.mintnetwork.spells;
 
+import me.mintnetwork.Objects.PaintCanister;
 import me.mintnetwork.Objects.Shield;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -103,100 +106,60 @@ public class Painter {
                             }
                         }
                     }
-                }, i);
+                }, i*2);
             }
         }
     }
 
     public static void PaintBomb(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (p.isSneaking()){
+            for (int i = 0; i < PaintCanister.canisterArrayList.size(); i++) {
+                PaintCanister canister = PaintCanister.canisterArrayList.get(i);
+                if (canister.getOwner()==p){
+                    if (canister.getAge()>=60) {
+                        canister.explode(plugin);
+                        i--;
+                    }
+                }
+            }
+        } else {
+            if (Mana.spendMana(p, 3)) {
 
-                ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
-                stand.setMarker(true);
-                stand.setInvisible(true);
+
                 Snowball grenade = p.launchProjectile(Snowball.class);
+                grenade.setVelocity(grenade.getVelocity().multiply(.5));
                 Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
                 velocity.put(grenade, p.getEyeLocation().getDirection());
                 Map<Entity, String> ID = ProjectileInfo.getProjectileID();
 
                 grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
-                grenade.setBounce(true);
 
-                Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
-                linked.put(stand, grenade);
-                linked.put(grenade, stand);
-                ID.put(stand, "PaintGrenade");
+                ID.put(grenade, "PaintGrenade");
                 Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-                Map<Entity, BukkitTask> activate = ProjectileInfo.getActivateCode();
-                tick.put(stand, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+                tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
-                        stand.teleport(linked.get(stand));
 
                         Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
 
                         dust = new Particle.DustOptions(Color.ORANGE, 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
 
                         dust = new Particle.DustOptions(Color.YELLOW, 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
 
                         dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
 
                         dust = new Particle.DustOptions(Color.BLUE, 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
 
                         dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 1);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 1, .1, .1, .1, 0, dust);
+                        grenade.getWorld().spawnParticle(Particle.REDSTONE, grenade.getLocation(), 1, .1, .1, .1, 0, dust);
                     }
                 }, 1, 1));
-                activate.put(stand, Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        dust = new Particle.DustOptions(Color.ORANGE, 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        dust = new Particle.DustOptions(Color.YELLOW, 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        dust = new Particle.DustOptions(Color.BLUE, 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
-                        stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation(), 20, 2, 2, 2, 0, dust);
-                        for (Entity entity : stand.getWorld().getNearbyEntities(stand.getLocation(), 6, 6, 6)) {
-                            if (entity instanceof LivingEntity) {
-                                if (!(entity instanceof ArmorStand)) {
-                                    LivingEntity live = (LivingEntity) entity;
-                                    if (entity.getLocation().distance(stand.getLocation()) <= 5) {
-                                        live.damage(3, stand);
-                                        live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 50, 1));
-                                        live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
-                                        Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
-                                        if (painted.containsKey(live)) {
-                                            painted.replace(live, painted.get(live) + 300);
-                                        } else {
-                                            painted.put(live, 300);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
-                        stand.getWorld().playSound(stand.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
 
-                        Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
-                        Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-                        linked.get(stand).remove();
-                        tick.get(stand).cancel();
-                        stand.remove();
-
-                    }
-                }, 60));
 
 //            Snowball grenade = p.launchProjectile(Snowball.class);
 //            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
@@ -212,6 +175,7 @@ public class Painter {
 //
 //                }
 //            },1,1));
+            }
         }
     }
 
@@ -248,6 +212,85 @@ public class Painter {
                 }
             }
         }
+    }
+
+    public static void BrushStroke(Player p,Plugin plugin){
+        if (Mana.spendMana(p, 3)) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,10,3));
+            p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
+            StatusEffects.UsingMove.add(p);
+
+
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
+                    final Vector[] v = {p.getEyeLocation().getDirection().normalize()};
+                    p.setVelocity(v[0]);
+
+                    final int[] count = {0};
+                    final boolean[] hasHit = {false};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            count[0]++;
+                            if (!(Math.toDegrees(v[0].angle(p.getEyeLocation().getDirection()))>=10)) count[0]++;
+                            v[0] = p.getEyeLocation().getDirection();
+                            p.setVelocity(v[0]);
+
+
+                            Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+                            dust = new Particle.DustOptions(Color.ORANGE, 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+                            dust = new Particle.DustOptions(Color.YELLOW, 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+                            dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+                            dust = new Particle.DustOptions(Color.BLUE, 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+                            dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 1, .1, .1, .1, 0, dust);
+
+
+                            for (Entity e : p.getNearbyEntities(2, 2, 2)) {
+                                if (e instanceof LivingEntity) {
+                                    if (!(e instanceof ArmorStand)) {
+                                        if (p.getBoundingBox().expand(.2,.2,.2,.2,.2,.2).overlaps(e.getBoundingBox())) {
+
+                                            ((LivingEntity) e).damage(3);
+                                            ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,100,1));
+
+                                            Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
+                                            if (painted.containsKey(e)) {
+                                                painted.replace((LivingEntity) e, painted.get(e) + 120);
+                                            } else {
+                                                painted.put((LivingEntity) e, 120);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            if (count[0] >= 15) {
+                                StatusEffects.UsingMove.remove(p);
+                                this.cancel();
+                                p.setVelocity(v[0].multiply(.3));
+                            }
+
+                        }
+                    }.runTaskTimer(plugin, 1, 1);
+                }
+            },10);
+        }
+
+
     }
 
     public static void PaintActivateUlt(Player p, Plugin plugin) {

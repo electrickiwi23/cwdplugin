@@ -49,6 +49,8 @@ public class RightClickListener implements Listener {
                         if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
 //                                if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
                             if (StatusEffects.CanCast(p)) {
+                                if (Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName().contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
+
                                 switch(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName()){
                                     case ("Lightning Bolt"):
                                         SpellSlinger.LightningBolt(p,plugin,em);
@@ -148,9 +150,6 @@ public class RightClickListener implements Listener {
                                     case("Blood Tracker"):
                                         BloodMage.BloodTracker(p,plugin);
                                         break;
-                                    case("Life Drain"):
-                                        BloodMage.BloodUlt(p,plugin);
-                                        break;
 
                                     case("Darkness Camouflage"):
                                         Shadow.ShadowInvis(p,plugin);
@@ -171,8 +170,8 @@ public class RightClickListener implements Listener {
                                     case("Paint Canister"):
                                         Painter.PaintBomb(p,plugin);
                                         break;
-                                    case("Reveal Paint"):
-                                        Painter.PaintReveal(p);
+                                    case("Brush Stroke"):
+                                        Painter.BrushStroke(p,plugin);
                                         break;
                                     case("Paint Activate"):
                                         Painter.PaintActivateUlt(p,plugin);

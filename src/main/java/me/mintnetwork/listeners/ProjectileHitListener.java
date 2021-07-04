@@ -6,11 +6,14 @@ import de.slikey.effectlib.effect.TornadoEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.BlackHole;
 import me.mintnetwork.Objects.DecayBlock;
+import me.mintnetwork.Objects.PaintCanister;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.spells.BloodMage;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
+import org.bukkit.Color;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
@@ -25,7 +28,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class ProjectileHitListener implements Listener {
 
@@ -154,6 +159,47 @@ public class ProjectileHitListener implements Listener {
         if (e instanceof Snowball) {
             Snowball snow = (Snowball) e;
             if (ID.containsKey(snow)) {
+                if (ID.get(snow).equals("PaintGrenade")){
+                    task.get(snow).cancel();
+                    if (hit!=null){
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.ORANGE, 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.YELLOW, 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.BLUE, 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 3);
+                        snow.getLocation().getWorld().spawnParticle(Particle.REDSTONE, snow.getLocation(), 20, 2, 2, 2, 0, dust);
+                        for (Entity entity : snow.getWorld().getNearbyEntities(snow.getLocation(), 6, 6, 6)) {
+                            if (entity instanceof LivingEntity) {
+                                if (!(entity instanceof ArmorStand)) {
+                                    LivingEntity live = (LivingEntity) entity;
+                                    if (entity.getLocation().distance(snow.getLocation()) <= 5) {
+                                        live.damage(3, entity);
+                                        live.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 50, 1));
+                                        live.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 160, 1));
+                                        Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
+                                        if (painted.containsKey(live)) {
+                                            painted.replace(live, painted.get(live) + 300);
+                                        } else {
+                                            painted.put(live, 300);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        snow.getWorld().playSound(snow.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
+                        snow.getWorld().playSound(snow.getLocation(), Sound.ENTITY_CAT_HISS, (float) .8, 1);
+                    } else {
+                        new PaintCanister(snow.getWorld().rayTraceBlocks(snow.getLocation(),snow.getVelocity(),1).getHitPosition().toLocation(snow.getWorld()), (Player) snow.getShooter(),plugin,hitFace,snow.getTicksLived());
+                    }
+
+                }
+
                 if (ID.get(snow).equals("FireBolt")) {
                     if (hit != null) {
                         hit.damage(2, snow);
@@ -179,8 +225,16 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
-                        hit.damage(5);
-                        shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
+                        hit.damage(5,snow);
+                        shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 2));
+                        if (hit instanceof Player) BloodMage.BloodLink((Player) shooter, (Player) hit);
+                    }
+                    if (hitBlock != null){
+                        if (BlockDecay.decay.containsKey(hitBlock)){
+                            DecayBlock block = BlockDecay.decay.get(hitBlock);
+                            block.damage(80);
+                            block.setForceful(true);
+                        }
                     }
                     task.get(snow).cancel();
                 }
@@ -537,12 +591,6 @@ public class ProjectileHitListener implements Listener {
                     } else {
                         Snowball bounce = (Snowball) e.getWorld().spawnEntity(e.getLocation().add(n.multiply(-.4)), EntityType.SNOWBALL);
                         bounce.setVelocity(v.multiply(.3));
-                        if (ID.get(stand).equals("PaintGrenade")) {
-                            bounce.setItem(new ItemStack(Material.FIREWORK_STAR));
-                            bounce.setBounce(true);
-                            linked.put(bounce, stand);
-                            linked.replace(stand, bounce);
-                        }
                         if (ID.get(stand).equals("TNTGrenade")) {
                             bounce.setItem(new ItemStack(Material.TNT));
                             bounce.setBounce(true);

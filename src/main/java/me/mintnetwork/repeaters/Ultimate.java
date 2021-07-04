@@ -129,6 +129,34 @@ public class Ultimate {
         return percentage;
     }
 
+    public static void FullCharge(Player p){
+        Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
+
+        switch (wizard.ClassID) {
+            case "spell slinger":
+            case "painter":
+                wizard.Ult = 480;
+                break;
+            case "demolitionist":
+            case "sky flyer":
+            case "berserker":
+            case "alchemist":
+            case "bard":
+            case "blood mage":
+            case "builder":
+            case "cleric":
+            case "tactician":
+            case "protector":
+                wizard.Ult = 720;
+                break;
+            case "shadow":
+            case "pillar man":
+                wizard.Ult = 960;
+                break;
+        }
+    }
+
+
     public static void ult(Main plugin) {
 
         System.out.println("generating ult");
@@ -140,76 +168,78 @@ public class Ultimate {
                     for (UUID uuid: WizardInit.playersWizards.keySet()) {
                         Player player = Bukkit.getPlayer(uuid);
                         Wizard wizard = WizardInit.playersWizards.get(uuid);
-                        switch (wizard.ClassID) {
-                            case "spell slinger":
-                            case "painter":
-                                if (wizard.Ult < 480) {
-                                    wizard.Ult++;
-                                }
-                                if (wizard.Ult == 479){
-                                    player.sendMessage("ULTIMATE CHARGED");
-                                }
+                        if (player != null) {
+                            switch (wizard.ClassID) {
+                                case "spell slinger":
+                                case "painter":
+                                    if (wizard.Ult < 480) {
+                                        wizard.Ult++;
+                                    }
+                                    if (wizard.Ult == 479) {
+                                        player.sendMessage("ULTIMATE CHARGED");
+                                    }
 
-                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                    for (ItemStack i : player.getInventory().getContents()) {
-                                        if (i != null) {
-                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                ItemMeta itemMeta = i.getItemMeta();
-                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
-                                                i.setItemMeta(itemMeta);
+                                    if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                        for (ItemStack i : player.getInventory().getContents()) {
+                                            if (i != null) {
+                                                if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                    ItemMeta itemMeta = i.getItemMeta();
+                                                    ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
+                                                    i.setItemMeta(itemMeta);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                break;
-                            case "demolitionist":
-                            case "sky flyer":
-                            case "berserker":
-                            case "alchemist":
-                            case "bard":
-                            case "blood mage":
-                            case "builder":
-                            case "cleric":
-                            case "tactician":
-                            case "protector":
-                                if (wizard.Ult < 720) {
-                                    wizard.Ult++;
-                                }
-                                if (wizard.Ult == 719){
-                                    player.sendMessage("ULTIMATE CHARGED");
-                                }
-                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                    for (ItemStack i : player.getInventory().getContents()) {
-                                        if (i != null) {
-                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                ItemMeta itemMeta = i.getItemMeta();
-                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
-                                                i.setItemMeta(itemMeta);
+                                    break;
+                                case "demolitionist":
+                                case "sky flyer":
+                                case "berserker":
+                                case "alchemist":
+                                case "bard":
+                                case "blood mage":
+                                case "builder":
+                                case "cleric":
+                                case "tactician":
+                                case "protector":
+                                    if (wizard.Ult < 720) {
+                                        wizard.Ult++;
+                                    }
+                                    if (wizard.Ult == 719) {
+                                        player.sendMessage("ULTIMATE CHARGED");
+                                    }
+                                    if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                        for (ItemStack i : player.getInventory().getContents()) {
+                                            if (i != null) {
+                                                if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                    ItemMeta itemMeta = i.getItemMeta();
+                                                    ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
+                                                    i.setItemMeta(itemMeta);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                break;
-                            case "shadow":
-                            case "pillar man":
-                                if (wizard.Ult < 960) {
-                                    wizard.Ult++;
-                                }
-                                if (wizard.Ult == 959){
-                                    player.sendMessage("ULTIMATE CHARGED");
-                                }
-                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                    for (ItemStack i : player.getInventory().getContents()) {
-                                        if (i != null) {
-                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                ItemMeta itemMeta = i.getItemMeta();
-                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561*getUltPercentage(player)));
-                                                i.setItemMeta(itemMeta);
+                                    break;
+                                case "shadow":
+                                case "pillar man":
+                                    if (wizard.Ult < 960) {
+                                        wizard.Ult++;
+                                    }
+                                    if (wizard.Ult == 959) {
+                                        player.sendMessage("ULTIMATE CHARGED");
+                                    }
+                                    if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                        for (ItemStack i : player.getInventory().getContents()) {
+                                            if (i != null) {
+                                                if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                    ItemMeta itemMeta = i.getItemMeta();
+                                                    ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
+                                                    i.setItemMeta(itemMeta);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
                         }
                     }
                 }

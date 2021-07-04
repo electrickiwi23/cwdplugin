@@ -11,6 +11,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -38,6 +39,13 @@ public class TakeDamageListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player){
             Player p = (Player) entity;
+            if (StatusEffects.activeBloodUlt.containsKey(p)) {
+                for (Player v:StatusEffects.bloodLink.get(p).keySet()) {
+                    v.damage(event.getDamage());
+                }
+            }
+
+
             for (Player victim:StatusEffects.protectionAura.keySet()) {
                 if (victim.getLocation().distance(p.getLocation()) < 15 && TeamsInit.getTeamName(p).equals(TeamsInit.getTeamName(victim))&&!StatusEffects.protectionAura.containsKey(p)) {
                     victim.damage(event.getDamage());
@@ -72,6 +80,10 @@ public class TakeDamageListener implements Listener {
             }
         }
         if (entity instanceof LivingEntity) {
+            if (entity instanceof Rabbit && event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION){
+                event.setCancelled(true);
+            }
+
             if (StatusEffects.BloodWeak.containsKey(entity)) {
                 event.setDamage(event.getDamage() + 1);
             }

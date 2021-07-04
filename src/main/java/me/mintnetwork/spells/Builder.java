@@ -45,7 +45,7 @@ public class Builder {
                             current[0].getBlock().setType(Material.GRAY_WOOL);
                         }
 
-                        new DecayBlock(150,1,current[0].getBlock());
+                        new DecayBlock(100,.6F,current[0].getBlock());
 
                         for (Entity e : block.getWorld().getNearbyEntities(current[0].clone().add(.5, .5, .5), .6, .5, .6)) {
                             if (e instanceof LivingEntity) e.setVelocity(face.getDirection());

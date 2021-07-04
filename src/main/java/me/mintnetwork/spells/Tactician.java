@@ -2,10 +2,14 @@ package me.mintnetwork.spells;
 
 import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.Objects.Shield;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -64,12 +68,39 @@ public class Tactician {
                         }
                         if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
                             hasHit = true;
+
+                            ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(),EntityType.ARMOR_STAND);
+                            stand.setInvisible(true);
+                            stand.setMarker(true);
+                            stand.setCustomNameVisible(false);
+                            stand.setCustomName(p.getDisplayName() + "'s Sniper Bolt");
+                            TeamsInit.addToTeam(p,TeamsInit.getTeamName(p));
+
+                            Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
+                            if (hitEntity instanceof Player) {
+                                if (wizard.PassiveTick >= 10) {
+                                    wizard.PassiveTick = 0;
+                                    Player finalHitEntity = (Player) hitEntity;
+                                    Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Wizard victimWiz = WizardInit.playersWizards.get(finalHitEntity.getUniqueId());
+                                            p.sendMessage(Utils.chat("&n&l" +finalHitEntity.getName() + ":"));
+                                            p.sendMessage(Utils.chat("&cHealth: " + Math.ceil((finalHitEntity).getHealth())));
+                                            p.sendMessage(Utils.chat("&aMana: " + victimWiz.Mana));
+                                            p.sendMessage(Utils.chat("&6Ultimate: " + (int) (Ultimate.getUltPercentage(finalHitEntity) * 100) + "%"));
+                                        }
+                                    });
+                                }
+                            }
+
                             if (Math.abs(hitLocation.getY() - hitEntity.getEyeLocation().getY()) <= .25) {
-                                hitEntity.damage(10, p);
+                                hitEntity.damage(10, stand);
                                 p.playSound(p.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
                             } else {
-                                hitEntity.damage(5, p);
+                                hitEntity.damage(5, stand);
                             }
+                            stand.remove();
                         }
 
                     }

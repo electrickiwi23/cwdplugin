@@ -25,7 +25,7 @@ public class SkyFlyer {
             arrow.setGravity(false);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             ID.put(arrow, "Wind Arrow");
-            arrow.setDamage(.4);
+            arrow.setDamage(.25);
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
@@ -49,7 +49,7 @@ public class SkyFlyer {
                     arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.45);
+                    arrow.setDamage(.25);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
@@ -74,7 +74,7 @@ public class SkyFlyer {
                     arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.45);
+                    arrow.setDamage(.25);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
                     Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {

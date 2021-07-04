@@ -2,6 +2,7 @@ package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,6 +25,8 @@ public class DebugCommand implements CommandExecutor {
             sender.sendMessage("Only players may execute this command!");
             return true;
         }
+
+        Ultimate.FullCharge((Player) sender);
 
         System.out.println(":)");
 

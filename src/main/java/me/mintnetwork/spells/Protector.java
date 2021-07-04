@@ -33,7 +33,7 @@ public class Protector {
             Vector v = p.getEyeLocation().getDirection().setY(0).normalize();
             v.add(new Vector(v.getX() * 2, 2, v.getZ() * 2).normalize().multiply(1.2));
             p.setVelocity(v);
-            StatusEffects.slamLunging.add(p);
+            StatusEffects.UsingMove.add(p);
 
             new BukkitRunnable() {
                 @Override
@@ -45,7 +45,7 @@ public class Protector {
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BASALT_BREAK,.6F,1);
                         p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GOAT_RAM_IMPACT,.6F,1);
 
-                        StatusEffects.slamLunging.remove(p);
+                        StatusEffects.UsingMove.remove(p);
                         for (Entity e : p.getNearbyEntities(5, 2, 5)) {
                             if (e instanceof LivingEntity) {
                                 if (!(e instanceof ArmorStand)) {

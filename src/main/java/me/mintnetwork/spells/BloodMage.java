@@ -1,5 +1,7 @@
 package me.mintnetwork.spells;
 
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.effect.LineEffect;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
@@ -7,9 +9,11 @@ import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -17,7 +21,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class BloodMage {
 
@@ -29,6 +35,7 @@ public class BloodMage {
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             bolt.setItem(new ItemStack(Material.RED_DYE));
             bolt.setGravity(false);
+            bolt.setCustomName(p.getDisplayName() + "'s blood bolt");
             ID.put(bolt, "BloodBolt");
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
             tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -79,27 +86,40 @@ public class BloodMage {
                         vex.setCharging(false);
                         vex.setVelocity(direction);
 
+                        Player tempLocked = null;
+                        double tempDistance = 20;
+
                         for (Entity e : vex.getNearbyEntities(20, 20, 20)) {
                             if (e instanceof Player) {
-                                if (e.getLocation().distance(vex.getLocation()) <= 20) {
+                                if (e.getLocation().distance(vex.getLocation()) < tempDistance) {
                                     if (!teamName.equals(TeamsInit.getTeamName(e))) {
                                         if (Math.ceil(((Player) e).getMaxHealth()) > Math.ceil(((Player) e).getHealth())) {
-                                            vex.setTarget((LivingEntity) e);
-                                            vex.setCharging(true);
-                                            locked[0] = (Player) e;
+                                            tempDistance = e.getLocation().distance(vex.getLocation());
+                                            tempLocked = (Player) e;
                                         }
                                     }
                                 }
                             }
                         }
+
+                        if (tempLocked!=null) {
+                            vex.setTarget(tempLocked);
+                            vex.setCharging(true);
+                            locked[0] = tempLocked;
+                        }
+
                     } else{
                         //Code for when the vex is locked onto a player
 
-                        Vector target = vex.getLocation().toVector().subtract(locked[0].getLocation().toVector()).normalize().multiply(-.05);
+                        Vector target = locked[0].getLocation().toVector().subtract(vex.getLocation().toVector()).normalize().multiply(.05);
                         vex.setVelocity(vex.getVelocity().add(target));
+
                         Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
                         vex.getWorld().spawnParticle(Particle.REDSTONE,vex.getLocation(),1,0,0,0,0,dust);
                         if (vex.getLocation().distance(locked[0].getLocation())<=2){
+                            BloodLink(p,locked[0]);
+
+
                             Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 3);
                             vex.getWorld().spawnParticle(Particle.REDSTONE,vex.getLocation(),10,.3,.3,.3,0,dustCloud);
                             vex.getWorld().playSound(vex.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP,1,1);
@@ -135,26 +155,58 @@ public class BloodMage {
         }
     }
 
-    public static void BloodUlt(Player p, Plugin plugin) {
-        if (Ultimate.spendUlt(p)) {
-            Snowball bolt = p.launchProjectile(Snowball.class);
-            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.5));
-            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-            bolt.setItem(new ItemStack(Material.RED_DYE));
-            bolt.setGravity(false);
-            ID.put(bolt, "BloodUlt");
-            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
-                Map<Entity, Vector> velocity1 = ProjectileInfo.getLockedVelocity();
-                bolt.setVelocity(velocity1.get(bolt));
-                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 4);
-                bolt.getWorld().spawnParticle(Particle.REDSTONE, bolt.getLocation(), 3, .1, .1, .1, dust);
-            }, 1, 1));
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-                tick.get(bolt).cancel();
-                bolt.remove();
-            }, 160);
+    public static void BloodLink(Player p,Player v){
+        Map<Player, HashMap<Player,Integer>> linkMap = StatusEffects.bloodLink;
+        if (linkMap.containsKey(p)){
+                if (linkMap.get(p).containsKey(v)) {
+                    linkMap.get(p).remove(v, 300);
+                } else {
+                    linkMap.get(p).put(v, 300);
+                }
+            UpdateUlt();
+        }
+    }
+
+    public static void UpdateUlt(){
+        for (UUID uuid:WizardInit.playersWizards.keySet()) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p!=null){
+                if (WizardInit.playersWizards.get(uuid).ClassID.equals("blood mage")) {
+                    for (ItemStack item : p.getInventory()) {
+                        if (item != null) {
+                            ItemMeta meta = item.getItemMeta();
+                            if (meta.getDisplayName().contains("Blood Link Ritual")) {
+                                meta.setDisplayName(Utils.chat("&rBlood Link Ritual (" + StatusEffects.bloodLink.get(p).size() + ")"));
+                                item.setItemMeta(meta);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void BloodUlt(Player p, EffectManager em) {
+        if (StatusEffects.bloodLink.containsKey(p)) {
+            if (!StatusEffects.bloodLink.get(p).isEmpty()) {
+                if (Ultimate.spendUlt(p)) {
+                    for (Player v : StatusEffects.bloodLink.get(p).keySet()) {
+                        LineEffect lineEffect = new LineEffect(em);
+                        lineEffect.setTargetPlayer(v);
+                        lineEffect.setTargetLocation(v.getLocation().add(0, 1, 0));
+                        lineEffect.setLocation(p.getLocation().add(0, 1, 0));
+                        lineEffect.setEntity(p);
+                        lineEffect.particle = Particle.REDSTONE;
+                        lineEffect.color = Color.RED;
+                        lineEffect.particleSize = 3;
+                        lineEffect.iterations = 20;
+                        lineEffect.particles = (int) v.getLocation().distance(p.getLocation());
+                        em.start(lineEffect);
+                    }
+                    StatusEffects.activeBloodUlt.put(p, 100);
+
+                }
+            }
         }
     }
 }

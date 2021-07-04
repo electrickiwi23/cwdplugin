@@ -6,6 +6,8 @@ import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.spells.BloodMage;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -90,6 +92,7 @@ public class  EntityDamageListener implements Listener {
 
                 switch (wizard.ClassID) {
                     case "blood mage":
+                        BloodMage.BloodLink(p, (Player) victim);
                         if (StatusEffects.BloodWeak.containsKey(victim)) {
                             for (int i = 0; i < 3; i++) {
                                 if (!live.isDead()) {
@@ -109,13 +112,16 @@ public class  EntityDamageListener implements Listener {
                     case "tactician":
                         if (wizard.PassiveTick>=10){
                             wizard.PassiveTick = 0;
-                            Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
-                            live.sendMessage(victim.getName() + ":");
-                            live.sendMessage("Health: " + Math.ceil(((Player) victim).getHealth()));
-                            live.sendMessage("Mana: " + victimWiz.Mana);
-                            live.sendMessage("Ultimate: " + Ultimate.getUltPercentage((Player) victim));
-
-
+                            Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                                @Override
+                                public void run() {
+                                    Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
+                                    live.sendMessage(Utils.chat("&n&l" + victim.getName() + ":"));
+                                    live.sendMessage(Utils.chat("&cHealth: " + Math.ceil(((Player) victim).getHealth())));
+                                    live.sendMessage(Utils.chat("&aMana: " + victimWiz.Mana));
+                                    live.sendMessage(Utils.chat("&6Ultimate: " + (int) (Ultimate.getUltPercentage((Player) victim ) * 100) + "%"));
+                                }
+                            });
                         }
                         break;
                 }

@@ -50,8 +50,12 @@ public class Mana{
                 if (GameStart.gameRunning) {
                     for (UUID uuid: WizardInit.playersWizards.keySet()) {
                         Player player = Bukkit.getPlayer(uuid);
-                        player.setFoodLevel(19);
-                        tickMana(player);
+                        if (player!=null) {
+                            if (player.isOnline()) {
+                                player.setFoodLevel(8);
+                                tickMana(player);
+                            }
+                        }
                     }
                 }
             }

@@ -8,7 +8,11 @@ import me.mintnetwork.listeners.*;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public final class Main extends JavaPlugin {
@@ -35,6 +39,21 @@ public final class Main extends JavaPlugin {
         getCommand("class").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         getCommand("start").setTabCompleter(new StartAutoCompleter());
+
+
+        FileConfiguration config = this.getConfig();
+
+        config.addDefault("FlareACords","0,0,0");
+        config.addDefault("FlareBCords","0,0,0");
+        config.addDefault("FlareCCords","0,0,0");
+
+        config.addDefault("FlareACords","0,0,0");
+        config.addDefault("FlareBCords","0,0,0");
+
+        config.options().copyDefaults(true);
+        saveConfig();
+
+        this.saveDefaultConfig();
 
         new FireworkExpolodeListener(this);
         new BlockPlaceListener(this);

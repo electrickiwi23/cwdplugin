@@ -7,6 +7,7 @@ import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.spells.BloodMage;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.*;
@@ -19,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import sun.awt.image.ImageWatched;
 
 import java.util.*;
 
@@ -56,19 +58,74 @@ public class StatusEffects {
 
     public static ArrayList<Player> cloudFloating = new ArrayList<>();
 
-    public static ArrayList<Player> slamLunging = new ArrayList<>();
+    public static ArrayList<Player> UsingMove = new ArrayList<>();
 
     public static ArrayList<Player> EnergyShield = new ArrayList<>();
 
-    public static  Map<Player, Integer> RageUlt = new HashMap<>();
+    public static Map<Player, Integer> RageUlt = new HashMap<>();
 
     public static Map<Player, Integer> healTeam = new HashMap<>();
+
+    public static Map<Player, Integer> activeBloodUlt = new HashMap<>();
+
+    public static Map<Player, HashMap<Player,Integer>> bloodLink = new HashMap<>();
 
     public void statusEffects(Main plugin) {
         EffectManager em = new EffectManager(plugin);
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
+                ArrayList<Player> RemoveActiveBloodUlt = new ArrayList<>();
+                for (Player p:activeBloodUlt.keySet()){
+                    activeBloodUlt.replace(p,activeBloodUlt.get(p)-1);
+                    p.getWorld().spawnParticle(Particle.REDSTONE,p.getLocation().add(0,1,0),1,.25,.5,.25,0,new Particle.DustOptions(Color.RED,1));
+
+                    for (Player v:bloodLink.get(p).keySet()) {
+
+                        for (int i = 1; i < 5; i++) {
+                            Vector vector = v.getLocation().toVector().subtract(p.getLocation().toVector());
+
+                            p.getWorld().spawnParticle(Particle.REDSTONE,p.getLocation().add(0,1,0).add(vector.normalize().multiply(i*.5)),1,0,0,0,new Particle.DustOptions(Color.RED,1));
+
+                            v.getWorld().spawnParticle(Particle.REDSTONE,v.getLocation().add(0,1,0).add(vector.normalize().multiply(i*-.5)),1,0,0,0,new Particle.DustOptions(Color.RED,1));
+                        }
+
+                    }
+
+                    if (activeBloodUlt.get(p)<=0||p.isDead()) {
+                        RemoveActiveBloodUlt.add(p);
+                    }
+                }
+                if (!RemoveActiveBloodUlt.isEmpty()) {
+                    for (Player r : RemoveActiveBloodUlt) {
+                        activeBloodUlt.remove(r);
+                    }
+                }
+                RemoveActiveBloodUlt.clear();
+
+                for (Player p:bloodLink.keySet()){
+                    ArrayList<Player> RemoveLink = new ArrayList<>();
+                    HashMap<Player, Integer> LinkedHashmap = bloodLink.get(p);
+
+                    for (Player v: LinkedHashmap.keySet()){
+                        if (p.isDead()||v.isDead()) {
+                            RemoveLink.add(v);
+                        }
+                        LinkedHashmap.replace(v,LinkedHashmap.get(v)-1);
+                        if (LinkedHashmap.get(v)<=0) {
+                            RemoveLink.add(v);
+                        }
+                    }
+                    if (!RemoveLink.isEmpty()) {
+                        for (Player r : RemoveLink) {
+                            LinkedHashmap.remove(r);
+                        }
+                        BloodMage.UpdateUlt();
+                    }
+                    RemoveLink.clear();
+
+                }
+
                 List<Block> removeObsidian = new ArrayList<>();
                 for (Block b : ObsidianDecay.keySet()) {
 
@@ -180,17 +237,23 @@ public class StatusEffects {
 
                 }
 
+                List<LivingEntity> removeBloodWeak = new ArrayList<>();
+
                 for (LivingEntity e : BloodWeak.keySet()) {
                     Particle.DustOptions dustCloud = new Particle.DustOptions(Color.RED, 2);
                     e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0, 1, 0), 2, .2, .4, .2, 0, dustCloud);
                     BloodWeak.replace(e, BloodWeak.get(e) - 1);
                     if (BloodWeak.get(e) <= 0) {
-                        BloodWeak.remove(e);
+                        removeBloodWeak.add(e);
                     }
                     if (e.isDead()) {
-                        BloodWeak.remove(e);
+                        removeBloodWeak.add(e);
                     }
                 }
+                for (LivingEntity r:removeBloodWeak) {
+                    BloodWeak.remove(r);
+                }
+                removeBloodWeak.clear();
 
                 List<LivingEntity> removePaintTimer = new ArrayList<>();
 
@@ -519,7 +582,7 @@ public class StatusEffects {
 
         if (stunSong.containsKey(p)) return false;
         if (ShadowConsumed.containsKey(p)) return false;
-        if (slamLunging.contains(p)) return false;
+        if (UsingMove.contains(p)) return false;
         if (!GameStart.gameRunning) return false;
 
         for (Player e:Bukkit.getOnlinePlayers()) {

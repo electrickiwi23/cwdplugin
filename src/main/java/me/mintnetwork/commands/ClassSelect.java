@@ -2,6 +2,7 @@ package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
@@ -23,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,8 +102,9 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rBlood Tracker"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rLife Drain"));
+                    ultMeta.setDisplayName(Utils.chat("&rBlood Link Ritual"));
                     wizard.ClassID = "blood mage";
+                    StatusEffects.bloodLink.put(p,new HashMap<>());
                     break;
                 case ("builder"):
                     meta.setDisplayName(Utils.chat("&rQuick Build"));
@@ -148,7 +151,7 @@ public class ClassSelect implements CommandExecutor {
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rPaint Canister"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rReveal Paint"));
+                    meta.setDisplayName(Utils.chat("&rBrush Stroke"));
                     wandList.add(meta.clone());
                     ultMeta.setDisplayName(Utils.chat("&rPaint Activate"));
                     wizard.ClassID = "painter";

@@ -53,6 +53,17 @@ public class Start implements CommandExecutor {
                     case("br"):
                     case("battleroyale"):
                         GameStart.startBR(plugin,((Player) sender).getWorld());
+                        break;
+                    case("flares"):
+                    case("flare"):
+                        GameStart.startFlares(plugin,((Player) sender).getWorld());
+                        break;
+                    case("koth"):
+                    case("kingofthehill"):
+                    case("hill"):
+                        GameStart.startKoth(plugin,((Player) sender).getWorld());
+                        break;
+
                 }
             }
         }

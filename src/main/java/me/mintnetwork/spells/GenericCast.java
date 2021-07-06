@@ -1,13 +1,13 @@
 package me.mintnetwork.spells;
 
-import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.AtomEffect;
 import me.mintnetwork.Objects.BlackHole;
+import me.mintnetwork.Objects.DecayBlock;
 import me.mintnetwork.Objects.Shield;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
@@ -145,7 +145,6 @@ public class GenericCast {
 
         }
     }
-    public net.minecraft.world.level.entity.EntitySection name;
 
     public static void BatSonar(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
@@ -313,7 +312,7 @@ public class GenericCast {
     }
 
     public static void ChildBomber(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 5)) {
+        if (Mana.spendMana(p, 4)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -374,7 +373,7 @@ public class GenericCast {
     }
 
     public static void ZombieSpawn(Player p) {
-        if (Mana.spendMana(p, 5)) {
+        if (Mana.spendMana(p, 4)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -702,6 +701,79 @@ public class GenericCast {
                                     range[0]++;
                                     if (range[0] >= 50) this.cancel();
                                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+
+                                    //code for shield reflection--------------------------------------------------------
+                                    for (Entity shield : Shield.shieldMap.keySet()) {
+                                        if (shield.getLocation().distance(current[0])<Shield.shieldMap.get(shield).getRadius()+.5){
+                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0],direction[0]);
+                                        }
+                                    }
+                                    //----------------------------------------------------------------------------------
+                                }
+                            } else {
+                                hasHit[0] = true;
+                            }
+                        } else {
+                            this.cancel();
+                        }
+                    }
+                }
+            }.runTaskTimer(plugin,1,1);
+
+        }
+    }
+    public static void ManaBullet(Player p, Plugin plugin){
+        if (Mana.spendMana(p, 1)) {
+            final boolean[] hasHit = {false};
+            final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
+            final Vector[] direction = {p.getEyeLocation().getDirection()};
+            final int[] range = {0};
+            new BukkitRunnable(){
+                @Override
+                public void run(){
+                    for (int i = 0; i < 4; i++) {
+                        if (!hasHit[0]) {
+                            if (current[0].isWorldLoaded()) {
+                                RayTraceResult ray = p.getWorld().rayTrace(current[0], direction[0], 1, FluidCollisionMode.NEVER, true, .1, null);
+                                Location hitLocation = null;
+                                LivingEntity hitEntity = null;
+                                if (ray != null) {
+                                    try {
+                                        hitEntity = (LivingEntity) ray.getHitEntity();
+                                    } catch (Exception ignore) {
+                                    }
+                                    try {
+                                        hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                                    } catch (Exception ignore) {
+                                    }
+                                    if (hitLocation != null && hitEntity == null) {
+                                        hasHit[0] = true;
+                                        if (BlockDecay.decay.containsKey(ray.getHitBlock())){
+                                            DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
+                                            block.damage(30);
+                                            block.setForceful(true);
+                                        }
+                                    }
+                                    if (hitEntity != null && (!(hitEntity == p && range[0] <= 2))) {
+                                        hasHit[0] = true;
+
+                                        ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(),EntityType.ARMOR_STAND);
+                                        stand.setInvisible(true);
+                                        stand.setMarker(true);
+                                        stand.setCustomNameVisible(false);
+                                        stand.setCustomName(p.getDisplayName() + "'s Mana Bullet");
+                                        TeamsInit.addToTeam(stand,TeamsInit.getTeamName(p));
+
+                                        hitEntity.damage(2, stand);
+
+                                        stand.remove();
+                                    }
+                                }
+                                if (!hasHit[0]) {
+                                    current[0] = current[0].add(direction[0]);
+                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current[0], 2, 0, 0, 0, 0);
+                                    range[0]++;
+                                    if (range[0] >= 50) this.cancel();
 
                                     //code for shield reflection--------------------------------------------------------
                                     for (Entity shield : Shield.shieldMap.keySet()) {

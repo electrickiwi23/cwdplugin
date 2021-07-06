@@ -13,7 +13,6 @@ import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.BloodMage;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
-import org.bukkit.Color;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
@@ -28,9 +27,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectileHitListener implements Listener {
 
@@ -298,19 +297,20 @@ public class ProjectileHitListener implements Listener {
                             if (((Player) shooter).isSneaking()) {
                                 stand.remove();
                                 this.cancel();
-                                ((Player) shooter).setGravity(true);
+                                shooter.setGravity(true);
 
                             }
-                            if (((Player) shooter).isDead()) {
+                            if (shooter.isDead()) {
                                 stand.remove();
                                 this.cancel();
-                                ((Player) shooter).setGravity(true);
+                                shooter.setGravity(true);
                             }
                         }
                     }.runTaskTimer(plugin, 1, 1);
                     Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                         @Override
                         public void run() {
+                            shooter.setGravity(true);
                             stand.remove();
                             pull.cancel();
                         }

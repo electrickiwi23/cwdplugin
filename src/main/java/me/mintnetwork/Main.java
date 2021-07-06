@@ -1,7 +1,9 @@
 package me.mintnetwork;
 
+import me.mintnetwork.Objects.CapturePoint;
 import me.mintnetwork.commands.*;
 import me.mintnetwork.initialization.GameStart;
+import me.mintnetwork.initialization.ScoreboardInit;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.listeners.*;
@@ -10,9 +12,6 @@ import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.io.IOException;
 
 
 public final class Main extends JavaPlugin {
@@ -35,6 +34,7 @@ public final class Main extends JavaPlugin {
         new Start(this);
         new GiveWand(this);
         new AssignTeams(this);
+        new setFlare(this);
 
         getCommand("class").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
@@ -43,12 +43,22 @@ public final class Main extends JavaPlugin {
 
         FileConfiguration config = this.getConfig();
 
-        config.addDefault("FlareACords","0,0,0");
-        config.addDefault("FlareBCords","0,0,0");
-        config.addDefault("FlareCCords","0,0,0");
+        config.addDefault("FlareAx",0.0);
+        config.addDefault("FlareAy",0.0);
+        config.addDefault("FlareAz",0.0);
 
-        config.addDefault("FlareACords","0,0,0");
-        config.addDefault("FlareBCords","0,0,0");
+        config.addDefault("FlareBx",0.0);
+        config.addDefault("FlareBy",0.0);
+        config.addDefault("FlareBz",0.0);
+
+        config.addDefault("FlareCx",0.0);
+        config.addDefault("FlareCy",0.0);
+        config.addDefault("FlareCz",0.0);
+
+        TeamsInit.refreshTeams();
+
+//        config.addDefault("FlareACords",new Location(getServer().getWorld("world"), 0,0,0));
+//        config.addDefault("FlareBCords",new Location(getServer().getWorld("world"), 0,0,0));
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -70,12 +80,16 @@ public final class Main extends JavaPlugin {
         new TeamsInit(this);
         //hello
 
+        ScoreboardInit.clearScoreboards();
+
 
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        CapturePoint.Shutdown();
+        ScoreboardInit.clearScoreboards();
 
     }
 }

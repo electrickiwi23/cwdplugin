@@ -14,3 +14,5 @@ commands:
     description: A command to select your class
   start:
     description: starts the game
+  setflare:
+    description: Creates flares

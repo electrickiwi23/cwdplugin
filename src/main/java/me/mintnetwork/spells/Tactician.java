@@ -74,7 +74,7 @@ public class Tactician {
                             stand.setMarker(true);
                             stand.setCustomNameVisible(false);
                             stand.setCustomName(p.getDisplayName() + "'s Sniper Bolt");
-                            TeamsInit.addToTeam(p,TeamsInit.getTeamName(p));
+                            TeamsInit.addToTeam(stand,TeamsInit.getTeamName(p));
 
                             Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
                             if (hitEntity instanceof Player) {

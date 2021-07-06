@@ -2,6 +2,7 @@ package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.initialization.GameStart;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
@@ -14,7 +15,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class EntityDieListener implements Listener {
@@ -41,10 +46,28 @@ public class EntityDieListener implements Listener {
                 if (gameMode.equals("elimination")||gameMode.equals("battle royale")) {
                     wizard.Mana = 3;
                     p.setLevel(3);
-                    if (wizard.ElimLives > 1) {
+                    if (wizard.ElimLives > 0) {
                         wizard.ElimLives--;
-                    } else {
+                    }
+                    if (wizard.ElimLives <= 0){
                         p.setGameMode(GameMode.SPECTATOR);
+                    }
+                    Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+
+                    if (board.getObjective("lives")!=null) board.getObjective("lives").getScore(p.getDisplayName()).setScore(wizard.ElimLives);
+
+                    ArrayList<Team> teams = new ArrayList<>();
+                    for (Player player:Bukkit.getOnlinePlayers()) {
+                        if (WizardInit.playersWizards.get(player.getUniqueId()).ElimLives>0){
+                            if (TeamsInit.getTeam(player)!=null){
+                                if (!teams.contains(TeamsInit.getTeam(player))){
+                                    teams.add(TeamsInit.getTeam(player));
+                                }
+                            }
+                        }
+                    }
+                    if (teams.size()==1){
+                        GameStart.endGame(teams.get(0));
                     }
                 }
             }

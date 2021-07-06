@@ -103,6 +103,10 @@ public class GiveWand implements CommandExecutor {
                                 meta.setDisplayName(Utils.chat("&rStorm Strike"));
                                 wandList.add(meta.clone());
                                 break;
+                            case("manabullet"):
+                                meta.setDisplayName(Utils.chat("&rMana Bullet"));
+                                wandList.add(meta.clone());
+                                break;
 
 
                         }

@@ -30,6 +30,20 @@ public class TeamsInit implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    public static ArrayList<Team> currentTeams = new ArrayList<>();
+
+    public static void refreshTeams(){
+        currentTeams.clear();
+
+        for (Player player:Bukkit.getOnlinePlayers()) {
+            if (getTeam(player)!=null){
+                if (!currentTeams.contains(getTeam(player))){
+                    currentTeams.add(getTeam(player));
+                }
+            }
+        }
+    }
+
 //  Individual Scoreboard Start ----------------------------------------------------------------------------------------
 
 //    @EventHandler
@@ -77,11 +91,17 @@ public class TeamsInit implements Listener {
         board.registerNewTeam("green");
 
 
+
         // Setting player prefixes and team characteristics
         board.getTeam("red").setColor(ChatColor.RED);
         board.getTeam("blue").setColor(ChatColor.BLUE);
         board.getTeam("yellow").setColor(ChatColor.YELLOW);
         board.getTeam("green").setColor(ChatColor.GREEN);
+
+        board.getTeam("red").setDisplayName("Red");
+        board.getTeam("blue").setDisplayName("Blue");
+        board.getTeam("yellow").setDisplayName("Yellow");
+        board.getTeam("green").setDisplayName("Green");
 
         board.getTeam("red").setAllowFriendlyFire(false);
         board.getTeam("blue").setAllowFriendlyFire(false);
@@ -160,7 +180,7 @@ public class TeamsInit implements Listener {
                 updateArmor(online);
             }
         }
-
+        refreshTeams();
     }
 
     public static Team getTeam(Entity e){
@@ -172,6 +192,7 @@ public class TeamsInit implements Listener {
         }
         return null;
     }
+
 
     public static String getTeamName(Entity e){
         ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -213,7 +234,6 @@ public class TeamsInit implements Listener {
     }
 
     public static void addToTeam(Entity e,String team){
-        System.out.println("adding to team " + team);
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getMainScoreboard();
         if (team!=null) {

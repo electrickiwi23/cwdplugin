@@ -26,9 +26,9 @@ public class Ultimate {
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         boolean has = false;
 
-        switch (wizard.ClassID) {
-            case "spell slinger":
-            case "painter":
+        switch (wizard.kitID) {
+            case SPELL_SLINGER:
+            case PAINTER:
                 if (wizard.Ult >= 480) {
                     has = true;
                 }
@@ -47,8 +47,8 @@ public class Ultimate {
                     has = true;
                 }
                 break;
-            case "shadow":
-            case "pillar man":
+            case SHADOW:
+            case PILLAR_MAN:
                 if (wizard.Ult >= 960) {
                     has = true;
                 }
@@ -63,9 +63,9 @@ public class Ultimate {
         boolean has = false;
 
 
-        switch (wizard.ClassID) {
-            case "spell slinger":
-            case "painter":
+        switch (wizard.kitID) {
+            case SPELL_SLINGER:
+            case PAINTER:
                 if (wizard.Ult >= 480) {
                     has = true;
                 }
@@ -103,9 +103,9 @@ public class Ultimate {
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         double percentage = 0;
 
-        switch (wizard.ClassID) {
-            case "spell slinger":
-            case "painter":
+        switch (wizard.kitID) {
+            case SPELL_SLINGER:
+            case PAINTER:
                 percentage = wizard.Ult/480.0;
                 break;
             case "demolitionist":
@@ -132,9 +132,9 @@ public class Ultimate {
     public static void FullCharge(Player p){
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
 
-        switch (wizard.ClassID) {
-            case "spell slinger":
-            case "painter":
+        switch (wizard.kitID) {
+            case SPELL_SLINGER:
+            case PAINTER:
                 wizard.Ult = 480;
                 break;
             case "demolitionist":
@@ -169,9 +169,9 @@ public class Ultimate {
                         Player player = Bukkit.getPlayer(uuid);
                         Wizard wizard = WizardInit.playersWizards.get(uuid);
                         if (player != null) {
-                            switch (wizard.ClassID) {
-                                case "spell slinger":
-                                case "painter":
+                            switch (wizard.kitID) {
+                                case SPELL_SLINGER:
+                                case PAINTER:
                                     if (wizard.Ult < 480) {
                                         wizard.Ult++;
                                     }

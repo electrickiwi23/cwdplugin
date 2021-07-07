@@ -3,7 +3,6 @@ package me.mintnetwork.Objects;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Wizard {

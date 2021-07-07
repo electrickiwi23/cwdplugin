@@ -20,7 +20,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import sun.awt.image.ImageWatched;
 
 import java.util.*;
 
@@ -409,7 +408,7 @@ public class StatusEffects {
                     String teamName = TeamsInit.getTeamName(p);
                     for (Player b:Bukkit.getOnlinePlayers()) {
 
-                        if (WizardInit.playersWizards.get(b.getUniqueId()).ClassID.equals("bard")){
+                        if (WizardInit.playersWizards.get(b.getUniqueId()).kitID.equals(Kit.BARD)){
                             String bardTeamName = TeamsInit.getTeamName(b);
                             if (bardTeamName.equals(teamName)){
                                 if (b.getLocation().distance(p.getLocation())<=6) {

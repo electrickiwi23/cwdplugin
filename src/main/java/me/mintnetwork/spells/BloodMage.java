@@ -171,7 +171,7 @@ public class BloodMage {
         for (UUID uuid:WizardInit.playersWizards.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p!=null){
-                if (WizardInit.playersWizards.get(uuid).ClassID.equals("blood mage")) {
+                if (WizardInit.playersWizards.get(uuid).kitID.equals(Kit.BLOOD_MAGE)) {
                     for (ItemStack item : p.getInventory()) {
                         if (item != null) {
                             ItemMeta meta = item.getItemMeta();

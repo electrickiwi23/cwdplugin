@@ -53,7 +53,7 @@ public class  EntityDamageListener implements Listener {
             Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
             if (victim instanceof LivingEntity) {
                 LivingEntity liveVictim = (LivingEntity) victim;
-                if (wizard.ClassID.equals("painter")) {
+                if (wizard.kitID.equals(Kit.PAINTER)) {
                     if (painted.containsKey(liveVictim)) {
                         painted.replace(liveVictim, painted.get(liveVictim) + 80);
                     } else {
@@ -80,7 +80,7 @@ public class  EntityDamageListener implements Listener {
                     speedMap.put((Player) entity, 30);
                 }
 
-                if (victimWizard.ClassID.equals("berserker")){
+                if (victimWizard.kitID.equals(Kit.BERSERKER)){
                     Mana.addMana((Player) victim,(int)Math.round(event.getDamage()));
                 }
 
@@ -90,8 +90,8 @@ public class  EntityDamageListener implements Listener {
 
                 Mana.addMana(live,(int)Math.round(event.getDamage()));
 
-                switch (wizard.ClassID) {
-                    case "blood mage":
+                switch (wizard.kitID) {
+                    case BLOOD_MAGE:
                         BloodMage.BloodLink(p, (Player) victim);
                         if (StatusEffects.BloodWeak.containsKey(victim)) {
                             for (int i = 0; i < 3; i++) {

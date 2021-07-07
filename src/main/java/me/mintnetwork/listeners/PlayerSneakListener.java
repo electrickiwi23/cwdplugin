@@ -52,14 +52,14 @@ public class PlayerSneakListener implements Listener {
                 p.getInventory().setHelmet(PreviousHelm.get(p));
                 Zoomed.remove(p);
             }
-            if(wizard.ClassID.equals("pillar man")){
+            if(wizard.kitID.equals(Kit.PILLAR_MAN)){
                 p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
                 p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
             }
 
 
         }else{
-            if (wizard.ClassID.equals("sky flyer")){
+            if (wizard.kitID.equals(Kit.AVIATOR)){
                 if (StatusEffects.cloudFloating.contains(p)){
                     p.removePotionEffect(PotionEffectType.SLOW_FALLING);
                     StatusEffects.cloudFloating.remove(p);
@@ -67,7 +67,7 @@ public class PlayerSneakListener implements Listener {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 3, false, false));
                     StatusEffects.cloudFloating.add(p);
                 }
-            } else if(wizard.ClassID.equals("pillar man")){
+            } else if(wizard.kitID.equals(Kit.PILLAR_MAN)){
                 p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(.6);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1000000,0,true,false));
             }

@@ -16,3 +16,5 @@ commands:
     description: starts the game
   setflare:
     description: Creates flares
+  changeclass:
+    description: Test GUI

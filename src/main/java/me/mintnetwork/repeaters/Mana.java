@@ -24,7 +24,7 @@ public class Mana{
             wizard.ManaTick++;
             //if player has a mana counter of 6 add a mana and set their xp to mana and resets their counter
 
-            if (wizard.ManaTick >= 6||wizard.ClassID.equals("spell slinger")&&wizard.ManaTick >= 5) {
+            if (wizard.ManaTick >= 6||wizard.kitID.equals(Kit.SPELL_SLINGER)&&wizard.ManaTick >= 5) {
                 wizard.Mana++;
                 player.setLevel(wizard.Mana);
                 wizard.ManaTick = 0;

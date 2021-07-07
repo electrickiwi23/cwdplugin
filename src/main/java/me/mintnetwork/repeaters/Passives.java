@@ -39,8 +39,8 @@ public class Passives {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         String teamName = TeamsInit.getTeamName(p);
                         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
-                        switch (wizard.ClassID) {
-                            case "alchemist":
+                        switch (wizard.kitID) {
+                            case ALCHEMIST:
                                 if (!p.getInventory().contains(Material.SPLASH_POTION)) {
                                     wizard.PassiveTick++;
                                     if (wizard.PassiveTick >= 20) {

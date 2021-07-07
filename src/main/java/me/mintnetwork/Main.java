@@ -13,6 +13,8 @@ import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static me.mintnetwork.commands.ChangeClass.createClassMenu;
+
 
 public final class Main extends JavaPlugin {
 
@@ -31,6 +33,7 @@ public final class Main extends JavaPlugin {
 
         new ClassSelect(this);
         new DebugCommand(this);
+        new ChangeClass(this);
         new Start(this);
         new GiveWand(this);
         new AssignTeams(this);
@@ -76,13 +79,16 @@ public final class Main extends JavaPlugin {
         new TakeDamageListener(this);
         new EntityExplodeListener(this);
         new PlayerDismountListener(this);
+        new InventoryClickListener(this);
+        new DropItemListener(this);
 
         new TeamsInit(this);
         //hello
 
         ScoreboardInit.clearScoreboards();
 
-
+        // Sets up GUIs
+        createClassMenu();
     }
 
     @Override

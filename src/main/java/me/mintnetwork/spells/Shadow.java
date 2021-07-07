@@ -91,14 +91,17 @@ public class Shadow {
             } catch (Exception ignore) {
             }
             if (hit != null) {
-                if (hit instanceof LivingEntity && Mana.spendMana(p,3)) {
+                if (hit!=p) {
+                    if (hit instanceof LivingEntity && Mana.spendMana(p, 3)) {
 
-                    new ShadowGrapple(p, (LivingEntity) hit,plugin);
 
-                    ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,120,1,true,true));
-                    ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,120,20,true,true));
+                        new ShadowGrapple(p, (LivingEntity) hit, plugin);
 
+                        ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 120, 1, true, true));
+                        ((LivingEntity) hit).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 120, 20, true, true));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 120, 20, true, true));
+
+                    }
                 }
             }
         }

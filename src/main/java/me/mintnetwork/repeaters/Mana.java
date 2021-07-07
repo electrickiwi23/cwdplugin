@@ -1,6 +1,7 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.WizardInit;

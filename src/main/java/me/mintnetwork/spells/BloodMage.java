@@ -2,6 +2,7 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.LineEffect;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;

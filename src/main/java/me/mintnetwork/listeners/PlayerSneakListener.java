@@ -1,6 +1,7 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;

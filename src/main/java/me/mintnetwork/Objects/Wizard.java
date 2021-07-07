@@ -2,6 +2,7 @@ package me.mintnetwork.Objects;
 
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
@@ -11,8 +12,12 @@ public class Wizard {
     public int Mana = 0;
     public int ManaTick = 0;
     public int Ult = 0;
-    public String ClassID = "";
+    public Kit kitID;
     public int PassiveTick = 0;
+
+    public ItemStack wand1;
+    public ItemStack wand2;
+    public ItemStack wand3;
 
     public FallingBlock thrownAnvil = null;
 

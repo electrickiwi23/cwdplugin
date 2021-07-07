@@ -1,6 +1,7 @@
 package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.utils.Utils;
@@ -32,11 +33,11 @@ public class ClassSelect implements CommandExecutor {
 
     public ClassSelect(Main plugin) {
         this.plugin = plugin;
-        plugin.getCommand("class").setExecutor(this);
+        plugin.getCommand("changeclass").setExecutor(this);
     }
 
     public static void AutoFill(Main plugin){
-        plugin.getCommand("class").setTabCompleter(new TabCompleter() {
+        plugin.getCommand("changeclass").setTabCompleter(new TabCompleter() {
             @Override
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
                 return null;
@@ -124,7 +125,7 @@ public class ClassSelect implements CommandExecutor {
                     ultMeta.setDisplayName(Utils.chat("&rDivine Intervention"));
                     wizard.kitID = Kit.CLERIC;
                     break;
-                case ("skyflyer"):
+                case ("aviator"):
                     meta.setDisplayName(Utils.chat("&rCloud Burst"));
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rAir Dash"));

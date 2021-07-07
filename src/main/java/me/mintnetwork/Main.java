@@ -39,7 +39,7 @@ public final class Main extends JavaPlugin {
         new AssignTeams(this);
         new setFlare(this);
 
-        getCommand("class").setTabCompleter(new ClassAutoCompleter());
+        getCommand("changeclass").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         getCommand("start").setTabCompleter(new StartAutoCompleter());
 

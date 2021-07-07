@@ -1,6 +1,7 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
@@ -109,7 +110,7 @@ public class  EntityDamageListener implements Listener {
                             }
                         }
                         break;
-                    case "tactician":
+                    case TACTICIAN:
                         if (wizard.PassiveTick>=10){
                             wizard.PassiveTick = 0;
                             Bukkit.getScheduler().runTask(plugin, new Runnable() {

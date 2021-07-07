@@ -19,7 +19,7 @@ public class ClassAutoCompleter implements TabCompleter {
         list.add("bloodmage");
         list.add("builder");
         list.add("cleric");
-        list.add("skyflyer");
+        list.add("aviator");
         list.add("demolitionist");
         list.add("painter");
         list.add("pillarman");

@@ -4,6 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.LineEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.DecayBlock;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;

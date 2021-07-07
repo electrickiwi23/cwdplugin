@@ -33,16 +33,16 @@ public class Ultimate {
                     has = true;
                 }
                 break;
-            case "demolitionist":
-            case "sky flyer":
-            case "berserker":
-            case "alchemist":
-            case "bard":
-            case "blood mage":
-            case "builder":
-            case "cleric":
-            case "tactician":
-            case "protector":
+            case DEMOLITIONIST:
+            case AVIATOR:
+            case BERSERKER:
+            case ALCHEMIST:
+            case BARD:
+            case BLOOD_MAGE:
+            case BUILDER:
+            case CLERIC:
+            case TACTICIAN:
+            case PROTECTOR:
                 if (wizard.Ult >= 720) {
                     has = true;
                 }
@@ -70,22 +70,22 @@ public class Ultimate {
                     has = true;
                 }
                 break;
-            case "demolitionist":
-            case "sky flyer":
-            case "berserker":
-            case "alchemist":
-            case "bard":
-            case "blood mage":
-            case "builder":
-            case "cleric":
-            case "tactician":
-            case "protector":
+            case DEMOLITIONIST:
+            case AVIATOR:
+            case BERSERKER:
+            case ALCHEMIST:
+            case BARD:
+            case BLOOD_MAGE:
+            case BUILDER:
+            case CLERIC:
+            case TACTICIAN:
+            case PROTECTOR:
                 if (wizard.Ult >= 720) {
                     has = true;
                 }
                 break;
-            case "shadow":
-            case "pillar man":
+            case SHADOW:
+            case PILLAR_MAN:
                 if (wizard.Ult >= 960) {
                     has = true;
                 }
@@ -108,20 +108,20 @@ public class Ultimate {
             case PAINTER:
                 percentage = wizard.Ult/480.0;
                 break;
-            case "demolitionist":
-            case "sky flyer":
-            case "berserker":
-            case "alchemist":
-            case "bard":
-            case "blood mage":
-            case "builder":
-            case "cleric":
-            case "tactician":
-            case "protector":
+            case DEMOLITIONIST:
+            case AVIATOR:
+            case BERSERKER:
+            case ALCHEMIST:
+            case BARD:
+            case BLOOD_MAGE:
+            case BUILDER:
+            case CLERIC:
+            case TACTICIAN:
+            case PROTECTOR:
                 percentage = wizard.Ult/720.0;
                 break;
-            case "shadow":
-            case "pillar man":
+            case SHADOW:
+            case PILLAR_MAN:
                 percentage = wizard.Ult/960.0;
                 break;
         }
@@ -137,20 +137,20 @@ public class Ultimate {
             case PAINTER:
                 wizard.Ult = 480;
                 break;
-            case "demolitionist":
-            case "sky flyer":
-            case "berserker":
-            case "alchemist":
-            case "bard":
-            case "blood mage":
-            case "builder":
-            case "cleric":
-            case "tactician":
-            case "protector":
+            case DEMOLITIONIST:
+            case AVIATOR:
+            case BERSERKER:
+            case ALCHEMIST:
+            case BARD:
+            case BLOOD_MAGE:
+            case BUILDER:
+            case CLERIC:
+            case TACTICIAN:
+            case PROTECTOR:
                 wizard.Ult = 720;
                 break;
-            case "shadow":
-            case "pillar man":
+            case SHADOW:
+            case PILLAR_MAN:
                 wizard.Ult = 960;
                 break;
         }
@@ -191,16 +191,16 @@ public class Ultimate {
                                         }
                                     }
                                     break;
-                                case "demolitionist":
-                                case "sky flyer":
-                                case "berserker":
-                                case "alchemist":
-                                case "bard":
-                                case "blood mage":
-                                case "builder":
-                                case "cleric":
-                                case "tactician":
-                                case "protector":
+                                case DEMOLITIONIST:
+                                case AVIATOR:
+                                case BERSERKER:
+                                case ALCHEMIST:
+                                case BARD:
+                                case BLOOD_MAGE:
+                                case BUILDER:
+                                case CLERIC:
+                                case TACTICIAN:
+                                case PROTECTOR:
                                     if (wizard.Ult < 720) {
                                         wizard.Ult++;
                                     }
@@ -219,8 +219,8 @@ public class Ultimate {
                                         }
                                     }
                                     break;
-                                case "shadow":
-                                case "pillar man":
+                                case SHADOW:
+                                case PILLAR_MAN:
                                     if (wizard.Ult < 960) {
                                         wizard.Ult++;
                                     }

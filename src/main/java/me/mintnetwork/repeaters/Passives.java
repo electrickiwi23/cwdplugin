@@ -78,7 +78,7 @@ public class Passives {
                                     }
                                 }
                                 break;
-                            case "builder":
+                            case BUILDER:
                                 wizard.PassiveTick++;
                                 if (wizard.PassiveTick >= 2) {
                                     wizard.PassiveTick = 0;
@@ -103,19 +103,19 @@ public class Passives {
                                     }
                                 }
                                 break;
-                            case "cleric":
+                            case CLERIC:
                                 if (!p.isDead()) {
                                     if (p.getMaxHealth() - .20 >= Math.ceil(p.getHealth())) {
                                         p.setHealth(p.getHealth() + .20);
                                     }
                                 }
                                 break;
-                            case "tactician":
+                            case TACTICIAN:
                                 if (wizard.PassiveTick < 10) {
                                     wizard.PassiveTick++;
                                 }
                                 break;
-                            case "bard":
+                            case BARD:
                                 wizard.PassiveTick++;
                                 if (wizard.PassiveTick >= 5) {
                                     wizard.PassiveTick = 0;

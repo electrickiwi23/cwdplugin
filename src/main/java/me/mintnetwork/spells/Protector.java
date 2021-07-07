@@ -100,7 +100,6 @@ public class Protector {
         Player currentVictim = null;
         double currentAngle = 90;
         for (Player victim:Bukkit.getOnlinePlayers()) {
-            System.out.println(victim);
             if (TeamsInit.getTeamName(victim).equals(TeamsInit.getTeamName(p)) && p != victim) {
                 if (p.hasLineOfSight(victim)) {
                     Vector direction = victim.getLocation().toVector().subtract(p.getLocation().toVector());
@@ -114,8 +113,6 @@ public class Protector {
                 }
             }
         }
-
-        System.out.println("final victim: " + currentVictim);
 
 
         if (currentVictim!=null && Mana.spendMana(p,3)){

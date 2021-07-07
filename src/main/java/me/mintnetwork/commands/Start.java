@@ -41,7 +41,6 @@ public class Start implements CommandExecutor {
                         if (args.length>=2){
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
                                 GameStart.startElimination(plugin,Math.abs(Integer.parseInt(args[1])));
-                                System.out.println("String contains only digits!");
                             }else{
                                 sender.sendMessage(Utils.chat("&cYou must enter a number."));
                             }
@@ -56,14 +55,30 @@ public class Start implements CommandExecutor {
                         break;
                     case("flares"):
                     case("flare"):
-                        GameStart.startFlares(plugin,((Player) sender).getWorld());
+                        if (args.length>=2) {
+                            if(args[1].matches("[0-9]+") && args[1].length() > 0) {
+                                GameStart.startFlares(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
+                            }else{
+                                sender.sendMessage(Utils.chat("&cYou must enter a number."));
+                            }
+                        } else{
+                            sender.sendMessage(Utils.chat("&cYou must enter a amount of time."));
+                        }
                         break;
                     case("koth"):
                     case("kingofthehill"):
                     case("hill"):
-                        GameStart.startKoth(plugin,((Player) sender).getWorld());
-                        break;
 
+                        if (args.length>=2) {
+                            if(args[1].matches("[0-9]+") && args[1].length() > 0) {
+                                GameStart.startKoth(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
+                            }else{
+                                sender.sendMessage(Utils.chat("&cYou must enter a number."));
+                            }
+                        } else{
+                            sender.sendMessage(Utils.chat("&cYou must enter a amount of time."));
+                        }
+                        break;
                 }
             }
         }

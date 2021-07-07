@@ -67,13 +67,20 @@ public class PillarMan {
                                 voidable = true;
                             }
                             if (ID.containsKey(e)) {
-                                if (ID.get(e).equals("TNTGrenade")) {
-                                    voidable = true;
-                                    grenade = true;
-                                }
-                                if (ID.get(e).equals("StickyTNT")) {
-                                    voidable = true;
-                                    grenade = true;
+                                switch (ID.get(e)) {
+                                    case "TNTGrenade":
+                                    case "StickyTNT":
+                                    case "DragonGrenade":
+                                        voidable = true;
+                                        grenade = true;
+                                        break;
+                                    case "BloodBolt":
+                                    case "FireBolt":
+                                    case "PaintGrenade":
+                                    case "Wind Arrow":
+                                    case "Molotov":
+                                        voidable = true;
+                                        break;
                                 }
                             }
                             if (voidable) {

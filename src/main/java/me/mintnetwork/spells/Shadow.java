@@ -22,19 +22,44 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Shadow {
-    public static void ShadowRetreat(Player p) {
+    public static void ShadowRetreat(Player p,Plugin plugin) {
+
         if (Mana.spendMana(p, 3)) {
             for (Entity e : p.getNearbyEntities(4, 4, 4)) {
                 if (e instanceof LivingEntity) {
-                    //TEAM CODE make it only effect enemies
-
-
-                    ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+                    String teamName = TeamsInit.getTeamName(e);
+                    if (!teamName.equals(TeamsInit.getTeamName(p))) {
+                        ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+                    }
                 }
             }
-            p.getWorld().spawnParticle(Particle.SQUID_INK, p.getEyeLocation(), 30, .1, .1, .1, .5);
-            p.setVelocity(p.getEyeLocation().getDirection().multiply(-1).add(new Vector(0, .5, 0)).normalize().multiply(1.5));
+            p.getWorld().spawnParticle(Particle.SQUID_INK, p.getEyeLocation(), 30, .1, .1, .1, .3);
+            p.setGravity(false);
+            double tempY = p.getEyeLocation().getDirection().getY();
+            Vector direction = p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.4,Math.min(.4,tempY))).normalize().multiply(1);
+            p.setVelocity(direction);
+            BukkitTask task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.setVelocity(direction);
+                    p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 4, .2, .4, .2, 0,new Particle.DustOptions(Color.BLACK,2));
+                }
+            }.runTaskTimer(plugin, 1, 1);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    p.setVelocity(p.getVelocity().multiply(.5));
+                    p.setGravity(true);
+                    task.cancel();
+                }
+            }, 8);
         }
+
+//        if (Mana.spendMana(p, 3)) {
+
+//            p.getWorld().spawnParticle(Particle.SQUID_INK, p.getEyeLocation(), 30, .1, .1, .1, .5);
+//            p.setVelocity(p.getEyeLocation().getDirection().multiply(-1).add(new Vector(0, .5, 0)).normalize().multiply(1.5));
+//        }
     }
 
     public static void ShadowInvis(Player p, Plugin plugin) {

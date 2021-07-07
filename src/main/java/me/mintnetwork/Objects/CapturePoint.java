@@ -169,17 +169,24 @@ public class CapturePoint {
                 for (Player p:Bukkit.getOnlinePlayers()) {
                     if (isHill) bossBar.addPlayer(p);
 
-                    if (p.getLocation().distance(location)<=radius){
-                        if (TeamsInit.getTeam(p)!=null) {
-                            if (playersPerTeam.containsKey(TeamsInit.getTeamName(p))){
-                                playersPerTeam.replace(TeamsInit.getTeamName(p),playersPerTeam.get(TeamsInit.getTeamName(p))+1);
-                            } else {
-                                playersPerTeam.put(TeamsInit.getTeamName(p),+1);
+                    boolean isIn = false;
 
+                    if (p.getLocation().distance(location)<=radius){
+                        if (!p.isDead()) {
+                            if (TeamsInit.getTeam(p) != null) {
+                                if (playersPerTeam.containsKey(TeamsInit.getTeamName(p))) {
+                                    playersPerTeam.replace(TeamsInit.getTeamName(p), playersPerTeam.get(TeamsInit.getTeamName(p)) + 1);
+                                } else {
+                                    playersPerTeam.put(TeamsInit.getTeamName(p), +1);
+
+                                }
+                                isIn = true;
+
+                                if (!isHill) bossBar.addPlayer(p);
                             }
-                            if (!isHill) bossBar.addPlayer(p);
                         }
-                    } else {
+                    }
+                    if (!isIn){
                         if (!isHill) bossBar.removePlayer(p);
                     }
                 }

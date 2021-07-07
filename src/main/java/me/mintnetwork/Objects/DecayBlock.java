@@ -9,9 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.UUID;
 
 public class DecayBlock {
     public Block block;

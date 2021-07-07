@@ -113,11 +113,13 @@ public class SkyFlyer {
     public static void AirDash(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
             p.setGravity(false);
-            p.setVelocity(p.getEyeLocation().getDirection().multiply(1.3));
+            double tempY = p.getEyeLocation().getDirection().getY();
+            p.setVelocity(p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.3,Math.min(.3,tempY))).normalize().multiply(1.5));
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.setVelocity(p.getEyeLocation().getDirection().multiply(1.3));
+                    double tempY = p.getEyeLocation().getDirection().getY();
+                    p.setVelocity(p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.3,Math.min(.3,tempY))).normalize().multiply(1.5));
                     p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .1, .1, .1, 0);
                 }
             }.runTaskTimer(plugin, 1, 1);
@@ -128,7 +130,7 @@ public class SkyFlyer {
                     p.setGravity(true);
                     task.cancel();
                 }
-            }, 6);
+            }, 7);
         }
     }
 

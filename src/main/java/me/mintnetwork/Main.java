@@ -43,25 +43,19 @@ public final class Main extends JavaPlugin {
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         getCommand("start").setTabCompleter(new StartAutoCompleter());
 
-
         FileConfiguration config = this.getConfig();
 
         config.addDefault("FlareAx",0.0);
         config.addDefault("FlareAy",0.0);
         config.addDefault("FlareAz",0.0);
-
         config.addDefault("FlareBx",0.0);
         config.addDefault("FlareBy",0.0);
         config.addDefault("FlareBz",0.0);
-
         config.addDefault("FlareCx",0.0);
         config.addDefault("FlareCy",0.0);
         config.addDefault("FlareCz",0.0);
 
         TeamsInit.refreshTeams();
-
-//        config.addDefault("FlareACords",new Location(getServer().getWorld("world"), 0,0,0));
-//        config.addDefault("FlareBCords",new Location(getServer().getWorld("world"), 0,0,0));
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -83,9 +77,6 @@ public final class Main extends JavaPlugin {
         new DropItemListener(this);
 
         new TeamsInit(this);
-        //hello
-
-        ScoreboardInit.clearScoreboards();
 
         // Sets up GUIs
         createClassMenu();

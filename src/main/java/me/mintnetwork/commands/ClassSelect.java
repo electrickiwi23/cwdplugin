@@ -66,7 +66,7 @@ public class ClassSelect implements CommandExecutor {
         Wizard wizard = WizardInit.playersWizards.get(((Player) sender).getUniqueId());
         if (args.length>0) {
             switch (args[0].toLowerCase()) {
-                case ("alchemist"):
+                case "alchemist":
                     meta.setDisplayName(Utils.chat("&rAcid Vial"));
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rHealing Potion"));
@@ -168,7 +168,7 @@ public class ClassSelect implements CommandExecutor {
                 case ("shadow"):
                     meta.setDisplayName(Utils.chat("&rDarkness Camouflage"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rShadow Escape"));
+                    meta.setDisplayName(Utils.chat("&rShadow Dash"));
                     wandList.add(meta.clone());
                     meta.setDisplayName(Utils.chat("&rPray Abduction"));
                     wandList.add(meta.clone());

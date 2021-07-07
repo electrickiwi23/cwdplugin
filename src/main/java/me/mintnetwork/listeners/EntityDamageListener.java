@@ -10,6 +10,7 @@ import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.spells.BloodMage;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -20,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.Collection;
 import java.util.Map;
@@ -109,6 +111,17 @@ public class  EntityDamageListener implements Listener {
                                 }
                             }
                         }
+                        break;
+                    case "shadow":
+                        if (wizard.PassiveTick >= 10&&!p.isInvisible()) {
+                            event.setDamage(event.getDamage() + 2);
+                            Vector horizontal = p.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90)).setY(0);
+                            for (int i = 0; i < 10; i++) {
+                                Vector v = p.getEyeLocation().getDirection().rotateAroundAxis(horizontal, Math.toRadians(40 - i * 8)).rotateAroundY(Math.toRadians(-40 + i * 8));
+                                p.spawnParticle(Particle.REDSTONE, p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(p.getEyeLocation().distance(victim.getLocation())-1.5)).add(v.normalize()), 3, .1, .1, .1, 0, new Particle.DustOptions(Color.BLACK, 2));
+                            }
+                        }
+                        wizard.PassiveTick = 0;
                         break;
                     case TACTICIAN:
                         if (wizard.PassiveTick>=10){

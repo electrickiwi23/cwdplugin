@@ -35,6 +35,7 @@ public final class Main extends JavaPlugin {
         new DebugCommand(this);
         new ClassSelect(this);
         new Start(this);
+        new Wands(this);
         new GiveWand(this);
         new AssignTeams(this);
         new setFlare(this);

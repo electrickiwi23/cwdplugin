@@ -61,8 +61,6 @@ public class ShadowGrapple {
 
         allGrapples.remove(this);
 
-        System.out.println("worked: " + shadow.eject());
-
         if (victim instanceof Player) {
             shadow.showPlayer(plugin, (Player) victim);
         }

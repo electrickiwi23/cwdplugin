@@ -118,7 +118,7 @@ public class  EntityDamageListener implements Listener {
                             Vector horizontal = p.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90)).setY(0);
                             for (int i = 0; i < 10; i++) {
                                 Vector v = p.getEyeLocation().getDirection().rotateAroundAxis(horizontal, Math.toRadians(40 - i * 8)).rotateAroundY(Math.toRadians(-40 + i * 8));
-                                p.spawnParticle(Particle.REDSTONE, p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(p.getEyeLocation().distance(victim.getLocation())-1.5)).add(v.normalize()), 3, .1, .1, .1, 0, new Particle.DustOptions(Color.BLACK, 2));
+                                p.getWorld().spawnParticle(Particle.REDSTONE, p.getEyeLocation().add(p.getEyeLocation().getDirection().multiply(p.getEyeLocation().distance(victim.getLocation())-1.5)).add(v.normalize()), 3, .1, .1, .1, 0, new Particle.DustOptions(Color.BLACK, 2));
                             }
                         }
                         wizard.PassiveTick = 0;

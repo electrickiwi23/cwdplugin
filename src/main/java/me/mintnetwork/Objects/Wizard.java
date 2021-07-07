@@ -15,15 +15,10 @@ public class Wizard {
     public Kit kitID = Kit.NONE;
     public int PassiveTick = 0;
 
-    public ItemStack wand1;
-    public ItemStack wand2;
-    public ItemStack wand3;
-
+    public ArrayList<ItemStack> wands = new ArrayList<>();
     public FallingBlock thrownAnvil = null;
 
     public int ElimLives = 0;
-    ArrayList<Integer> ChosenSpells = new ArrayList<>();
-
     public Wizard(Player p){
         player = p;
     }

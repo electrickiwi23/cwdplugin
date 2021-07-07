@@ -4,6 +4,7 @@ import me.mintnetwork.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,25 +33,19 @@ public class InventoryClickListener implements Listener {
 
             Player player = (Player) event.getWhoClicked();
 
-            if (event.getSlot()!=8){
 
-                ArrayList<ItemMeta> wandList = new ArrayList<>();
-
-                ItemStack baseWand = new ItemStack(Material.STICK);
-                ItemMeta meta = baseWand.getItemMeta();
-
-                ItemStack ultWand = new ItemStack(Material.DIAMOND_HOE);
-                ItemMeta ultMeta = ultWand.getItemMeta();
-
+            if (event.getCurrentItem().getType()==Material.LIME_STAINED_GLASS_PANE || event.getCurrentItem().getType()==Material.RED_STAINED_GLASS_PANE) {
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND,.5F,1);
+                return;
             }
 
-            String[] slots ={
+            String[] slots = {
                     "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
                     "pillarman", "shadow", "spellslinger", "tactician", "protector"
             };
 
-            if(event.getSlot()<slots.length){
-                player.performCommand("changeclass "+slots[event.getSlot()]);
+            if (event.getSlot() < slots.length) {
+                player.performCommand("changeclass " + slots[event.getSlot()]);
                 player.sendMessage(ChatColor.GOLD + "Class Selected");
             }
             player.closeInventory();

@@ -13,7 +13,7 @@ import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static me.mintnetwork.commands.ChangeClass.createClassMenu;
+import static me.mintnetwork.commands.ClassSelect.createClassMenu;
 
 
 public final class Main extends JavaPlugin {
@@ -31,9 +31,9 @@ public final class Main extends JavaPlugin {
         StatusEffects statuses = new StatusEffects();
         statuses.statusEffects(this);
 
-        new ClassSelect(this);
-        new DebugCommand(this);
         new ChangeClass(this);
+        new DebugCommand(this);
+        new ClassSelect(this);
         new Start(this);
         new GiveWand(this);
         new AssignTeams(this);

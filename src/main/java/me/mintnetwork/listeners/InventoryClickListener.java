@@ -13,8 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-import static me.mintnetwork.commands.ChangeClass.classInv;
-
 public class InventoryClickListener implements Listener {
 
     private final Main plugin;

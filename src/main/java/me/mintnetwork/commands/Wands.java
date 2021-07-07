@@ -1,6 +1,8 @@
 package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -46,7 +48,7 @@ public class Wands implements CommandExecutor {
         wandsInv = Bukkit.createInventory(null, 27, ChatColor.BOLD+"Select Wands");
 
         ItemStack item;
-        item = new ItemStack(Material.);
+        item = new ItemStack(Material.BONE_MEAL);
         ItemMeta meta;
         List<String> lore = new ArrayList<String>();
         String select = ChatColor.GRAY + "Click to select wand";

@@ -224,6 +224,8 @@ public class ChangeClass implements CommandExecutor {
                 if (uniqueClass) {
                     p.getInventory().clear();
 
+                    wizard.wands.clear();
+
                     p.setCustomNameVisible(!wizard.kitID.equals(Kit.SHADOW));
 
                     if (wizard.kitID.equals(Kit.PROTECTOR)){

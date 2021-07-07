@@ -29,7 +29,7 @@ public class GiveWand implements CommandExecutor {
         Player p = (Player) sender;
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
 //        if (p.hasPermission("cwd.cangivewands")) {
-            if (wizard.wands.size()>3){
+            if (wizard.wands.size()>=3){
                 p.sendMessage("You have already chosen 3 spells");
                 return false;
             }

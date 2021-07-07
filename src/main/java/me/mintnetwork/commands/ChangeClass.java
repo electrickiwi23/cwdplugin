@@ -214,8 +214,10 @@ public class ChangeClass implements CommandExecutor {
                 for (UUID uuid: WizardInit.playersWizards.keySet()) {
                     Player player = Bukkit.getPlayer(uuid);
                     Wizard tempWizard = WizardInit.playersWizards.get(uuid);
-                    if (tempWizard.kitID.equals(wizard.kitID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player!=p) {
-                        uniqueClass = false;
+                    if (tempWizard.kitID!=null) {
+                        if (tempWizard.kitID.equals(wizard.kitID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player != p) {
+                            uniqueClass = false;
+                        }
                     }
                 }
 

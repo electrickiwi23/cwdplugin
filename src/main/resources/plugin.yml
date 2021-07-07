@@ -18,3 +18,5 @@ commands:
     description: Creates flares
   changeclass:
     description: Test GUI
+  wands:
+    description: Opens the Menu to select wands

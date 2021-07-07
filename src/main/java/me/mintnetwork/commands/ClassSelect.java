@@ -311,22 +311,24 @@ public class ClassSelect implements CommandExecutor {
 
         ArrayList<Kit> kits = new ArrayList<>(Arrays.asList(Kit.values()));
         for (int i = 0; i < kits.size(); i++) {
-            if (playerKit==kits.get(i)){
-                //green pane
-                ItemStack pane = inv.getItem(i);
-                pane.setType(Material.LIME_STAINED_GLASS_PANE);
-                ItemMeta meta = pane.getItemMeta();
-                meta.setLore(Arrays.asList("You have already selected this class."));
-                pane.setItemMeta(meta);
-                inv.setItem(i, pane);
-            } else if (takenKits.contains(kits.get(i))){
-                //red pane
-                ItemStack pane = inv.getItem(i);
-                pane.setType(Material.RED_STAINED_GLASS_PANE);
-                ItemMeta meta = pane.getItemMeta();
-                meta.setLore(Arrays.asList("A player on your team has already selected this class."));
-                pane.setItemMeta(meta);
-                inv.setItem(i,pane);
+            if (kits.get(i) != Kit.NONE) {
+                if (playerKit == kits.get(i)) {
+                    //green pane
+                    ItemStack pane = inv.getItem(i);
+                    pane.setType(Material.LIME_STAINED_GLASS_PANE);
+                    ItemMeta meta = pane.getItemMeta();
+                    meta.setLore(Arrays.asList("You have already selected this class."));
+                    pane.setItemMeta(meta);
+                    inv.setItem(i, pane);
+                } else if (takenKits.contains(kits.get(i))) {
+                    //red pane
+                    ItemStack pane = inv.getItem(i);
+                    pane.setType(Material.RED_STAINED_GLASS_PANE);
+                    ItemMeta meta = pane.getItemMeta();
+                    meta.setLore(Arrays.asList("A player on your team has already selected this class."));
+                    pane.setItemMeta(meta);
+                    inv.setItem(i, pane);
+                }
             }
         }
 

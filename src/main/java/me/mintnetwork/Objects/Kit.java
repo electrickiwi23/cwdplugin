@@ -14,7 +14,8 @@ public enum Kit {
     SHADOW,
     SPELL_SLINGER,
     TACTICIAN,
-    PROTECTOR
+    PROTECTOR,
+    NONE
 
 
 }

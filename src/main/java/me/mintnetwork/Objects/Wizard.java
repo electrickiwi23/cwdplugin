@@ -12,7 +12,7 @@ public class Wizard {
     public int Mana = 0;
     public int ManaTick = 0;
     public int Ult = 0;
-    public Kit kitID;
+    public Kit kitID = Kit.NONE;
     public int PassiveTick = 0;
 
     public ItemStack wand1;

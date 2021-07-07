@@ -224,7 +224,7 @@ public class Wands implements CommandExecutor {
 //        list.add("shoulderblitz");
         lore.clear();
         lore.add(select);
-        lore.add("After charging up shoots you forward quckly dealing damage to those in your path");
+        lore.add("After charging up shoots you forward dealing damage to those in your path");
 
         item.setType(Material.GLOWSTONE_DUST); //todo item
         meta = item.getItemMeta();

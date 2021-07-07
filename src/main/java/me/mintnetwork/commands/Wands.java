@@ -54,7 +54,7 @@ public class Wands implements CommandExecutor {
 //        list.add("fireworkbolt");
         lore.clear();
         lore.add(select);
-        lore.add("");
+        lore.add("Shoots an explosive rocket towards your enemies");
 
 
         item.setType(Material.FIREWORK_ROCKET);
@@ -63,6 +63,8 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         wandsInv.setItem(0, item);
+
+
 //        list.add("jumpboost");
         lore.clear();
         lore.add(select);
@@ -142,13 +144,109 @@ public class Wands implements CommandExecutor {
 
 
 //        list.add("blackhole");
+        lore.clear();
+        lore.add(select);
+        lore.add("Create a black hole which after charging sucks in everyone around it");
+
+        item.setType(Material.NETHER_STAR);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Black Hole");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(7, item);
+
+
 //        list.add("endwarp");
+        lore.clear();
+        lore.add(select);
+        lore.add("Shoots out orb which teleports you to location of contact");
+
+        item.setType(Material.ENDER_PEARL);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"End Warp");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(8, item);
+        
+        
 //        list.add("babyboomer");
+        lore.clear();
+        lore.add(select);
+        lore.add("Child Suicide Squad Member"); //todo do something better me
+
+        item.setType(Material.GUNPOWDER);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Baby Boomer");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(9, item);
+        
+        
 //        list.add("zombiesummon");
+        lore.clear();
+        lore.add(select);
+        lore.add("Summons a trio of zombie servants");
+
+        item.setType(Material.ROTTEN_FLESH);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Zombie Summon");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(10, item);
+
+
 //        list.add("slimeball");
+        lore.clear();
+        lore.add(select);
+        lore.add("Shoots a ray that turns blocks into slime and causes knockback in the area");
+
+        item.setType(Material.SLIME_BALL);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Slimeball");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(11, item);
+
+
 //        list.add("flashstep");
+        lore.clear();
+        lore.add(select);
+        lore.add("Teleports you in the direction you are facing");
+
+        item.setType(Material.GLOWSTONE_DUST);
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Flash Step");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(12, item);
+
+
 //        list.add("shoulderblitz");
+        lore.clear();
+        lore.add(select);
+        lore.add("After charging up shoots you forward quckly dealing damage to those in your path");
+
+        item.setType(Material.GLOWSTONE_DUST); //todo item
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Shoulder Blitz");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(13, item);
+
+
 //        list.add("anviltoss");
+        lore.clear();
+        lore.add(select);
+        lore.add("Teleports you in the direction you are facing");
+
+        item.setType(Material.GLOWSTONE_DUST); //todo item
+        meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE +"Shoulder Blitz");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        wandsInv.setItem(14, item);
+
+
 //        list.add("stormstrike");
 //        list.add("manabullet");
 

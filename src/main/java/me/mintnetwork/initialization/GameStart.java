@@ -38,9 +38,12 @@ public class GameStart {
 
         for (UUID uuid: WizardInit.playersWizards.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
-            Wizard w = WizardInit.playersWizards.get(uuid);
-            w.Mana = 3;
-            p.setLevel(3);
+            if (p!=null) {
+                Wizard w = WizardInit.playersWizards.get(uuid);
+                w.Mana = 3;
+                w.Ult = 0;
+                p.setLevel(3);
+            }
         }
         //stops objectives that are running from previous games
         CapturePoint.Shutdown();
@@ -74,19 +77,22 @@ public class GameStart {
 
     }
 
-    public static void startFlares(Main plugin,World world){
+    public static void startFlares(Main plugin,World world,int time){
         startGeneric(plugin);
         gameMode = "flares";
-        ScoreboardInit.InitPoints("Zone Capture", "5:00",plugin);
-        startTimer(300,plugin);
+        ScoreboardInit.InitPoints("Zone Capture", time + ":00",plugin);
+        startTimer(time * 60,plugin);
         CapturePoint.CreateFlares(world,plugin);
     }
 
-    public static void startKoth(Main plugin, World world){
+    public static void startKoth(Main plugin, World world, int i){
         startGeneric(plugin);
         gameMode = "koth";
-        ScoreboardInit.InitPoints("King of the Hill", "5:00",plugin);
-        startTimer(300,plugin);
+
+        String string = (i + ":" + "00");
+
+        ScoreboardInit.InitPoints("King of the Hill", string,plugin);
+        startTimer(i * 60,plugin);
         CapturePoint.CreateHill(world,plugin);
     }
 

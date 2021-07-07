@@ -111,6 +111,7 @@ public class Passives {
                                 }
                                 break;
                             case TACTICIAN:
+                            case SHADOW:
                                 if (wizard.PassiveTick < 10) {
                                     wizard.PassiveTick++;
                                 }

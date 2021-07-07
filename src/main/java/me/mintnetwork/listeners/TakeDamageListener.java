@@ -1,9 +1,12 @@
 package me.mintnetwork.listeners;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.spells.Shadow;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -78,6 +81,10 @@ public class TakeDamageListener implements Listener {
                 System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
+            if (WizardInit.playersWizards.get(p.getUniqueId()).kitID.equals(Kit.SHADOW)){
+                WizardInit.playersWizards.get(p.getUniqueId()).PassiveTick = 0;
+            }
+
         }
         if (entity instanceof LivingEntity) {
             if (entity instanceof Rabbit && event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION){

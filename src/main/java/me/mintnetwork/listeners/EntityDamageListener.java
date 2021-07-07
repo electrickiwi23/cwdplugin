@@ -112,7 +112,7 @@ public class  EntityDamageListener implements Listener {
                             }
                         }
                         break;
-                    case "shadow":
+                    case SHADOW:
                         if (wizard.PassiveTick >= 10&&!p.isInvisible()) {
                             event.setDamage(event.getDamage() + 2);
                             Vector horizontal = p.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90)).setY(0);

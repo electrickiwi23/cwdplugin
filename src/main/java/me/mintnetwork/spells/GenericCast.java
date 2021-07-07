@@ -461,13 +461,13 @@ public class GenericCast {
         if (Mana.spendMana(p, 3)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,3));
             p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
-            StatusEffects.UsingMove.add(p);
+//            StatusEffects.UsingMove.add(p);
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
                     p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
-                    final Vector[] v = {p.getEyeLocation().getDirection().normalize()};
+                    final Vector[] v = {p.getEyeLocation().getDirection().setY(0).normalize().multiply(1.3)};
 
 
                     final int[] count = {0};
@@ -479,10 +479,9 @@ public class GenericCast {
 
 
                             System.out.println(Math.toDegrees(v[0].angle(p.getEyeLocation().getDirection())));
-                            v[0] = p.getEyeLocation().toVector();
 
-
-                            p.setVelocity(p.getEyeLocation().toVector());
+                            p.teleport(p.getLocation().setDirection(v[0]));
+                            p.setVelocity(v[0]);
                             p.getWorld().spawnParticle(Particle.FLAME,p.getLocation().add(0,1,0),10, .2,.2,.2,.2,null,false);
 
 
@@ -493,7 +492,7 @@ public class GenericCast {
                                             e.setVelocity(v[0].multiply(1.3).add(new Vector(0,.4,0)).multiply(1-((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
                                             p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
 
-                                            StatusEffects.UsingMove.remove(p);
+//                                            StatusEffects.UsingMove.remove(p);
 
                                             ((LivingEntity) e).damage(6);
                                             p.damage(2);
@@ -507,7 +506,7 @@ public class GenericCast {
                                     p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), 1);
 
-                                    StatusEffects.UsingMove.remove(p);
+//                                    StatusEffects.UsingMove.remove(p);
 
                                     e.setVelocity(v[0].multiply(1).add(new Vector(0,.4,0)));
                                     p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
@@ -531,7 +530,7 @@ public class GenericCast {
                                 }
                                 if (hitBlock != null) {
                                     this.cancel();
-                                    StatusEffects.UsingMove.remove(p);
+//                                    StatusEffects.UsingMove.remove(p);
                                     p.damage(2);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, hitLocation, 1);
                                     p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
@@ -541,14 +540,14 @@ public class GenericCast {
 
                             if (count[0] >= 7) {
                                 this.cancel();
-                                StatusEffects.UsingMove.remove(p);
+//                                StatusEffects.UsingMove.remove(p);
                                 p.setVelocity(v[0].multiply(.3));
                             }
 
                         }
                     }.runTaskTimer(plugin, 1, 1);
                 }
-            },10);
+            },13);
         }
     }
 

@@ -154,8 +154,8 @@ public class RightClickListener implements Listener {
                                     case("Darkness Camouflage"):
                                         Shadow.ShadowInvis(p,plugin);
                                         break;
-                                    case("Shadow Escape"):
-                                        Shadow.ShadowRetreat(p);
+                                    case("Shadow Dash"):
+                                        Shadow.ShadowRetreat(p,plugin);
                                         break;
                                     case("Pray Abduction"):
                                         Shadow.ShadowGrapple(p,plugin);
@@ -240,6 +240,12 @@ public class RightClickListener implements Listener {
                                         break;
                                     case ("Aura of Protection"):
                                         Protector.ProtectionUlt(p);
+                                        break;
+
+                                    case ("Tripwire"):
+                                        if (event.getClickedBlock() != null) {
+                                            Trapper.tripwire(p, plugin, event.getBlockFace(), event.getClickedBlock());
+                                        }
                                         break;
 
                                     case ("Create Clone"):

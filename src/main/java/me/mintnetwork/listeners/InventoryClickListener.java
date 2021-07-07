@@ -51,5 +51,42 @@ public class InventoryClickListener implements Listener {
             player.closeInventory();
             return;
         }
+        else if (event.getView().getTitle().equals(ChatColor.BOLD + "Select Wands")){
+            event.setCancelled(true);
+            if(event.getCurrentItem() == null) return;
+            if(event.getCurrentItem().getItemMeta() == null) return;
+            if(event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+
+            Player player = (Player) event.getWhoClicked();
+
+
+            if (event.getCurrentItem().getType()==Material.LIME_STAINED_GLASS_PANE) {
+
+                for (ItemStack item:WizardInit.playersWizards.get(player.getUniqueId()).wands) {
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().equals(item.getItemMeta().getDisplayName())){
+                        player.getInventory().removeItem(item);
+                        WizardInit.playersWizards.get(player.getUniqueId()).wands.remove(item);
+                    }
+                }
+
+                event.getClickedInventory().setContents(Wands.wandsEditInventory(player,Wands.wandsInv).getContents());
+                return;
+            }
+
+            String[] slots = {
+                    "fireworkbolt", "jumpboost", "engineblast", "dragonorb", "batsonar", "tntring", "hivebolt", "blackhole", "endwarp",
+                    "babyboomer", "zombiesummon", "slimeball", "flashstep", "shoulderblitz", "anviltoss", "stormstrike", "manabullet"
+            };
+
+            if (event.getSlot() < slots.length) {
+                player.performCommand("givewands " + slots[event.getSlot()]);
+                player.sendMessage(ChatColor.GOLD + "Wand Selected");
+                event.getClickedInventory().setContents(Wands.wandsEditInventory(player,Wands.wandsInv).getContents());
+            }else{
+                player.closeInventory();
+                return;
+            }
+
+        }
     }
 }

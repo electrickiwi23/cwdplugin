@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static me.mintnetwork.commands.ClassSelect.createClassMenu;
+import static me.mintnetwork.commands.Wands.createWandsMenu;
 
 
 public final class Main extends JavaPlugin {
@@ -81,6 +82,7 @@ public final class Main extends JavaPlugin {
 
         // Sets up GUIs
         createClassMenu();
+        createWandsMenu();
     }
 
     @Override

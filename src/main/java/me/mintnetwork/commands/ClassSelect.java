@@ -304,10 +304,6 @@ public class ClassSelect implements CommandExecutor {
         //green pane
         Kit playerKit = WizardInit.playersWizards.get(player.getUniqueId()).kitID;
 
-        String[] slots ={
-                "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
-                "pillarman", "shadow", "spellslinger", "tactician", "protector"
-        };
 
         ArrayList<Kit> kits = new ArrayList<>(Arrays.asList(Kit.values()));
         for (int i = 0; i < kits.size(); i++) {

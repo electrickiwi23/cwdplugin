@@ -745,9 +745,12 @@ public class GenericCast {
                                 block.damage(30);
                                 block.setForceful(true);
                             }
+                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
                             break;
                         }
                         if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
+
+                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
 
                             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
                             stand.setInvisible(true);
@@ -763,8 +766,7 @@ public class GenericCast {
                         }
                     }
                     current = current.add(direction);
-                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 2, 0, 0, 0, 0);
-                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current.add(direction), 2, 0, 0, 0, 0);
+                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 1, 0, 0, 0, 0);
 
                     range++;
                     if (range >= 30) break;

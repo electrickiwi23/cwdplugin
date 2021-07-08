@@ -5,6 +5,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,7 +52,7 @@ public class RightClickListener implements Listener {
                             if (StatusEffects.CanCast(p)) {
                                 if (Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName().contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
 
-                                switch(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName()){
+                                switch(ChatColor.stripColor(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName())){
                                     case ("Lightning Bolt"):
                                         SpellSlinger.LightningBolt(p,plugin,em);
                                         break;
@@ -65,6 +66,9 @@ public class RightClickListener implements Listener {
                                         SpellSlinger.ElementBlast(p,plugin,em);
                                         break;
 
+                                    case "Berserker Blade":
+                                        Berserker.SwordLunge(p);
+                                        break;
                                     case ("Speed Rush"):
                                         Berserker.SpeedBoost(p);
                                         break;

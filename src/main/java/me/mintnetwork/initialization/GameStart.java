@@ -2,11 +2,11 @@ package me.mintnetwork.initialization;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.CapturePoint;
+import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
-import me.mintnetwork.Objects.Wizard;
-import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,6 +26,56 @@ public class GameStart {
     public GameStart(Main plugin) {
         this.plugin = plugin;
     };
+
+    public static void startCountdown(Main plugin, GameMode gameMode, World world, int additional){
+        final int[] count = {0};
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                count[0]++;
+                String message = ChatColor.GREEN + "GO";
+                switch (count[0]){
+                    case 1:
+                        message = ChatColor.RED + "3";
+                        break;
+                    case 2:
+                        message = ChatColor.GOLD + "2";
+                        break;
+                    case 3:
+                        message = ChatColor.YELLOW + "1";
+                        break;
+                    case 4:
+                        switch (gameMode){
+                            case SKIRMISH:
+                                startGeneric(plugin);
+                                break;
+                            case FLARES:
+                                startFlares(plugin,world,additional);
+                                break;
+                            case ELIMINATION:
+                                startElimination(plugin,additional);
+                                break;
+                            case KING_OF_THE_HILL:
+                                startKoth(plugin,world,additional);
+                                break;
+                            case BATTLE_ROYAL:
+                                startBR(plugin,world);
+                                break;
+
+                        }
+                        break;
+                }
+                for (Player p:Bukkit.getOnlinePlayers()) {
+                    p.sendTitle(message,"",0,20,0);
+                }
+                if (count[0]==4) this.cancel();
+            }
+        }.runTaskTimer(plugin,20,20);
+
+
+
+
+    }
     
     public static void startGeneric(Main plugin) {
         if (!hasStarted) {
@@ -53,32 +103,32 @@ public class GameStart {
         gameRunning = true;
 
     }
-    public static void startBR(Main plugin, World world){
-        startGeneric(plugin);
-        for (UUID uuid: WizardInit.playersWizards.keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            Wizard w = WizardInit.playersWizards.get(uuid);
-            w.ElimLives= 1;
-        }
-
-        gameMode = "battle royale";
-
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-
-                Bukkit.getServer().getWorld("world");
-                System.out.println(world.getName());
-                world.getWorldBorder().setSize(300);
-                world.getWorldBorder().setSize(45,120);
-
+    public static void startBR(Main plugin,World world){
+            startGeneric(plugin);
+            for (UUID uuid : WizardInit.playersWizards.keySet()) {
+                Player player = Bukkit.getPlayer(uuid);
+                Wizard w = WizardInit.playersWizards.get(uuid);
+                w.ElimLives = 1;
             }
-        },1200);
 
+            gameMode = "battle royale";
+
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+
+                    Bukkit.getServer().getWorld("world");
+                    System.out.println(world.getName());
+                    world.getWorldBorder().setSize(300);
+                    world.getWorldBorder().setSize(45, 120);
+
+                }
+            }, 1200);
     }
 
     public static void startFlares(Main plugin,World world,int time){
         startGeneric(plugin);
+
         gameMode = "flares";
         ScoreboardInit.InitPoints("Zone Capture", time + ":00",plugin);
         startTimer(time * 60,plugin);

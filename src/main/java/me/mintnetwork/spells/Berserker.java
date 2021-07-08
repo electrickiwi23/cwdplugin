@@ -28,6 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Berserker {
+    public static void SwordLunge(Player p){
+        if (Mana.spendMana(p,2)){
+         p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize().multiply(1.2));
+
+        }
+    }
+
     public static void SpeedBoost(Player p) {
         if (Mana.spendMana(p, 3)) {
             Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;

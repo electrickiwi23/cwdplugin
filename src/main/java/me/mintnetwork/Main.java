@@ -3,7 +3,6 @@ package me.mintnetwork;
 import me.mintnetwork.Objects.CapturePoint;
 import me.mintnetwork.commands.*;
 import me.mintnetwork.initialization.GameStart;
-import me.mintnetwork.initialization.ScoreboardInit;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.listeners.*;
@@ -87,9 +86,8 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         CapturePoint.Shutdown();
-        ScoreboardInit.clearScoreboards();
+        // Plugin shutdown logic
 
     }
 }

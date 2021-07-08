@@ -9,10 +9,7 @@ import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.spells.BloodMage;
 import me.mintnetwork.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -130,10 +127,10 @@ public class  EntityDamageListener implements Listener {
                                 @Override
                                 public void run() {
                                     Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
-                                    live.sendMessage(Utils.chat("&n&l" + victim.getName() + ":"));
-                                    live.sendMessage(Utils.chat("&cHealth: " + Math.ceil(((Player) victim).getHealth())));
-                                    live.sendMessage(Utils.chat("&aMana: " + victimWiz.Mana));
-                                    live.sendMessage(Utils.chat("&6Ultimate: " + (int) (Ultimate.getUltPercentage((Player) victim ) * 100) + "%"));
+                                    live.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + ("&n&l" + victim.getName() + ":"));
+                                    live.sendMessage(ChatColor.RED + ("Health: " + Math.ceil(((Player) victim).getHealth())));
+                                    live.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
+                                    live.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage((Player) victim ) * 100) + "%"));
                                 }
                             });
                         }

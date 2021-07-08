@@ -177,7 +177,7 @@ public class BloodMage {
                         if (item != null) {
                             ItemMeta meta = item.getItemMeta();
                             if (meta.getDisplayName().contains("Blood Link Ritual")) {
-                                meta.setDisplayName(Utils.chat("&rBlood Link Ritual (" + StatusEffects.bloodLink.get(p).size() + ")"));
+                                meta.setDisplayName(ChatColor.RESET + ("Blood Link Ritual (" + StatusEffects.bloodLink.get(p).size() + ")"));
                                 item.setItemMeta(meta);
                             }
                         }

@@ -138,9 +138,9 @@ public class GameStart {
                     String string = (timer / 60 + ":" + mins);
 
 
-                    int score = ScoreboardInit.sidebar.getScore(Utils.chat("          " + ScoreboardInit.timer)).getScore();
-                    ScoreboardInit.sidebar.getScoreboard().resetScores(Utils.chat("          " + ScoreboardInit.timer));
-                    ScoreboardInit.sidebar.getScore(Utils.chat("          " + string)).setScore(score);
+                    int score = ScoreboardInit.sidebar.getScore("          " + ScoreboardInit.timer).getScore();
+                    ScoreboardInit.sidebar.getScoreboard().resetScores("          " + ScoreboardInit.timer);
+                    ScoreboardInit.sidebar.getScore("          " + string).setScore(score);
                     ScoreboardInit.timer = string;
                 } else {
                     Team winner = TeamsInit.currentTeams.get(0);

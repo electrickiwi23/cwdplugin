@@ -67,9 +67,9 @@ public class CapturePoint {
     public CapturePoint(World world, double x, double y, double z, float r, @Nullable Character letter, boolean isHill){
 
         if (letter==null){
-            bossBar = Bukkit.createBossBar(Utils.chat("&lObjective"), BarColor.WHITE, BarStyle.SOLID);
+            bossBar = Bukkit.createBossBar(ChatColor.BOLD + ("Objective"), BarColor.WHITE, BarStyle.SOLID);
 
-        } else bossBar = Bukkit.createBossBar(Utils.chat("&lObjective " + Character.toUpperCase(letter)), BarColor.WHITE, BarStyle.SOLID);
+        } else bossBar = Bukkit.createBossBar(ChatColor.BOLD + ("Objective " + Character.toUpperCase(letter)), BarColor.WHITE, BarStyle.SOLID);
         bossBar.setProgress(0);
 
         radius = r;

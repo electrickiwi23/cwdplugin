@@ -68,10 +68,10 @@ public class InventoryClickListener implements Listener {
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(item.getItemMeta().getDisplayName())){
                         player.getInventory().removeItem(item);
                         WizardInit.playersWizards.get(player.getUniqueId()).wands.remove(item);
+                        event.getClickedInventory().setContents(Wands.wandsEditInventory(player,Wands.wandsInv).getContents());
+                        return;
                     }
                 }
-
-                event.getClickedInventory().setContents(Wands.wandsEditInventory(player,Wands.wandsInv).getContents());
                 return;
             }
 

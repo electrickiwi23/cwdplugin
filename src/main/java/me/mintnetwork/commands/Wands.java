@@ -53,7 +53,7 @@ public class Wands implements CommandExecutor {
         List<String> lore = new ArrayList<String>();
         String select = ChatColor.GRAY + "Click to select wand";
 
-//        list.add("fireworkbolt");
+//      FIREWORK BOLT
         lore.clear();
         lore.add(select);
         lore.add("Shoots an explosive rocket towards your enemies");
@@ -67,7 +67,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(0, item);
 
 
-//        list.add("jumpboost");
+//      JUMP BOOST
         lore.clear();
         lore.add(select);
         lore.add("Enhances your jump and slows your fall");
@@ -80,7 +80,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(1, item);
 
 
-//        list.add("engineblast");
+//      ENGINE BLAST
         lore.clear();
         lore.add(select);
         lore.add("A blast of smoke propels you and your enemies away");
@@ -93,7 +93,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(2, item);
 
 
-//        list.add("dragonorb");
+//      DRAGON ORB
         lore.clear();
         lore.add(select);
         lore.add("Shoot a timed grenade that releases deadly gasses");
@@ -106,7 +106,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(3, item);
 
 
-//        list.add("batsonar");
+//      BAT SONAR
         lore.clear();
         lore.add(select);
         lore.add("Spawn a bat which locates and marks your enemies");
@@ -119,7 +119,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(4, item);
 
 
-        //        list.add("tntring");
+//      TNT RING
         lore.clear();
         lore.add(select);
         lore.add("Create a ring of explosives that detonate after a short time");
@@ -132,7 +132,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(5, item);
 
 
-        //        list.add("hivebolt");
+//      HIVE BOLT
         lore.clear();
         lore.add(select);
         lore.add("Shoots out angry bees which attack anyone near. BEEware!");
@@ -145,7 +145,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(6, item);
 
 
-//        list.add("blackhole");
+//      BLACK HOLE
         lore.clear();
         lore.add(select);
         lore.add("Create a black hole which after charging sucks in everyone around it");
@@ -158,7 +158,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(7, item);
 
 
-//        list.add("endwarp");
+//      END WARP
         lore.clear();
         lore.add(select);
         lore.add("Shoots out orb which teleports you to location of contact");
@@ -171,7 +171,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(8, item);
         
         
-//        list.add("babyboomer");
+//      BABY BOOMER
         lore.clear();
         lore.add(select);
         lore.add("Child Suicide Squad Member"); //todo do something better me
@@ -184,7 +184,7 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(9, item);
         
         
-//        list.add("zombiesummon");
+//      ZOMBIE SUMMON
         lore.clear();
         lore.add(select);
         lore.add("Summons a trio of zombie servants");
@@ -197,20 +197,20 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(10, item);
 
 
-//        list.add("slimeball");
+//      SLIME BALL
         lore.clear();
         lore.add(select);
         lore.add("Shoots a ray that turns blocks into slime and causes knockback in the area");
 
         item.setType(Material.SLIME_BALL);
         meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.WHITE +"Slimeball");
+        meta.setDisplayName(ChatColor.WHITE +"Slime Ball");
         meta.setLore(lore);
         item.setItemMeta(meta);
         wandsInv.setItem(11, item);
 
 
-//        list.add("flashstep");
+//      FLASH STEP
         lore.clear();
         lore.add(select);
         lore.add("Teleports you in the direction you are facing");
@@ -223,12 +223,12 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(12, item);
 
 
-//        list.add("shoulderblitz");
+//      SHOULDER BLITZ
         lore.clear();
         lore.add(select);
         lore.add("After charging up shoots you forward dealing damage to those in your path");
 
-        item.setType(Material.GLOWSTONE_DUST); //todo item
+        item.setType(Material.IRON_CHESTPLATE);
         meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE +"Shoulder Blitz");
         meta.setLore(lore);
@@ -236,12 +236,12 @@ public class Wands implements CommandExecutor {
         wandsInv.setItem(13, item);
 
 
-//        list.add("anviltoss");
+//      ANVIL TOSS
         lore.clear();
         lore.add(select);
         lore.add("Teleports you in the direction you are facing");
 
-        item.setType(Material.GLOWSTONE_DUST); //todo item
+        item.setType(Material.ANVIL);
         meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE +"Shoulder Blitz");
         meta.setLore(lore);

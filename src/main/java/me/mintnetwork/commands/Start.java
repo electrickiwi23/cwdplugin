@@ -4,6 +4,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.utils.Utils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,11 +43,11 @@ public class Start implements CommandExecutor {
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
                                 GameStart.startElimination(plugin,Math.abs(Integer.parseInt(args[1])));
                             }else{
-                                sender.sendMessage(Utils.chat("&cYou must enter a number."));
+                                sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }
 
                         } else{
-                            sender.sendMessage(Utils.chat("&cYou must enter an amount of lives."));
+                            sender.sendMessage(ChatColor.RED+("You must enter an amount of lives."));
                         }
                         break;
                     case("br"):
@@ -59,10 +60,10 @@ public class Start implements CommandExecutor {
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
                                 GameStart.startFlares(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
                             }else{
-                                sender.sendMessage(Utils.chat("&cYou must enter a number."));
+                                sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }
                         } else{
-                            sender.sendMessage(Utils.chat("&cYou must enter a amount of time."));
+                            sender.sendMessage(ChatColor.RED+("You must enter a amount of time."));
                         }
                         break;
                     case("koth"):
@@ -73,10 +74,10 @@ public class Start implements CommandExecutor {
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
                                 GameStart.startKoth(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
                             }else{
-                                sender.sendMessage(Utils.chat("&cYou must enter a number."));
+                                sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }
                         } else{
-                            sender.sendMessage(Utils.chat("&cYou must enter a amount of time."));
+                            sender.sendMessage(ChatColor.RED+("You must enter a amount of time."));
                         }
                         break;
                 }

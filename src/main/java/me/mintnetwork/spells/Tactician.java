@@ -42,10 +42,10 @@ public class Tactician {
             boolean hasHit = false;
             while (!hasHit) {
                 if (current.isWorldLoaded()) {
-                    RayTraceResult ray = p.getWorld().rayTrace(current, direction, 1, FluidCollisionMode.NEVER, true, .1, null);
-                    Location hitLocation = null;
-                    LivingEntity hitEntity = null;
+                    RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .2, null);
                     if (ray != null) {
+                        Location hitLocation = null;
+                        LivingEntity hitEntity = null;
                         try {
                             hitEntity = (LivingEntity) ray.getHitEntity();
                         } catch (Exception ignore) {
@@ -105,11 +105,11 @@ public class Tactician {
 
                     }
                     if (!hasHit) {
-                        current = current.add(direction);
+                        current = current.add(direction.multiply(2));
                         p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current, 1, 0, 0, 0, 0);
+                        p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current.add(direction), 1, 0, 0, 0, 0);
                         range++;
-                        if (range >= 150) hasHit = true;
-                        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
+                        if (range >= 75) hasHit = true;
                         for (Entity shield : Shield.shieldMap.keySet()) {
                             if (shield.getLocation().distance(current)<Shield.shieldMap.get(shield).getRadius()+.5){
                                 direction = Shield.shieldMap.get(shield).reflectVector(current,direction);

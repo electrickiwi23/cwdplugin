@@ -33,9 +33,6 @@ import java.util.Map;
 public class GenericCast {
 
 
-
-
-
     public static void FireworkBolt(Player p) {
         if (Mana.spendMana(p, 2)) {
             Firework firework = (Firework) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.FIREWORK);
@@ -44,7 +41,7 @@ public class GenericCast {
             effect.with(FireworkEffect.Type.BURST);
 
             if (TeamsInit.getTeamName(p).equals("")) effect.withColor(Color.WHITE);
-            switch (TeamsInit.getTeamName(p)){
+            switch (TeamsInit.getTeamName(p)) {
                 case ("red"):
                     effect.withColor(Color.RED);
                     break;
@@ -155,7 +152,7 @@ public class GenericCast {
             final Location[] set = {null};
             final int[] age = {0};
             String TeamName = TeamsInit.getTeamName(p);
-            TeamsInit.addToTeam(bat,TeamName);
+            TeamsInit.addToTeam(bat, TeamName);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -174,7 +171,7 @@ public class GenericCast {
 
                     if (age[0] > 30) {
                         for (Entity e : bat.getWorld().getNearbyEntities(bat.getLocation(), 13, 13, 13)) {
-                            if (bat.getLocation().distance(e.getLocation())<=12) {
+                            if (bat.getLocation().distance(e.getLocation()) <= 12) {
                                 if (e instanceof LivingEntity) {
                                     if (!(e instanceof ArmorStand)) {
                                         if (!TeamsInit.getTeamName(e).matches(TeamName)) {
@@ -262,9 +259,9 @@ public class GenericCast {
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    if (!bolt.isDead()){
+                    if (!bolt.isDead()) {
                         tick.get(bolt).cancel();
-                        new BlackHole(bolt.getLocation(),em,plugin);
+                        new BlackHole(bolt.getLocation(), em, plugin);
                         bolt.remove();
                     }
                 }
@@ -434,12 +431,12 @@ public class GenericCast {
             Vector direction = p.getEyeLocation().getDirection();
             Location current = p.getLocation().add(direction).add(0, .3, 0);
 
-            p.getWorld().spawnParticle(Particle.FLASH,p.getLocation().add(0,1,0),1);
+            p.getWorld().spawnParticle(Particle.FLASH, p.getLocation().add(0, 1, 0), 1);
 
             RayTraceResult ray = p.getWorld().rayTraceBlocks(current, direction, 6, FluidCollisionMode.NEVER, true);
             Block hitBlock = null;
             current = current.add(direction.multiply(6));
-            direction.multiply(1.0/6.0);
+            direction.multiply(1.0 / 6.0);
             if (ray != null) {
                 try {
                     hitBlock = ray.getHitBlock();
@@ -457,9 +454,9 @@ public class GenericCast {
         }
     }
 
-    public static void BoostSlam(Player p, Plugin plugin){
+    public static void BoostSlam(Player p, Plugin plugin) {
         if (Mana.spendMana(p, 3)) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,3));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3));
             p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
 //            StatusEffects.UsingMove.add(p);
 
@@ -482,41 +479,41 @@ public class GenericCast {
 
                             p.teleport(p.getLocation().setDirection(v[0]));
                             p.setVelocity(v[0]);
-                            p.getWorld().spawnParticle(Particle.FLAME,p.getLocation().add(0,1,0),10, .2,.2,.2,.2,null,false);
+                            p.getWorld().spawnParticle(Particle.FLAME, p.getLocation().add(0, 1, 0), 10, .2, .2, .2, .2, null, false);
 
 
                             for (Entity e : p.getNearbyEntities(2, 2, 2)) {
                                 if (e instanceof LivingEntity) {
                                     if (!(e instanceof ArmorStand)) {
-                                        if (p.getBoundingBox().expand(.2,.2,.2,.2,.2,.2).overlaps(e.getBoundingBox())) {
-                                            e.setVelocity(v[0].multiply(1.3).add(new Vector(0,.4,0)).multiply(1-((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
-                                            p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
+                                        if (p.getBoundingBox().expand(.2, .2, .2, .2, .2, .2).overlaps(e.getBoundingBox())) {
+                                            e.setVelocity(v[0].multiply(1.3).add(new Vector(0, .4, 0)).multiply(1 - ((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
+                                            p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
 
 //                                            StatusEffects.UsingMove.remove(p);
 
                                             ((LivingEntity) e).damage(6);
                                             p.damage(2);
-                                            p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
+                                            p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
                                             hasHit[0] = true;
                                             this.cancel();
                                             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), 1);
                                         }
                                     }
-                                } else  if (e instanceof TNTPrimed){
-                                    p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
+                                } else if (e instanceof TNTPrimed) {
+                                    p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), 1);
 
 //                                    StatusEffects.UsingMove.remove(p);
 
-                                    e.setVelocity(v[0].multiply(1).add(new Vector(0,.4,0)));
-                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
+                                    e.setVelocity(v[0].multiply(1).add(new Vector(0, .4, 0)));
+                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
 
                                     hasHit[0] = true;
                                     this.cancel();
                                 }
                             }
 
-                            RayTraceResult ray = p.getWorld().rayTraceBlocks(p.getLocation().add(0,.5,0), v[0], 1, FluidCollisionMode.NEVER, true);
+                            RayTraceResult ray = p.getWorld().rayTraceBlocks(p.getLocation().add(0, .5, 0), v[0], 1, FluidCollisionMode.NEVER, true);
                             Location hitLocation = null;
                             Block hitBlock = null;
                             if (ray != null) {
@@ -533,8 +530,8 @@ public class GenericCast {
 //                                    StatusEffects.UsingMove.remove(p);
                                     p.damage(2);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, hitLocation, 1);
-                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
-                                    p.getWorld().playSound(hitLocation,Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
+                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
+                                    p.getWorld().playSound(hitLocation, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
                                 }
                             }
 
@@ -547,13 +544,13 @@ public class GenericCast {
                         }
                     }.runTaskTimer(plugin, 1, 1);
                 }
-            },13);
+            }, 13);
         }
     }
 
-    public static void AnvilLaunch(Player p, Plugin plugin){
+    public static void AnvilLaunch(Player p, Plugin plugin) {
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
-        if (wizard.thrownAnvil==null) {
+        if (wizard.thrownAnvil == null) {
             if (Mana.spendMana(p, 3)) {
                 Location start = p.getEyeLocation().add(0, 1, 0);
 
@@ -575,9 +572,9 @@ public class GenericCast {
                     @Override
                     public void run() {
                         current[0] = anvil.getLocation();
-                        if (anvil.isDead()){
+                        if (anvil.isDead()) {
                             Location hit = current[0];
-                            hit = hit.add(0,-1,0);
+                            hit = hit.add(0, -1, 0);
                             final int[] count = {0};
                             Location finalHit = hit;
                             new BukkitRunnable() {
@@ -586,8 +583,8 @@ public class GenericCast {
                                     count[0]++;
                                     for (int j = count[0] * -1; j < count[0] + 1; j++) {
                                         for (int k = count[0] * -1; k < count[0] + 1; k++) {
-                                            if (!(Math.abs(j) == 3 &&(Math.abs(k) == 3))) {
-                                                if ((Math.abs(j) == count[0] || (Math.abs(k) ==  count[0]))) {
+                                            if (!(Math.abs(j) == 3 && (Math.abs(k) == 3))) {
+                                                if ((Math.abs(j) == count[0] || (Math.abs(k) == count[0]))) {
                                                     Location block = new Location(finalHit.getWorld(), finalHit.getX() + j, finalHit.getY(), finalHit.getZ() + k);
                                                     boolean surface;
                                                     surface = (!block.getBlock().isPassable() && block.clone().add(0, 1, 0).getBlock().isPassable());
@@ -636,13 +633,13 @@ public class GenericCast {
                                             }
                                         }
                                     }
-                                    if (count[0]>=3)this.cancel();
+                                    if (count[0] >= 3) this.cancel();
                                 }
-                            }.runTaskTimer(plugin,2,2);
+                            }.runTaskTimer(plugin, 2, 2);
                             this.cancel();
                         }
                     }
-                }.runTaskTimer(plugin,1,1);
+                }.runTaskTimer(plugin, 1, 1);
             }
         } else {
             FallingBlock anvil = wizard.thrownAnvil;
@@ -658,9 +655,9 @@ public class GenericCast {
             final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
             final Vector[] direction = {p.getEyeLocation().getDirection()};
             final int[] range = {0};
-            new BukkitRunnable(){
+            new BukkitRunnable() {
                 @Override
-                public void run(){
+                public void run() {
                     for (int i = 0; i < 5; i++) {
                         if (!hasHit[0]) {
                             if (current[0].isWorldLoaded()) {
@@ -682,14 +679,14 @@ public class GenericCast {
                                             public void run() {
                                                 count[0]++;
                                                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(50, 50, 255), 1);
-                                                p.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, current[0], 40, (20-count[0])/14.0, (20-count[0])/14.0, (20-count[0])/14.0, 0);
+                                                p.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, current[0], 40, (20 - count[0]) / 14.0, (20 - count[0]) / 14.0, (20 - count[0]) / 14.0, 0);
 
-                                                if (count[0]>=20){
+                                                if (count[0] >= 20) {
                                                     current[0].getWorld().strikeLightning(finalHitLocation);
                                                     this.cancel();
                                                 }
                                             }
-                                        }.runTaskTimer(plugin,1,1);
+                                        }.runTaskTimer(plugin, 1, 1);
                                         this.cancel();
                                     }
                                 }
@@ -703,8 +700,8 @@ public class GenericCast {
 
                                     //code for shield reflection--------------------------------------------------------
                                     for (Entity shield : Shield.shieldMap.keySet()) {
-                                        if (shield.getLocation().distance(current[0])<Shield.shieldMap.get(shield).getRadius()+.5){
-                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0],direction[0]);
+                                        if (shield.getLocation().distance(current[0]) < Shield.shieldMap.get(shield).getRadius() + .5) {
+                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0], direction[0]);
                                         }
                                     }
                                     //----------------------------------------------------------------------------------
@@ -717,81 +714,70 @@ public class GenericCast {
                         }
                     }
                 }
-            }.runTaskTimer(plugin,1,1);
+            }.runTaskTimer(plugin, 1, 1);
 
         }
     }
-    public static void ManaBullet(Player p, Plugin plugin){
+
+    public static void ManaBullet(Player p) {
         if (Mana.spendMana(p, 1)) {
-            final boolean[] hasHit = {false};
-            final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
-            final Vector[] direction = {p.getEyeLocation().getDirection()};
-            final int[] range = {0};
-            new BukkitRunnable(){
-                @Override
-                public void run(){
-                    for (int i = 0; i < 4; i++) {
-                        if (!hasHit[0]) {
-                            if (current[0].isWorldLoaded()) {
-                                RayTraceResult ray = p.getWorld().rayTrace(current[0], direction[0], 1, FluidCollisionMode.NEVER, true, .1, null);
-                                Location hitLocation = null;
-                                LivingEntity hitEntity = null;
-                                if (ray != null) {
-                                    try {
-                                        hitEntity = (LivingEntity) ray.getHitEntity();
-                                    } catch (Exception ignore) {
-                                    }
-                                    try {
-                                        hitLocation = ray.getHitPosition().toLocation(p.getWorld());
-                                    } catch (Exception ignore) {
-                                    }
-                                    if (hitLocation != null && hitEntity == null) {
-                                        hasHit[0] = true;
-                                        if (BlockDecay.decay.containsKey(ray.getHitBlock())){
-                                            DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
-                                            block.damage(30);
-                                            block.setForceful(true);
-                                        }
-                                    }
-                                    if (hitEntity != null && (!(hitEntity == p && range[0] <= 2))) {
-                                        hasHit[0] = true;
-
-                                        ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(),EntityType.ARMOR_STAND);
-                                        stand.setInvisible(true);
-                                        stand.setMarker(true);
-                                        stand.setCustomNameVisible(false);
-                                        stand.setCustomName(p.getDisplayName() + "'s Mana Bullet");
-                                        TeamsInit.addToTeam(stand,TeamsInit.getTeamName(p));
-
-                                        hitEntity.damage(2, stand);
-
-                                        stand.remove();
-                                    }
-                                }
-                                if (!hasHit[0]) {
-                                    current[0] = current[0].add(direction[0]);
-                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current[0], 2, 0, 0, 0, 0);
-                                    range[0]++;
-                                    if (range[0] >= 50) this.cancel();
-
-                                    //code for shield reflection--------------------------------------------------------
-                                    for (Entity shield : Shield.shieldMap.keySet()) {
-                                        if (shield.getLocation().distance(current[0])<Shield.shieldMap.get(shield).getRadius()+.5){
-                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0],direction[0]);
-                                        }
-                                    }
-                                    //----------------------------------------------------------------------------------
-                                }
-                            } else {
-                                hasHit[0] = true;
+            Location current = p.getEyeLocation().add(p.getEyeLocation().getDirection());
+            Vector direction = p.getEyeLocation().getDirection();
+            int range = 0;
+            while (true) {
+                if (current.isWorldLoaded()) {
+                    RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .1, null);
+                    if (ray != null) {
+                        Location hitLocation = null;
+                        LivingEntity hitEntity = null;
+                        try {
+                            hitEntity = (LivingEntity) ray.getHitEntity();
+                        } catch (Exception ignore) {
+                        }
+                        try {
+                            hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                        } catch (Exception ignore) {
+                        }
+                        if (hitLocation != null && hitEntity == null) {
+                            if (BlockDecay.decay.containsKey(ray.getHitBlock())) {
+                                DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
+                                block.damage(30);
+                                block.setForceful(true);
                             }
-                        } else {
-                            this.cancel();
+                            break;
+                        }
+                        if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
+
+                            ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                            stand.setInvisible(true);
+                            stand.setMarker(true);
+                            stand.setCustomNameVisible(false);
+                            stand.setCustomName(p.getDisplayName() + "'s Mana Bullet");
+                            TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
+
+                            hitEntity.damage(2, stand);
+
+                            stand.remove();
+                            break;
                         }
                     }
-                }
-            }.runTaskTimer(plugin,1,1);
+                    current = current.add(direction);
+                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 2, 0, 0, 0, 0);
+                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current.add(direction), 2, 0, 0, 0, 0);
 
+                    range++;
+                    if (range >= 30) break;
+
+                    //code for shield reflection--------------------------------------------------------
+                    for (Entity shield : Shield.shieldMap.keySet()) {
+                        if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
+                            direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
+                        }
+                    }
+                    //----------------------------------------------------------------------------------
+                } else {break;}
+            }
         }
     }
+
 }

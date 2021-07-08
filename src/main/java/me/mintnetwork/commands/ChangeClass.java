@@ -8,6 +8,7 @@ import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -59,7 +60,7 @@ public class ChangeClass implements CommandExecutor {
         if (args.length>0) {
             switch (args[0].toLowerCase()) {
                 case "alchemist":
-                    meta.setDisplayName(Utils.chat("&rAcid Vial"));
+                    meta.setDisplayName(ChatColor.RESET + "Acid Vial");
                     wandList.add(meta.clone());
                     meta.setDisplayName(ChatColor.RESET+("Healing Potion"));
                     wandList.add(meta.clone());

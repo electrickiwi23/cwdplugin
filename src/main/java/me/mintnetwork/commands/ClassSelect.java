@@ -278,7 +278,7 @@ public class ClassSelect implements CommandExecutor {
 
     }
 
-    public Inventory classEditInventory(Player player, Inventory invet){
+    public static Inventory classEditInventory(Player player, Inventory invet){
         Inventory inv = Bukkit.createInventory(null, 18, ChatColor.BOLD+"Select Class");
         inv.setContents(invet.getContents());
 

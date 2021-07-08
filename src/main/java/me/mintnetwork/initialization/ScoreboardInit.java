@@ -3,6 +3,7 @@ package me.mintnetwork.initialization;
 import me.mintnetwork.Main;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -52,7 +53,7 @@ public class ScoreboardInit {
 
         if (board.getObjective("sidebar")!=null) board.getObjective("sidebar").unregister();
 
-        sidebar = board.registerNewObjective("sidebar","dummy", Utils.chat("&l " + string));
+        sidebar = board.registerNewObjective("sidebar","dummy", ChatColor.BOLD+(" " + string));
 
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 

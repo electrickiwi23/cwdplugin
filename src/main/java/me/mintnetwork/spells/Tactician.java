@@ -85,10 +85,10 @@ public class Tactician {
                                         @Override
                                         public void run() {
                                             Wizard victimWiz = WizardInit.playersWizards.get(finalHitEntity.getUniqueId());
-                                            p.sendMessage(Utils.chat("&n&l" +finalHitEntity.getName() + ":"));
-                                            p.sendMessage(Utils.chat("&cHealth: " + Math.ceil((finalHitEntity).getHealth())));
-                                            p.sendMessage(Utils.chat("&aMana: " + victimWiz.Mana));
-                                            p.sendMessage(Utils.chat("&6Ultimate: " + (int) (Ultimate.getUltPercentage(finalHitEntity) * 100) + "%"));
+                                            p.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + (finalHitEntity.getName() + ":"));
+                                            p.sendMessage(ChatColor.RED + ("Health: " + Math.ceil((finalHitEntity).getHealth())));
+                                            p.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
+                                            p.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage(finalHitEntity) * 100) + "%"));
                                         }
                                     });
                                 }

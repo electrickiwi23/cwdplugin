@@ -5,6 +5,7 @@ import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -57,10 +58,10 @@ public class AssignTeams implements CommandExecutor {
                 if (teams==2||teams==4){
                     TeamsInit.initializeTeams(teams,team1,team2);
                     return true;
-                }  p.sendMessage(Utils.chat("&cThere must be either 2 or 4 teams."));
+                }  p.sendMessage(ChatColor.RED+"There must be either 2 or 4 teams.");
 
             } else {
-                p.sendMessage(Utils.chat("&cYou must input an amount of teams."));
+                p.sendMessage(ChatColor.RED+"&cYou must input an amount of teams.");
             }
 
 

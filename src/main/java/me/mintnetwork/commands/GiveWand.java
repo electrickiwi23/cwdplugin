@@ -4,6 +4,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,55 +42,55 @@ public class GiveWand implements CommandExecutor {
 
                         switch (args[0].toLowerCase()) {
                             case ("fireworkbolt"):
-                                meta.setDisplayName(Utils.chat("&rFirework Bolt"));
+                                meta.setDisplayName(ChatColor.RESET + ("Firework Bolt"));
                                 break;
                             case ("jumpboost"):
-                                meta.setDisplayName(Utils.chat("&rJump Boost"));
+                                meta.setDisplayName(ChatColor.RESET + ("Jump Boost"));
                                 break;
                             case ("engineblast"):
-                                meta.setDisplayName(Utils.chat("&rEngine Blast"));
+                                meta.setDisplayName(ChatColor.RESET + ("Engine Blast"));
                                 break;
                             case ("dragonorb"):
-                                meta.setDisplayName(Utils.chat("&rDragon Orb"));
+                                meta.setDisplayName(ChatColor.RESET + ("Dragon Orb"));
                                 break;
                             case ("batsonar"):
-                                meta.setDisplayName(Utils.chat("&rBat Sonar"));;
+                                meta.setDisplayName(ChatColor.RESET + ("Bat Sonar"));;
                                 break;
                             case ("tntring"):
-                                meta.setDisplayName(Utils.chat("&rTNT Ring"));
+                                meta.setDisplayName(ChatColor.RESET + ("TNT Ring"));
                                 break;
                             case ("hivebolt"):
-                                meta.setDisplayName(Utils.chat("&rHive Bolt"));
+                                meta.setDisplayName(ChatColor.RESET + ("Hive Bolt"));
                                 break;
                             case ("blackhole"):
-                                meta.setDisplayName(Utils.chat("&rBlack Hole"));
+                                meta.setDisplayName(ChatColor.RESET + ("Black Hole"));
                                 break;
                             case ("endwarp"):
-                                meta.setDisplayName(Utils.chat("&rEnd Warp"));
+                                meta.setDisplayName(ChatColor.RESET + ("End Warp"));
                                 break;
                             case ("babyboomer"):
-                                meta.setDisplayName(Utils.chat("&rBaby Boomer"));
+                                meta.setDisplayName(ChatColor.RESET + ("Baby Boomer"));
                                 break;
                             case ("zombiesummon"):
-                                meta.setDisplayName(Utils.chat("&rZombie Summon"));
+                                meta.setDisplayName(ChatColor.RESET + ("Zombie Summon"));
                                 break;
                             case ("slimeball"):
-                                meta.setDisplayName(Utils.chat("&rSlime Ball"));
+                                meta.setDisplayName(ChatColor.RESET + ("Slime Ball"));
                                 break;
                             case ("flashstep"):
-                                meta.setDisplayName(Utils.chat("&rFlash Step"));
+                                meta.setDisplayName(ChatColor.RESET + ("Flash Step"));
                                 break;
                             case ("shoulderblitz"):
-                                meta.setDisplayName(Utils.chat("&rShoulder Blitz"));
+                                meta.setDisplayName(ChatColor.RESET + ("Shoulder Blitz"));
                                 break;
                             case ("anviltoss"):
-                                meta.setDisplayName(Utils.chat("&rAnvil Toss"));
+                                meta.setDisplayName(ChatColor.RESET + ("Anvil Toss"));
                                 break;
                             case ("stormstrike"):
-                                meta.setDisplayName(Utils.chat("&rStorm Strike"));
+                                meta.setDisplayName(ChatColor.RESET + ("Storm Strike"));
                                 break;
                             case("manabullet"):
-                                meta.setDisplayName(Utils.chat("&rMana Bullet"));
+                                meta.setDisplayName(ChatColor.RESET + ("Mana Bullet"));
                                 break;
 
 
@@ -99,7 +100,7 @@ public class GiveWand implements CommandExecutor {
 
                         wizard.wands.add(baseWand);
                 } else{
-                    p.sendMessage(Utils.chat("&cYou must select a spell."));
+                    p.sendMessage(ChatColor.RED+("You must select a spell."));
                 }
 //        }
         return false;

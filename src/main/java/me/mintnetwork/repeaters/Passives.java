@@ -50,22 +50,22 @@ public class Passives {
 
                                         switch ((int) Math.ceil(Math.random() * 4)) {
                                             case (1):
-                                                potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Swiftness"));
+                                                potionMeta.setDisplayName(ChatColor.RESET + ("Splash Potion of Swiftness"));
                                                 potionMeta.setColor(Color.fromRGB(124, 175, 198));
                                                 potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1), false);
                                                 break;
                                             case (2):
-                                                potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Regeneration"));
+                                                potionMeta.setDisplayName(ChatColor.RESET + ("Splash Potion of Regeneration"));
                                                 potionMeta.setColor(Color.fromRGB(205, 92, 171));
                                                 potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 1), false);
                                                 break;
                                             case (3):
-                                                potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Poison"));
+                                                potionMeta.setDisplayName(ChatColor.RESET + ("Splash Potion of Poison"));
                                                 potionMeta.setColor(Color.fromRGB(78, 147, 49));
                                                 potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.POISON, 200, 1), false);
                                                 break;
                                             case (4):
-                                                potionMeta.setDisplayName(Utils.chat("&rSplash Potion of Slowness"));
+                                                potionMeta.setDisplayName(ChatColor.RESET + ("Splash Potion of Slowness"));
                                                 potionMeta.setColor(Color.fromRGB(90, 108, 129));
                                                 potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SLOW, 200, 1), false);
                                                 break;

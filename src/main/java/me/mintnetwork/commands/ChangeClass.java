@@ -8,6 +8,7 @@ import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -36,14 +37,6 @@ public class ChangeClass implements CommandExecutor {
         plugin.getCommand("changeclass").setExecutor(this);
     }
 
-    public static void AutoFill(Main plugin){
-        plugin.getCommand("changeclass").setTabCompleter(new TabCompleter() {
-            @Override
-            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                return null;
-            }
-        });
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -67,143 +60,143 @@ public class ChangeClass implements CommandExecutor {
         if (args.length>0) {
             switch (args[0].toLowerCase()) {
                 case "alchemist":
-                    meta.setDisplayName(Utils.chat("&rAcid Vial"));
+                    meta.setDisplayName(ChatColor.RESET + "Acid Vial");
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rHealing Potion"));
+                    meta.setDisplayName(ChatColor.RESET+("Healing Potion"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rPlague Potion"));
+                    meta.setDisplayName(ChatColor.RESET+("Plague Potion"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rElixir of Immortality"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Elixir of Immortality"));
                     wizard.kitID = Kit.ALCHEMIST;
                     break;
                 case ("bard"):
-                    meta.setDisplayName(Utils.chat("&rSong of Healing"));
+                    meta.setDisplayName(ChatColor.RESET+("Song of Healing"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rSong of Haste"));
+                    meta.setDisplayName(ChatColor.RESET+("Song of Haste"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rConcussion Ring"));
+                    meta.setDisplayName(ChatColor.RESET+("Concussion Ring"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rSiren Song"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Siren Song"));
                     wizard.kitID = Kit.BARD;
                     break;
                 case ("berserker"):
-                    meta.setDisplayName(Utils.chat("&rSpeed Rush"));
+                    meta.setDisplayName(ChatColor.RESET+("Speed Rush"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rForce Pull"));
+                    meta.setDisplayName(ChatColor.RESET+("Force Pull"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rUnleash Rage"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Unleash Rage"));
                     wizard.kitID = Kit.BERSERKER;
                     break;
                 case ("bloodmage"):
-                    meta.setDisplayName(Utils.chat("&rBlood Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Blood Bolt"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rLife Sacrifice"));
+                    meta.setDisplayName(ChatColor.RESET+("Life Sacrifice"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rBlood Tracker"));
+                    meta.setDisplayName(ChatColor.RESET+("Blood Tracker"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rBlood Link Ritual"));
+                    ultMeta.setDisplayName(ChatColor.RESET + ("Blood Link Ritual"));
                     wizard.kitID = Kit.BLOOD_MAGE;
                     StatusEffects.bloodLink.put(p,new HashMap<>());
                     break;
                 case ("builder"):
-                    meta.setDisplayName(Utils.chat("&rQuick Build"));
+                    meta.setDisplayName(ChatColor.RESET+("Quick Build"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rPop up Tower"));
+                    meta.setDisplayName(ChatColor.RESET+("Pop up Tower"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rBridge Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Bridge Bolt"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rNetherite Wall"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Netherite Wall"));
                     wizard.kitID = Kit.BUILDER;
                     break;
                 case ("cleric"):
-                    meta.setDisplayName(Utils.chat("&rHeal Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rHealing Pillar"));
+                    meta.setDisplayName(ChatColor.RESET+("Healing Pillar"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rPurification Wave"));
+                    meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rDivine Intervention"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Divine Intervention"));
                     wizard.kitID = Kit.CLERIC;
                     break;
                 case ("aviator"):
-                    meta.setDisplayName(Utils.chat("&rCloud Burst"));
+                    meta.setDisplayName(ChatColor.RESET+("Cloud Burst"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rAir Dash"));
+                    meta.setDisplayName(ChatColor.RESET+("Air Dash"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rAir Needles"));
+                    meta.setDisplayName(ChatColor.RESET+("Air Needles"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rTornado Blast"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
                     wizard.kitID = Kit.AVIATOR;
                     break;
                 case ("demolitionist"):
-                    meta.setDisplayName(Utils.chat("&rTNT Line"));
+                    meta.setDisplayName(ChatColor.RESET+("TNT Line"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rTNT Grenade"));
+                    meta.setDisplayName(ChatColor.RESET+("TNT Grenade"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rSticky Grenade"));
+                    meta.setDisplayName(ChatColor.RESET+("Sticky Grenade"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rCluster Bomb"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Cluster Bomb"));
                     wizard.kitID = Kit.DEMOLITIONIST;
                     break;
                 case ("painter"):
-                    meta.setDisplayName(Utils.chat("&rSpray Paint"));
+                    meta.setDisplayName(ChatColor.RESET+("Spray Paint"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rPaint Canister"));
+                    meta.setDisplayName(ChatColor.RESET+("Paint Canister"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rBrush Stroke"));
+                    meta.setDisplayName(ChatColor.RESET+("Brush Stroke"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rPaint Activate"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Paint Activate"));
                     wizard.kitID = Kit.PAINTER;
                     break;
                 case ("pillarman"):
-                    meta.setDisplayName(Utils.chat("&rVoid Rift"));
+                    meta.setDisplayName(ChatColor.RESET+("Void Rift"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rBeam Pillar"));
+                    meta.setDisplayName(ChatColor.RESET+("Beam Pillar"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rMana Pillar"));
+                    meta.setDisplayName(ChatColor.RESET+("Mana Pillar"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rSkeleton Spirit"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Skeleton Spirit"));
                     wizard.kitID = Kit.PILLAR_MAN;
                     break;
                 case ("shadow"):
-                    meta.setDisplayName(Utils.chat("&rDarkness Camouflage"));
+                    meta.setDisplayName(ChatColor.RESET+("Darkness Camouflage"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rShadow Dash"));
+                    meta.setDisplayName(ChatColor.RESET+("Shadow Dash"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rPray Abduction"));
+                    meta.setDisplayName(ChatColor.RESET+("Pray Abduction"));
                     wandList.add(meta.clone());
                     p.setCustomNameVisible(false);
-                    ultMeta.setDisplayName(Utils.chat("&rConsuming Midnight"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Consuming Midnight"));
                     wizard.kitID = Kit.SHADOW;
                     break;
                 case ("spellslinger"):
-                    meta.setDisplayName(Utils.chat("&rLightning Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Lightning Bolt"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rFire Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Fire Bolt"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rIce Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Ice Bolt"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rElemental Blast"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Elemental Blast"));
                     wizard.kitID = Kit.SPELL_SLINGER;
                     break;
                 case ("tactician"):
-                    meta.setDisplayName(Utils.chat("&rSniper Bolt"));
+                    meta.setDisplayName(ChatColor.RESET+("Sniper Bolt"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rMolotov Cocktail"));
+                    meta.setDisplayName(ChatColor.RESET+("Molotov Cocktail"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rGrapple Hook"));
+                    meta.setDisplayName(ChatColor.RESET+("Grapple Hook"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rAir Strike"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Air Strike"));
                     wizard.kitID = Kit.TACTICIAN;
                     break;
                 case ("protector"):
-                    meta.setDisplayName(Utils.chat("&rArial Slam"));
+                    meta.setDisplayName(ChatColor.RESET+("Arial Slam"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rDome of Safety"));
+                    meta.setDisplayName(ChatColor.RESET+("Dome of Safety"));
                     wandList.add(meta.clone());
-                    meta.setDisplayName(Utils.chat("&rArmor Aura"));
+                    meta.setDisplayName(ChatColor.RESET+("Armor Aura"));
                     wandList.add(meta.clone());
-                    ultMeta.setDisplayName(Utils.chat("&rAura of Protection"));
+                    ultMeta.setDisplayName(ChatColor.RESET+("Aura of Protection"));
                     wizard.kitID = Kit.PROTECTOR;
                     break;
             }
@@ -247,7 +240,7 @@ public class ChangeClass implements CommandExecutor {
                     ItemMeta swordMeta = sword.getItemMeta();
                     if (wizard.kitID.equals(Kit.BERSERKER)) {
                         sword.setType(Material.STONE_SWORD);
-                        swordMeta.setDisplayName((Utils.chat("&rBerserker Blade")));
+                        swordMeta.setDisplayName((ChatColor.RESET+("Berserker Blade")));
                     }
                     swordMeta.setUnbreakable(true);
                     sword.setItemMeta(swordMeta);

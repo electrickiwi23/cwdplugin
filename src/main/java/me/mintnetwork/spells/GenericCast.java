@@ -11,6 +11,7 @@ import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -34,7 +35,7 @@ public class GenericCast {
 
 
     public static void FireworkBolt(Player p) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.FIREWORK_BOLT_COST)) {
             Firework firework = (Firework) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.FIREWORK);
             FireworkEffect.Builder effect = FireworkEffect.builder();
             FireworkMeta meta = firework.getFireworkMeta();
@@ -70,14 +71,14 @@ public class GenericCast {
     }
 
     public static void JumpBoost(Player p) {
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.JUMP_BOOST_COST)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 120, 3, true, true));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 120, 1, true, true));
         }
     }
 
     public static void EngineBurst(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.ENGINE_BLAST_COST)) {
 
             Location center = p.getLocation().add(p.getEyeLocation().getDirection().multiply(2));
             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, center.add(0, 1, 0), 4, .4, .4, .4);
@@ -95,7 +96,7 @@ public class GenericCast {
     }
 
     public static void DragonGrenade(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.DRAGON_ORB_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);
@@ -144,7 +145,7 @@ public class GenericCast {
     }
 
     public static void BatSonar(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BAT_SONAR_COST)) {
             Bat bat = (Bat) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.BAT);
             bat.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0);
             bat.setGlowing(true);
@@ -192,7 +193,7 @@ public class GenericCast {
     }
 
     public static void TNTRing(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.TNT_RING_COST)) {
             for (int i = 0; i < 8; i++) {
                 TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
                 Location location = p.getLocation();
@@ -205,7 +206,7 @@ public class GenericCast {
     }
 
     public static void BeeBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.HIVE_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -236,7 +237,7 @@ public class GenericCast {
     }
 
     public static void BlackHole(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.BLACK_HOLE_COST)) {
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
@@ -282,7 +283,7 @@ public class GenericCast {
 
 
     public static void EndWarp(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.END_WARP_COST)) {
             EnderPearl bolt = p.launchProjectile(EnderPearl.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -309,7 +310,7 @@ public class GenericCast {
     }
 
     public static void ChildBomber(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.BABY_BOOMER_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -370,7 +371,7 @@ public class GenericCast {
     }
 
     public static void ZombieSpawn(Player p) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.ZOMBIE_SUMMON_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -415,7 +416,7 @@ public class GenericCast {
     }
 
     public static void SlimeBomb(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.SLIME_BALL_COST)) {
             Snowball grenade = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(grenade, p.getEyeLocation().getDirection());
@@ -427,7 +428,7 @@ public class GenericCast {
     }
 
     public static void VoltStep(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.FLASH_STEP_COST)) {
             Vector direction = p.getEyeLocation().getDirection();
             Location current = p.getLocation().add(direction).add(0, .3, 0);
 
@@ -454,9 +455,9 @@ public class GenericCast {
         }
     }
 
-    public static void BoostSlam(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3));
+    public static void BoostSlam(Player p, Plugin plugin){
+        if (Mana.spendMana(p, Utils.SHOULDER_BLITZ_COST)) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,3));
             p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
 //            StatusEffects.UsingMove.add(p);
 
@@ -479,41 +480,41 @@ public class GenericCast {
 
                             p.teleport(p.getLocation().setDirection(v[0]));
                             p.setVelocity(v[0]);
-                            p.getWorld().spawnParticle(Particle.FLAME, p.getLocation().add(0, 1, 0), 10, .2, .2, .2, .2, null, false);
+                            p.getWorld().spawnParticle(Particle.FLAME,p.getLocation().add(0,1,0),10, .2,.2,.2,.2,null,false);
 
 
                             for (Entity e : p.getNearbyEntities(2, 2, 2)) {
                                 if (e instanceof LivingEntity) {
                                     if (!(e instanceof ArmorStand)) {
-                                        if (p.getBoundingBox().expand(.2, .2, .2, .2, .2, .2).overlaps(e.getBoundingBox())) {
-                                            e.setVelocity(v[0].multiply(1.3).add(new Vector(0, .4, 0)).multiply(1 - ((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
-                                            p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
+                                        if (p.getBoundingBox().expand(.2,.2,.2,.2,.2,.2).overlaps(e.getBoundingBox())) {
+                                            e.setVelocity(v[0].multiply(1.3).add(new Vector(0,.4,0)).multiply(1-((LivingEntity) e).getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue()));
+                                            p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
 
 //                                            StatusEffects.UsingMove.remove(p);
 
                                             ((LivingEntity) e).damage(6);
                                             p.damage(2);
-                                            p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
+                                            p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
                                             hasHit[0] = true;
                                             this.cancel();
                                             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), 1);
                                         }
                                     }
-                                } else if (e instanceof TNTPrimed) {
-                                    p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
+                                } else  if (e instanceof TNTPrimed){
+                                    p.getWorld().playSound(p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, p.getBoundingBox().intersection(e.getBoundingBox()).getCenter().toLocation(p.getWorld()), 1);
 
 //                                    StatusEffects.UsingMove.remove(p);
 
-                                    e.setVelocity(v[0].multiply(1).add(new Vector(0, .4, 0)));
-                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
+                                    e.setVelocity(v[0].multiply(1).add(new Vector(0,.4,0)));
+                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
 
                                     hasHit[0] = true;
                                     this.cancel();
                                 }
                             }
 
-                            RayTraceResult ray = p.getWorld().rayTraceBlocks(p.getLocation().add(0, .5, 0), v[0], 1, FluidCollisionMode.NEVER, true);
+                            RayTraceResult ray = p.getWorld().rayTraceBlocks(p.getLocation().add(0,.5,0), v[0], 1, FluidCollisionMode.NEVER, true);
                             Location hitLocation = null;
                             Block hitBlock = null;
                             if (ray != null) {
@@ -530,8 +531,8 @@ public class GenericCast {
 //                                    StatusEffects.UsingMove.remove(p);
                                     p.damage(2);
                                     p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, hitLocation, 1);
-                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0, .4, 0)));
-                                    p.getWorld().playSound(hitLocation, Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2, 1);
+                                    p.setVelocity(v[0].multiply(-.2).add(new Vector(0,.4,0)));
+                                    p.getWorld().playSound(hitLocation,Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, (float) .2,1);
                                 }
                             }
 
@@ -544,14 +545,14 @@ public class GenericCast {
                         }
                     }.runTaskTimer(plugin, 1, 1);
                 }
-            }, 13);
+            },13);
         }
     }
 
-    public static void AnvilLaunch(Player p, Plugin plugin) {
+    public static void AnvilLaunch(Player p, Plugin plugin){
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
-        if (wizard.thrownAnvil == null) {
-            if (Mana.spendMana(p, 3)) {
+        if (wizard.thrownAnvil==null) {
+            if (Mana.spendMana(p, Utils.ANVIL_TOSS_COST)) {
                 Location start = p.getEyeLocation().add(0, 1, 0);
 
                 FallingBlock anvil = p.getWorld().spawnFallingBlock(start, new MaterialData(Material.ANVIL));
@@ -572,9 +573,9 @@ public class GenericCast {
                     @Override
                     public void run() {
                         current[0] = anvil.getLocation();
-                        if (anvil.isDead()) {
+                        if (anvil.isDead()){
                             Location hit = current[0];
-                            hit = hit.add(0, -1, 0);
+                            hit = hit.add(0,-1,0);
                             final int[] count = {0};
                             Location finalHit = hit;
                             new BukkitRunnable() {
@@ -583,8 +584,8 @@ public class GenericCast {
                                     count[0]++;
                                     for (int j = count[0] * -1; j < count[0] + 1; j++) {
                                         for (int k = count[0] * -1; k < count[0] + 1; k++) {
-                                            if (!(Math.abs(j) == 3 && (Math.abs(k) == 3))) {
-                                                if ((Math.abs(j) == count[0] || (Math.abs(k) == count[0]))) {
+                                            if (!(Math.abs(j) == 3 &&(Math.abs(k) == 3))) {
+                                                if ((Math.abs(j) == count[0] || (Math.abs(k) ==  count[0]))) {
                                                     Location block = new Location(finalHit.getWorld(), finalHit.getX() + j, finalHit.getY(), finalHit.getZ() + k);
                                                     boolean surface;
                                                     surface = (!block.getBlock().isPassable() && block.clone().add(0, 1, 0).getBlock().isPassable());
@@ -650,7 +651,7 @@ public class GenericCast {
     }
 
     public static void StormStrike(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.STORM_STRIKE_COST)) {
             final boolean[] hasHit = {false};
             final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
             final Vector[] direction = {p.getEyeLocation().getDirection()};
@@ -720,7 +721,7 @@ public class GenericCast {
     }
 
     public static void ManaBullet(Player p) {
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.MANA_BULLET_COST)) {
             Location current = p.getEyeLocation().add(p.getEyeLocation().getDirection());
             Vector direction = p.getEyeLocation().getDirection();
             int range = 0;
@@ -779,5 +780,4 @@ public class GenericCast {
             }
         }
     }
-
 }

@@ -31,14 +31,13 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
+
 public class GenericCast {
 
 
 
-
-
     public static void FireworkBolt(Player p) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.FIREWORK_BOLT_COST)) {
             Firework firework = (Firework) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.FIREWORK);
             FireworkEffect.Builder effect = FireworkEffect.builder();
             FireworkMeta meta = firework.getFireworkMeta();
@@ -74,14 +73,14 @@ public class GenericCast {
     }
 
     public static void JumpBoost(Player p) {
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.JUMP_BOOST_COST)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 120, 3, true, true));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 120, 1, true, true));
         }
     }
 
     public static void EngineBurst(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.ENGINE_BLAST_COST)) {
 
             Location center = p.getLocation().add(p.getEyeLocation().getDirection().multiply(2));
             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, center.add(0, 1, 0), 4, .4, .4, .4);
@@ -99,7 +98,7 @@ public class GenericCast {
     }
 
     public static void DragonGrenade(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.DRAGON_ORB_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);
@@ -148,7 +147,7 @@ public class GenericCast {
     }
 
     public static void BatSonar(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BAT_SONAR_COST)) {
             Bat bat = (Bat) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.BAT);
             bat.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0);
             bat.setGlowing(true);
@@ -196,7 +195,7 @@ public class GenericCast {
     }
 
     public static void TNTRing(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.TNT_RING_COST)) {
             for (int i = 0; i < 8; i++) {
                 TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
                 Location location = p.getLocation();
@@ -209,7 +208,7 @@ public class GenericCast {
     }
 
     public static void BeeBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.HIVE_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -240,7 +239,7 @@ public class GenericCast {
     }
 
     public static void BlackHole(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.BLACK_HOLE_COST)) {
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
@@ -286,7 +285,7 @@ public class GenericCast {
 
 
     public static void EndWarp(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.END_WARP_COST)) {
             EnderPearl bolt = p.launchProjectile(EnderPearl.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -313,7 +312,7 @@ public class GenericCast {
     }
 
     public static void ChildBomber(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.BABY_BOOMER_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -374,7 +373,7 @@ public class GenericCast {
     }
 
     public static void ZombieSpawn(Player p) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.ZOMBIE_SUMMON_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
             LeatherArmorMeta meta = (LeatherArmorMeta) helm.getItemMeta();
@@ -419,7 +418,7 @@ public class GenericCast {
     }
 
     public static void SlimeBomb(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.SLIME_BALL_COST)) {
             Snowball grenade = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(grenade, p.getEyeLocation().getDirection());
@@ -431,7 +430,7 @@ public class GenericCast {
     }
 
     public static void VoltStep(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.FLASH_STEP_COST)) {
             Vector direction = p.getEyeLocation().getDirection();
             Location current = p.getLocation().add(direction).add(0, .3, 0);
 
@@ -459,7 +458,7 @@ public class GenericCast {
     }
 
     public static void BoostSlam(Player p, Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.SHOULDER_BLITZ_COST)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20,3));
             p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
 //            StatusEffects.UsingMove.add(p);
@@ -555,7 +554,7 @@ public class GenericCast {
     public static void AnvilLaunch(Player p, Plugin plugin){
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         if (wizard.thrownAnvil==null) {
-            if (Mana.spendMana(p, 3)) {
+            if (Mana.spendMana(p, Utils.ANVIL_TOSS_COST)) {
                 Location start = p.getEyeLocation().add(0, 1, 0);
 
                 FallingBlock anvil = p.getWorld().spawnFallingBlock(start, new MaterialData(Material.ANVIL));
@@ -654,7 +653,7 @@ public class GenericCast {
     }
 
     public static void StormStrike(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.STORM_STRIKE_COST)) {
             final boolean[] hasHit = {false};
             final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
             final Vector[] direction = {p.getEyeLocation().getDirection()};
@@ -723,7 +722,7 @@ public class GenericCast {
         }
     }
     public static void ManaBullet(Player p, Plugin plugin){
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.MANA_BULLET_COST)) {
             final boolean[] hasHit = {false};
             final Location[] current = {p.getEyeLocation().add(p.getEyeLocation().getDirection())};
             final Vector[] direction = {p.getEyeLocation().getDirection()};

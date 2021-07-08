@@ -5,6 +5,7 @@ import de.slikey.effectlib.effect.VortexEffect;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 public class Berserker {
     public static void SpeedBoost(Player p) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.SPEED_BOOST_COST)) {
             Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
             if (!speedMap.containsKey(p)) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
@@ -40,7 +41,7 @@ public class Berserker {
     }
 
     public static void ForcePull(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.FORCE_PULL_COST)) {
         int distance = 12;
         Location start = p.getEyeLocation();
         RayTraceResult ray = p.getWorld().rayTraceBlocks(start, start.getDirection(), distance, FluidCollisionMode.NEVER, true);

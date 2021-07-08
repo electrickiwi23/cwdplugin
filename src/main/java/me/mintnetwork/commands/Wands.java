@@ -57,7 +57,7 @@ public class Wands implements CommandExecutor {
 //      FIREWORK BOLT
         lore.clear();
         lore.add(select);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIREWORK_BOLT_COST); //Let me know if this fucks stuff up
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIREWORK_BOLT_COST);
         lore.add("Shoots an explosive rocket towards your enemies");
 
 

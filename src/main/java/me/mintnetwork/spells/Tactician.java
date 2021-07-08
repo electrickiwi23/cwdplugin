@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class Tactician {
     public static void SniperBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)){
+        if (Mana.spendMana(p, Utils.SNIPER_BOLT_COST)){
             Location spread = p.getEyeLocation();
             if (!p.isSneaking()) {
                 float pitch = spread.getPitch() + (float) (Math.random() * 60 - 30);
@@ -124,7 +124,7 @@ public class Tactician {
     }
 
     public static void Molotov(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.MOLOTOV_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);
@@ -160,7 +160,7 @@ public class Tactician {
     }
 
     public static void GrappleHook(Player p,Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.GRAPPLE_HOOK_COST)) {
             Slime slime = (Slime) p.getWorld().spawnEntity(p.getEyeLocation(),EntityType.SLIME);
             slime.setLeashHolder(p);
             slime.setSize(1);

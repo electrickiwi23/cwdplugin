@@ -9,6 +9,7 @@ import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -27,7 +28,7 @@ import java.util.function.Predicate;
 
 public class PillarMan {
     public static void VoidPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.VOID_PILLAR_COST)) {
             Zombie pillar = (Zombie) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize()).add(.5, .5, .5), EntityType.ZOMBIE);
             pillar.setInvisible(true);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
@@ -114,7 +115,7 @@ public class PillarMan {
     }
 
     public static void ManaPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.MANA_PILLAR_COST)) {
             Zombie pillar = (Zombie) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize()).add(.5, .5, .5), EntityType.ZOMBIE);
             pillar.setInvisible(true);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
@@ -188,7 +189,7 @@ public class PillarMan {
     public static void BeamPillar(Player p, Plugin plugin, Block block, BlockFace face) {
         if (face.getDirection().equals(new Vector(0, 1, 0))) {
             if (p.getWorld().rayTraceBlocks(block.getLocation().add(face.getDirection()), face.getDirection(), 3, FluidCollisionMode.NEVER, true) == null) {
-                if (Mana.spendMana(p, 4)) {
+                if (Mana.spendMana(p, Utils.BEAM_PILLAR_COST)) {
                     for (int i = 1; i < 4; i++) {
                         Block currentBlock = block.getLocation().add(face.getDirection().normalize().multiply(i)).getBlock();
                         if (currentBlock.isPassable()) {

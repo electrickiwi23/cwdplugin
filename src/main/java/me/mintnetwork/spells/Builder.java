@@ -6,6 +6,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +26,7 @@ import java.util.Map;
 
 public class Builder {
     public static void QuickBuild(Player p, Plugin plugin, BlockFace face, Block block) {
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.QUICK_BUILD_COST)) {
             final Location[] current = {block.getLocation().add(face.getDirection().normalize())};
             final int[] count = {0};
             String TeamName = TeamsInit.getTeamName(p);
@@ -66,7 +67,7 @@ public class Builder {
     }
 
     public static void PopUpTower(Player p, Plugin plugin, BlockFace face, Block block) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.POPUP_TOWER_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             for (int i = 1; i < 6; i++) {
                 int finalI = i;
@@ -115,7 +116,7 @@ public class Builder {
     }
 
     public static void BuildBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BUILD_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             bolt.teleport(bolt.getLocation().add(0,-1,0));
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();

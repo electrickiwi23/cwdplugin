@@ -23,6 +23,51 @@ public class Utils {
     public static final int MANA_BULLET_COST = 1;
 
 
+    //mana costs of class spells
+    public static final int ACID_POTION_COST = 3;
+    public static final int HEAL_POTION_COST = 4;
+    public static final int DEBUFF_POTION_COST = 3;
+    public static final int SPEED_SONG_COST = 4;
+    public static final int HEAL_SONG_COST = 3;
+    public static final int STUN_SONG_COST = 3;
+    public static final int SPEED_BOOST_COST = 3;
+    public static final int FORCE_PULL_COST = 4;
+    public static final int BLOOD_BOLT_COST = 3;
+    public static final int BLOOD_SACRIFICE_COST = 6; // IN HEALTH
+    public static final int BLOOD_TRACKER_COST = 3;
+    public static final int QUICK_BUILD_COST = 1;
+    public static final int POPUP_TOWER_COST = 4;
+    public static final int BUILD_BOLT_COST = 3;
+    public static final int HEAL_BOLT_COST = 3;
+    public static final int HEAL_PILLAR_COST = 4;
+    public static final int PURIFICATION_WAVE_COST = 3;
+    public static final int TNT_LINE_COST = 3;
+    public static final int TNT_GRENADE_COST = 1;
+    public static final int TNT_STICK_GRENADE_COST = 2;
+    public static final int SPRAY_PAINT_COST = 2;
+    public static final int PAINT_BOMB_COST = 3;
+    public static final int PAINT_ACTIVATE = 2;
+    public static final int BRUSH_STROKE_COST = 3;
+    public static final int VOID_PILLAR_COST = 4;
+    public static final int MANA_PILLAR_COST = 4;
+    public static final int BEAM_PILLAR_COST = 4;
+    public static final int SLAM_COST = 3;
+    public static final int SHIELD_DOME_COST = 4;
+    public static final int GIVE_ARMOR_COST = 3;
+    public static final int SHADOW_RETREAT_COST = 3;
+    public static final int SHADOW_INVISIBILITY_COST = 3;
+    public static final int SHADOW_GRAPPLE_COST = 3;
+    public static final int AIR_NEEDLES_COST = 3;
+    public static final int CLOUD_BURST_COST = 3;
+    public static final int AIR_DASH_COST = 3;
+    public static final int LIGHTNING_BOLT_COST = 4;
+    public static final int SNOW_BOLT_COST = 3;
+    public static final int FIRE_BOLT_COST = 2;
+    public static final int SNIPER_BOLT_COST = 3;
+    public static final int MOLOTOV_COST = 3;
+    public static final int GRAPPLE_HOOK_COST = 3;
+
+
     //utils
 //    public static String chat (String s) {
 //        return ChatColor.translateAlternateColorCodes('&', s);

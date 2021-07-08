@@ -29,7 +29,7 @@ import java.util.UUID;
 public class BloodMage {
 
     public static void BloodBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BLOOD_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection().multiply(1.3));
@@ -61,7 +61,7 @@ public class BloodMage {
     public static void BloodSacrifice(Player p) {
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         wizard.Mana = wizard.Mana + 3;
-        p.damage(6);
+        p.damage(Utils.BLOOD_SACRIFICE_COST);
         if (wizard.Mana > 10) {
             wizard.Mana = 10;
         }
@@ -70,7 +70,7 @@ public class BloodMage {
     }
 
     public static void BloodTracker(Player p,Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BLOOD_TRACKER_COST)) {
             String teamName = TeamsInit.getTeamName(p);
 
             Vex vex = (Vex) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.VEX);

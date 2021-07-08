@@ -3,6 +3,7 @@ package me.mintnetwork.spells;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class Demolitionist {
 
     public static void TNTLine(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.TNT_LINE_COST)) {
             for (int i = 1; i < 6; i++) {
                 int finalI = i;
                 Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -32,7 +33,7 @@ public class Demolitionist {
     }
 
     public static void TNTGrenade(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 1)) {
+        if (Mana.spendMana(p, Utils.TNT_GRENADE_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);
@@ -75,7 +76,7 @@ public class Demolitionist {
     }
 
     public static void StickyTNTGrenade(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.TNT_STICK_GRENADE_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);

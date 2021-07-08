@@ -8,6 +8,7 @@ import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class SpellSlinger {
 
     public static void LightningBolt(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.LIGHTNING_BOLT_COST)) {
             Vector v = p.getEyeLocation().getDirection();
             Location l = p.getEyeLocation().add(v.normalize());
             BukkitTask cloud = Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -111,7 +112,7 @@ public class SpellSlinger {
     }
 
     public static void SnowBolt(Player p,Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.SNOW_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -138,7 +139,7 @@ public class SpellSlinger {
     }
 
     public static void FireBolt(Player p,Plugin plugin){
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.FIRE_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());

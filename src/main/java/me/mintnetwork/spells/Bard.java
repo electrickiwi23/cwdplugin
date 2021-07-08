@@ -5,6 +5,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -18,12 +19,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Bard {
     public static void SpeedSong(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.SPEED_SONG_COST)) {
             String teamName = TeamsInit.getTeamName(p);
             for (Player victim:Bukkit.getOnlinePlayers() ) {
                 if (victim.getLocation().distance(p.getLocation())<=10) {
@@ -59,7 +61,7 @@ public class Bard {
     }
 
     public static void HealSong(Player p,Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.HEAL_SONG_COST)) {
             String teamName = TeamsInit.getTeamName(p);
             for (Player victim:Bukkit.getOnlinePlayers() ) {
                 if (victim.getLocation().distance(p.getLocation())<=10) {
@@ -95,7 +97,7 @@ public class Bard {
     }
 
     public static void StunSong(Player p, Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.STUN_SONG_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.ARMOR_STAND);
             stand.setMarker(true);
             stand.setInvisible(true);

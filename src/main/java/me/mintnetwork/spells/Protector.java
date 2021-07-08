@@ -9,6 +9,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -28,7 +29,7 @@ public class Protector {
 
     public static void Slam(Player p, Plugin plugin) {
 
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.SLAM_COST)) {
 
             Vector v = p.getEyeLocation().getDirection().setY(0).normalize();
             v.add(new Vector(v.getX() * 2, 2, v.getZ() * 2).normalize().multiply(1.2));
@@ -70,7 +71,7 @@ public class Protector {
     }
 
     public static void ShieldDome(Player p, EffectManager em, Plugin plugin) {
-        if (Mana.spendMana(p, 4)) {
+        if (Mana.spendMana(p, Utils.SHIELD_DOME_COST)) {
             ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             ID.put(stand, "ShieldDome");
@@ -115,7 +116,7 @@ public class Protector {
         }
 
 
-        if (currentVictim!=null && Mana.spendMana(p,3)){
+        if (currentVictim!=null && Mana.spendMana(p,Utils.GIVE_ARMOR_COST)){
            LineEffect line = new LineEffect(em);
            line.setLocation(p.getEyeLocation());
            line.setTargetEntity(currentVictim);

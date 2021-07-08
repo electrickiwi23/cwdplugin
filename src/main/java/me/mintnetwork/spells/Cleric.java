@@ -8,6 +8,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class Cleric {
 
     public static void HealBolt(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.HEAL_BOLT_COST)) {
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -91,7 +92,7 @@ public class Cleric {
 
     public static void HealPillar(Player p, Plugin plugin, BlockFace face, Block block) {
         if (face.getDirection().equals(new Vector(0, 1, 0))) {
-            if (Mana.spendMana(p, 4)) {
+            if (Mana.spendMana(p, Utils.HEAL_PILLAR_COST)) {
                 Block pillarLocation = block.getLocation().add(face.getDirection()).getBlock();
                 Block cakeLocation = pillarLocation.getLocation().add(0, 1, 0).getBlock();
                 if (cakeLocation.isPassable()) {
@@ -142,7 +143,7 @@ public class Cleric {
     }
 
     public static void PurificationWave(Player p, Plugin plugin, EffectManager em) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.PURIFICATION_WAVE_COST)) {
             String teamName = TeamsInit.getTeamName(p);
             ArrayList<Entity> nearby = new ArrayList<>(p.getNearbyEntities(5, 5, 5));
             nearby.add(p);

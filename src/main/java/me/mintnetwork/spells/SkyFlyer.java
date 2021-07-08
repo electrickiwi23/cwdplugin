@@ -4,6 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class SkyFlyer {
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.AIR_NEEDLES_COST)) {
             Arrow arrow = p.launchProjectile(Arrow.class);
             arrow.setVelocity(arrow.getVelocity().multiply(1.5));
             arrow.setGravity(false);
@@ -93,7 +94,7 @@ public class SkyFlyer {
     }
 
     public static void CloudBurst(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.CLOUD_BURST_COST)) {
             p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
             final int[] count = {0};
             p.setVelocity(new Vector(0, 1.4, 0));
@@ -111,7 +112,7 @@ public class SkyFlyer {
     }
 
     public static void AirDash(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.AIR_DASH_COST)) {
             p.setGravity(false);
             double tempY = p.getEyeLocation().getDirection().getY();
             p.setVelocity(p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.3,Math.min(.3,tempY))).normalize().multiply(1.5));

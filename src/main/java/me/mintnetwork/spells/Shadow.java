@@ -7,6 +7,7 @@ import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class Shadow {
     public static void ShadowRetreat(Player p,Plugin plugin) {
 
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.SHADOW_RETREAT_COST)) {
             for (Entity e : p.getNearbyEntities(4, 4, 4)) {
                 if (e instanceof LivingEntity) {
                     String teamName = TeamsInit.getTeamName(e);
@@ -65,7 +66,7 @@ public class Shadow {
     public static void ShadowInvis(Player p, Plugin plugin) {
         Collection<Player> status = StatusEffects.ShadowInvis;
         if (!status.contains(p)) {
-            if (Mana.spendMana(p, 3)) {
+            if (Mana.spendMana(p, Utils.SHADOW_INVISIBILITY_COST)) {
                 status.add(p);
                 ItemStack[] oldArmor = p.getInventory().getArmorContents();
                 ItemStack[] noArmor = new ItemStack[4];
@@ -117,7 +118,7 @@ public class Shadow {
             }
             if (hit != null) {
                 if (hit!=p) {
-                    if (hit instanceof LivingEntity && Mana.spendMana(p, 3)) {
+                    if (hit instanceof LivingEntity && Mana.spendMana(p, Utils.SHADOW_GRAPPLE_COST)) {
 
 
                         new ShadowGrapple(p, (LivingEntity) hit, plugin);

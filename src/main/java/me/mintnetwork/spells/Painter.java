@@ -6,6 +6,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class Painter {
     public static void SprayPaint(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, 2)) {
+        if (Mana.spendMana(p, Utils.SPRAY_PAINT_COST)) {
             for (int i = 0; i < 5; i++) {
                 Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                     @Override
@@ -123,7 +124,7 @@ public class Painter {
                 }
             }
         } else {
-            if (Mana.spendMana(p, 3)) {
+            if (Mana.spendMana(p, Utils.PAINT_BOMB_COST)) {
 
 
                 Snowball grenade = p.launchProjectile(Snowball.class);
@@ -182,7 +183,7 @@ public class Painter {
     public static void PaintReveal(Player p){
         Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
         if (painted.keySet().size()>0){
-            if (Mana.spendMana(p,2)){
+            if (Mana.spendMana(p,Utils.PAINT_ACTIVATE)){
                 Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
                 p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
                 dust = new Particle.DustOptions(Color.ORANGE, 2);
@@ -215,7 +216,7 @@ public class Painter {
     }
 
     public static void BrushStroke(Player p,Plugin plugin){
-        if (Mana.spendMana(p, 3)) {
+        if (Mana.spendMana(p, Utils.BRUSH_STROKE_COST)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,10,3));
             p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
             StatusEffects.UsingMove.add(p);

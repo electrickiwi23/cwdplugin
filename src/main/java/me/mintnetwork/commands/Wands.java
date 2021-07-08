@@ -3,6 +3,7 @@ package me.mintnetwork.commands;
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -56,7 +57,7 @@ public class Wands implements CommandExecutor {
 //      FIREWORK BOLT
         lore.clear();
         lore.add(select);
-        lore.add(ChatColor.GREEN + "Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIREWORK_BOLT_COST);
         lore.add("Shoots an explosive rocket towards your enemies");
 
 
@@ -71,7 +72,7 @@ public class Wands implements CommandExecutor {
 //      JUMP BOOST
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.JUMP_BOOST_COST);
         lore.add("Enhances your jump and slows your fall");
 
         item.setType(Material.RABBIT_FOOT);
@@ -85,7 +86,7 @@ public class Wands implements CommandExecutor {
 //      ENGINE BLAST
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.ENGINE_BLAST_COST);
         lore.add("A blast of smoke propels you and your enemies away");
 
         item.setType(Material.FIRE_CHARGE);
@@ -99,7 +100,7 @@ public class Wands implements CommandExecutor {
 //      DRAGON ORB
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.DRAGON_ORB_COST);
         lore.add("Shoot a timed grenade that releases deadly gasses");
 
         item.setType(Material.DRAGON_BREATH);
@@ -113,7 +114,7 @@ public class Wands implements CommandExecutor {
 //      BAT SONAR
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BAT_SONAR_COST);
         lore.add("Spawn a bat which locates and marks your enemies");
 
         item.setType(Material.SCULK_SENSOR);
@@ -127,7 +128,7 @@ public class Wands implements CommandExecutor {
 //      TNT RING
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_RING_COST);
         lore.add("Create a ring of explosives that detonate after a short time");
 
         item.setType(Material.TNT);
@@ -141,7 +142,7 @@ public class Wands implements CommandExecutor {
 //      HIVE BOLT
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HIVE_BOLT_COST);
         lore.add("Shoots out angry bees which attack anyone near. BEEware!");
 
         item.setType(Material.HONEY_BOTTLE);
@@ -155,7 +156,7 @@ public class Wands implements CommandExecutor {
 //      BLACK HOLE
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLACK_HOLE_COST);
         lore.add("Create a black hole which after charging sucks in everyone around it");
 
         item.setType(Material.NETHER_STAR);
@@ -169,7 +170,7 @@ public class Wands implements CommandExecutor {
 //      END WARP
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.END_WARP_COST);
         lore.add("Shoots out orb which teleports you to location of contact");
 
         item.setType(Material.ENDER_PEARL);
@@ -178,12 +179,12 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         wandsInv.setItem(8, item);
-        
-        
+
+
 //      BABY BOOMER
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BABY_BOOMER_COST);
         lore.add("Child Suicide Squad Member"); //todo do something better me
 
         item.setType(Material.GUNPOWDER);
@@ -192,12 +193,12 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         wandsInv.setItem(9, item);
-        
-        
+
+
 //      ZOMBIE SUMMON
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.ZOMBIE_SUMMON_COST);
         lore.add("Summons a trio of zombie servants");
 
         item.setType(Material.ROTTEN_FLESH);
@@ -211,7 +212,7 @@ public class Wands implements CommandExecutor {
 //      SLIME BALL
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SLIME_BALL_COST);
         lore.add("Shoots a ray that turns blocks into slime and causes knockback in the area");
 
         item.setType(Material.SLIME_BALL);
@@ -225,7 +226,7 @@ public class Wands implements CommandExecutor {
 //      FLASH STEP
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FLASH_STEP_COST);
         lore.add("Teleports you in the direction you are facing");
 
         item.setType(Material.GLOWSTONE_DUST);
@@ -239,7 +240,7 @@ public class Wands implements CommandExecutor {
 //      SHOULDER BLITZ
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHOULDER_BLITZ_COST);
         lore.add("After charging up shoots you forward");
 
         item.setType(Material.IRON_CHESTPLATE);
@@ -253,7 +254,7 @@ public class Wands implements CommandExecutor {
 //      ANVIL TOSS
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.ANVIL_TOSS_COST);
         lore.add("Throws an anvil that launches enemies around where it lands");
 
         item.setType(Material.ANVIL);
@@ -267,7 +268,7 @@ public class Wands implements CommandExecutor {
 //      STORM STRIKE
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1"); //todo @Clams
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.STORM_STRIKE_COST);
         lore.add("Causes a lightning strike after a short charge");
 
         item.setType(Material.LIGHTNING_ROD);
@@ -281,7 +282,7 @@ public class Wands implements CommandExecutor {
 //      MANA BULLET
         lore.clear();
         lore.add(select);
-        lore.add("Mana Cost: 1");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MANA_BULLET_COST);
         lore.add("Shoots a bolt which deals a small amount of damage.");
 
         item.setType(Material.EMERALD);

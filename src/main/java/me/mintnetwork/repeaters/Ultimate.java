@@ -29,6 +29,7 @@ public class Ultimate {
         switch (wizard.kitID) {
             case SPELL_SLINGER:
             case PAINTER:
+            case CLERIC:
                 if (wizard.Ult >= 480) {
                     has = true;
                 }
@@ -40,7 +41,6 @@ public class Ultimate {
             case BARD:
             case BLOOD_MAGE:
             case BUILDER:
-            case CLERIC:
             case TACTICIAN:
             case PROTECTOR:
                 if (wizard.Ult >= 720) {
@@ -66,6 +66,7 @@ public class Ultimate {
         switch (wizard.kitID) {
             case SPELL_SLINGER:
             case PAINTER:
+            case CLERIC:
                 if (wizard.Ult >= 480) {
                     has = true;
                 }
@@ -77,7 +78,6 @@ public class Ultimate {
             case BARD:
             case BLOOD_MAGE:
             case BUILDER:
-            case CLERIC:
             case TACTICIAN:
             case PROTECTOR:
                 if (wizard.Ult >= 720) {
@@ -106,6 +106,7 @@ public class Ultimate {
         switch (wizard.kitID) {
             case SPELL_SLINGER:
             case PAINTER:
+            case CLERIC:
                 percentage = wizard.Ult/480.0;
                 break;
             case DEMOLITIONIST:
@@ -115,7 +116,6 @@ public class Ultimate {
             case BARD:
             case BLOOD_MAGE:
             case BUILDER:
-            case CLERIC:
             case TACTICIAN:
             case PROTECTOR:
                 percentage = wizard.Ult/720.0;
@@ -135,6 +135,7 @@ public class Ultimate {
         switch (wizard.kitID) {
             case SPELL_SLINGER:
             case PAINTER:
+            case CLERIC:
                 wizard.Ult = 480;
                 break;
             case DEMOLITIONIST:
@@ -144,7 +145,6 @@ public class Ultimate {
             case BARD:
             case BLOOD_MAGE:
             case BUILDER:
-            case CLERIC:
             case TACTICIAN:
             case PROTECTOR:
                 wizard.Ult = 720;
@@ -173,6 +173,7 @@ public class Ultimate {
                                 switch (wizard.kitID) {
                                     case SPELL_SLINGER:
                                     case PAINTER:
+                                    case CLERIC:
                                         if (wizard.Ult < 480) {
                                             wizard.Ult++;
                                         }
@@ -199,7 +200,6 @@ public class Ultimate {
                                     case BARD:
                                     case BLOOD_MAGE:
                                     case BUILDER:
-                                    case CLERIC:
                                     case TACTICIAN:
                                     case PROTECTOR:
                                         if (wizard.Ult < 720) {

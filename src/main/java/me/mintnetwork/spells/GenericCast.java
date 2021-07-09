@@ -29,6 +29,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class GenericCast {
@@ -370,7 +371,7 @@ public class GenericCast {
         }
     }
 
-    public static void ZombieSpawn(Player p) {
+    public static void ZombieSpawn(Player p,Plugin plugin) {
         if (Mana.spendMana(p, Utils.ZOMBIE_SUMMON_COST)) {
             String TeamName = TeamsInit.getTeamName(p);
             ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
@@ -385,7 +386,7 @@ public class GenericCast {
             } else if (TeamName.equals("yellow")) {
                 meta.setColor(Color.fromRGB(120, 120, 2));
             }
-
+            ArrayList<Zombie> zombies = new ArrayList<>();
 
             for (int i = 0; i < 3; i++) {
 
@@ -411,7 +412,21 @@ public class GenericCast {
                 zombie.getEquipment().setChestplateDropChance(0);
                 zombie.getEquipment().setLeggingsDropChance(0);
                 zombie.getEquipment().setBootsDropChance(0);
+
+                zombies.add(zombie);
             }
+
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    for (Zombie zombie:zombies) {
+                        zombie.damage(100);
+                    }
+
+                }
+            },600);
+
+
         }
     }
 

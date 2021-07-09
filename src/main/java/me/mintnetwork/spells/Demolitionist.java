@@ -18,6 +18,7 @@ import java.util.Map;
 public class Demolitionist {
 
     public static void TNTLine(Player p, Plugin plugin) {
+        p.playSound(p.getEyeLocation(),Sound.ENTITY_TNT_PRIMED,1.3F,1);
         if (Mana.spendMana(p, Utils.TNT_LINE_COST)) {
             for (int i = 1; i < 6; i++) {
                 int finalI = i;

@@ -5,10 +5,7 @@ import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -21,12 +18,13 @@ import java.util.Map;
 public class SkyFlyer {
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
         if (Mana.spendMana(p, Utils.AIR_NEEDLES_COST)) {
+            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ARROW_SHOOT,.3F,1);
             Arrow arrow = p.launchProjectile(Arrow.class);
             arrow.setVelocity(arrow.getVelocity().multiply(1.5));
             arrow.setGravity(false);
             Map<Entity, String> ID = ProjectileInfo.getProjectileID();
             ID.put(arrow, "Wind Arrow");
-            arrow.setDamage(.25);
+            arrow.setDamage(.3);
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
             Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
@@ -44,13 +42,14 @@ public class SkyFlyer {
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ARROW_SHOOT,.3F,1);
 
                     Arrow arrow = p.launchProjectile(Arrow.class);
                     arrow.setVelocity(arrow.getVelocity().multiply(1.5));
                     arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.25);
+                    arrow.setDamage(.3);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
 
@@ -70,12 +69,14 @@ public class SkyFlyer {
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
+
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ARROW_SHOOT,.3F,1);
                     Arrow arrow = p.launchProjectile(Arrow.class);
                     arrow.setVelocity(arrow.getVelocity().multiply(1.5));
                     arrow.setGravity(false);
                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
                     ID.put(arrow, "Wind Arrow");
-                    arrow.setDamage(.25);
+                    arrow.setDamage(.3);
                     arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                     Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
                     Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -95,6 +96,7 @@ public class SkyFlyer {
 
     public static void CloudBurst(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.CLOUD_BURST_COST)) {
+            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP,.7F,1);
             p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
             final int[] count = {0};
             p.setVelocity(new Vector(0, 1.4, 0));

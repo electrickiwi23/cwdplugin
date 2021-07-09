@@ -31,6 +31,7 @@ import java.util.Map;
 public class Berserker {
     public static void SwordLunge(Player p){
         if (Mana.spendMana(p,2)){
+            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GOAT_LONG_JUMP,1,1);
          p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize().multiply(1.2));
 
         }
@@ -96,7 +97,7 @@ public class Berserker {
         if (Ultimate.spendUlt(p)) {
             for (ItemStack i : p.getInventory().getContents()) {
                 if (i != null) {
-                    if (i.getType().equals(Material.IRON_SWORD)) {
+                    if (i.getType().equals(Material.STONE_SWORD)) {
                         i.addEnchantment(Enchantment.KNOCKBACK, 1);
                     }
                 }

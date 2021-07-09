@@ -135,7 +135,7 @@ public class RightClickListener implements Listener {
                                         break;
                                     case("Pop up Tower"):
                                         if (event.getClickedBlock() != null) {
-                                            Builder.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
+                                            Builder.PopUpTower(p, plugin, event.getClickedBlock());
                                         }
                                         break;
                                     case("Bridge Bolt"):
@@ -288,7 +288,7 @@ public class RightClickListener implements Listener {
                                         GenericCast.ChildBomber(p,plugin);
                                         break;
                                     case("Zombie Summon"):
-                                        GenericCast.ZombieSpawn(p);
+                                        GenericCast.ZombieSpawn(p,plugin);
                                         break;
                                     case("Slime Ball"):
                                         GenericCast.SlimeBomb(p,plugin);

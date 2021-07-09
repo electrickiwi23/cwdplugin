@@ -15,6 +15,7 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -108,7 +109,7 @@ public class ProjectileHitListener implements Listener {
                     cloud.setRadiusPerTick((float) -.005);
                     cloud.setDuration(200);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, true, true), false);
-                    cloud.setReapplicationDelay(10);
+                    cloud.setReapplicationDelay(14);
                     cloud.setCustomName("Acid Pool");
                 }
                 if (ID.get(potion).equals("Heal Potion")) {
@@ -119,7 +120,7 @@ public class ProjectileHitListener implements Listener {
                     cloud.setRadiusPerTick((float) -.005);
                     cloud.setDuration(150);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 3, false, false), false);
-                    cloud.setReapplicationDelay(20);
+                    cloud.setReapplicationDelay(17);
                     cloud.setSource(shooter);
                 }
                 if (ID.get(potion).equals("Debuff Potion")) {
@@ -205,7 +206,16 @@ public class ProjectileHitListener implements Listener {
                         hit.setFireTicks(60);
                     }
                     if (hitBlock != null) {
+                        hitBlock.getWorld().playSound(hitBlock.getLocation().add(.5,.5,.5),Sound.ITEM_FLINTANDSTEEL_USE,1,1);
                         hitBlock.getLocation().add(hitFace.getDirection()).getBlock().setType(Material.FIRE);
+                        if (hitBlock.getLocation().add(hitFace.getDirection()).getBlock().getType()==Material.FIRE) {
+                            Fire fire = (Fire) hitBlock.getLocation().add(hitFace.getDirection()).getBlock().getBlockData();
+                            if (fire.getAllowedFaces().contains(hitFace.getOppositeFace())) {
+                                fire.setFace(hitFace.getOppositeFace(), true);
+                                hitBlock.getLocation().add(hitFace.getDirection()).getBlock().setBlockData(fire);
+                            }
+                        }
+
                     }
                     task.get(snow).cancel();
                 }
@@ -224,9 +234,13 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
-                        hit.damage(5,snow);
-                        shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 2));
-                        if (hit instanceof Player) BloodMage.BloodLink((Player) shooter, (Player) hit);
+                        if (TeamsInit.getTeamName(hit).equals("")||!TeamsInit.getTeamName(hit).equals(TeamsInit.getTeamName(shooter))) {
+                            hit.damage(5, snow);
+                            if (hit instanceof Player) {
+                                BloodMage.BloodLink((Player) shooter, (Player) hit);
+                                shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 2));
+                            }
+                        }
                     }
                     if (hitBlock != null){
                         if (BlockDecay.decay.containsKey(hitBlock)){

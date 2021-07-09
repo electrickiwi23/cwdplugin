@@ -76,6 +76,7 @@ public final class Main extends JavaPlugin {
         new PlayerDismountListener(this);
         new InventoryClickListener(this);
         new DropItemListener(this);
+        new BlockFallListener(this);
 
         new TeamsInit(this);
 

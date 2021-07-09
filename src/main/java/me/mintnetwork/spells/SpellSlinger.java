@@ -140,6 +140,7 @@ public class SpellSlinger {
 
     public static void FireBolt(Player p,Plugin plugin){
         if (Mana.spendMana(p, Utils.FIRE_BOLT_COST)) {
+            p.getWorld().playSound(p.getEyeLocation(),Sound.ENTITY_BLAZE_SHOOT,1,1);
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());

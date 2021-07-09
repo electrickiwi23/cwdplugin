@@ -61,7 +61,7 @@ public class AssignTeams implements CommandExecutor {
                 }  p.sendMessage(ChatColor.RED+"There must be either 2 or 4 teams.");
 
             } else {
-                p.sendMessage(ChatColor.RED+"&cYou must input an amount of teams.");
+                p.sendMessage(ChatColor.RED+"You must input an amount of teams.");
             }
 
 

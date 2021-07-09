@@ -145,7 +145,7 @@ public class Wands implements CommandExecutor {
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HIVE_BOLT_COST);
         lore.add("Shoots out angry bees which attack anyone near. BEEware!");
 
-        item.setType(Material.HONEY_BOTTLE);
+        item.setType(Material.HONEYCOMB);
         meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE +"Hive Bolt");
         meta.setLore(lore);

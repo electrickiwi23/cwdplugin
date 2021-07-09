@@ -9,9 +9,9 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -132,8 +132,11 @@ public class Painter {
                 Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
                 velocity.put(grenade, p.getEyeLocation().getDirection());
                 Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-
-                grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
+                ItemStack item = new ItemStack(Material.FIREWORK_STAR);
+                FireworkEffectMeta meta = (FireworkEffectMeta) item.getItemMeta();
+                meta.setEffect(FireworkEffect.builder().withColor(Color.LIME).build());
+                item.setItemMeta(meta);
+                grenade.setItem(item);
 
                 ID.put(grenade, "PaintGrenade");
                 Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();

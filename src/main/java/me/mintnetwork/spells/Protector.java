@@ -125,6 +125,7 @@ public class Protector {
 
            currentVictim.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,300,0));
            StatusEffects.EnergyShield.add(currentVictim);
+           currentVictim.getWorld().playSound(currentVictim.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_PLACE,1,1);
            currentVictim.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).addModifier(new AttributeModifier("EnergyShield",1,AttributeModifier.Operation.ADD_NUMBER));
 
         }

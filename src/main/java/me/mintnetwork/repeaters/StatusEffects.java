@@ -228,8 +228,10 @@ public class StatusEffects {
                         RageUlt.remove(p);
 
                         for (ItemStack i:p.getInventory().getContents()) {
-                            if (i.getType().equals(Material.IRON_SWORD)){
-                                i.removeEnchantment(Enchantment.KNOCKBACK);
+                            if (i!=null) {
+                                if (i.getType().equals(Material.STONE_SWORD)) {
+                                    i.removeEnchantment(Enchantment.KNOCKBACK);
+                                }
                             }
                         }
 
@@ -468,12 +470,12 @@ public class StatusEffects {
                     direction.setPitch(0);
                     direction.setYaw((x % 20) * 18 - 180);
 
-                    p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(direction.getDirection()).add(0,healTeam.get(p)/12.0,0),1,.1,.1,.1,0);
+                    p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(direction.getDirection()).add(0,healTeam.get(p)/8.0,0),1,.1,.1,.1,0);
                     p.playSound(p.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) .4, (float) (healTeam.get(p)/20.0+.5));
 
                     healTeam.replace(p, healTeam.get(p) + 1);
 
-                    if (healTeam.get(p) >= 30) {
+                    if (healTeam.get(p) >= 20) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL,1,10));
                         p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(0,1,0),10,.3,.4,.3,0);
 

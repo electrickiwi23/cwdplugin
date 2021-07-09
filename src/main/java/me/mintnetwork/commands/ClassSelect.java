@@ -80,7 +80,7 @@ public class ClassSelect implements CommandExecutor {
         meta.setLore(lore);
 
         PotionMeta potionMeta = (PotionMeta) meta;
-        potionMeta.setColor(Color.GREEN);
+        potionMeta.setColor(Color.LIME);
         item.setItemMeta(potionMeta);
         classInv.setItem(0, item);
 
@@ -218,7 +218,7 @@ public class ClassSelect implements CommandExecutor {
         lore.add("Escape into the night to");
         lore.add("bewilder and confuse your foes.");
 
-        item.setType(Material.INK_SAC);
+        item.setType(Material.BLACK_DYE);
         meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY +"The Shadow");
         meta.setLore(lore);

@@ -55,36 +55,20 @@ public class ChangeClass implements CommandExecutor {
         ItemStack ultWand = new ItemStack(Material.DIAMOND_HOE);
         ItemMeta ultMeta = ultWand.getItemMeta();
 
+        ArrayList<ItemStack> give = new ArrayList<ItemStack>();
+
         List<String> lore = new ArrayList<String>();
         lore.clear();
 
         Wizard wizard = WizardInit.playersWizards.get(((Player) sender).getUniqueId());
         if (args.length>0) {
+            boolean selected = false;
             switch (args[0].toLowerCase()) {
                 case "alchemist":
-                    lore.add(ChatColor.GREEN + "Mana Cost: " + "3");
-                    lore.add("Throw a potion which deals massive damage within its radius over time");
-                    meta.setDisplayName(ChatColor.RESET + "Acid Vial");
-                    meta.setLore(lore);
-                    lore.clear();
-                    wandList.add(meta.clone());
-                    lore.add(ChatColor.GREEN + "Mana Cost: " + "4");
-                    lore.add("Throw a potion which heals allies within its radius over time");
-                    meta.setDisplayName(ChatColor.RESET+("Healing Potion"));
-                    meta.setLore(lore);
-                    lore.clear();
-                    wandList.add(meta.clone());
-                    lore.add(ChatColor.GREEN + "Mana Cost: " + "3");
-                    lore.add("Throws a potion which slows and weakens anyone within its radius");
-                    meta.setDisplayName(ChatColor.RESET+("Plague Potion"));
-                    meta.setLore(lore);
-                    lore.clear();
-                    wandList.add(meta.clone());
-                    lore.add("Throws a potion which shields allies within its radius");
-                    ultMeta.setDisplayName(ChatColor.RESET+("Elixir of Immortality"));
-                    meta.setLore(lore);
-                    lore.clear();
                     wizard.kitID = Kit.ALCHEMIST;
+                    give.addAll(Kit.ALCHEMIST.KitItems.wands);
+                    give.add(Kit.ALCHEMIST.KitItems.ult);
+                    selected = true;
                     break;
                 case ("bard"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -110,6 +94,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.BARD;
+                    selected = true;
                     break;
                 case ("berserker"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -129,6 +114,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.BERSERKER;
+                    selected = true;
                     break;
                 case ("bloodmage"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -155,6 +141,7 @@ public class ChangeClass implements CommandExecutor {
                     lore.clear();
                     wizard.kitID = Kit.BLOOD_MAGE;
                     StatusEffects.bloodLink.put(p,new HashMap<>());
+                    selected = true;
                     break;
                 case ("builder"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -180,6 +167,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.BUILDER;
+                    selected = true;
                     break;
                 case ("cleric"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -205,6 +193,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.CLERIC;
+                    selected = true;
                     break;
                 case ("aviator"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -230,6 +219,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.AVIATOR;
+                    selected = true;
                     break;
                 case ("demolitionist"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -255,6 +245,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.DEMOLITIONIST;
+                    selected = true;
                     break;
                 case ("painter"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -280,6 +271,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.PAINTER;
+                    selected = true;
                     break;
                 case ("pillarman"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -305,6 +297,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.PILLAR_MAN;
+                    selected = true;
                     break;
                 case ("shadow"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -331,6 +324,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.SHADOW;
+                    selected = true;
                     break;
                 case ("spellslinger"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -356,6 +350,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.SPELL_SLINGER;
+                    selected = true;
                     break;
                 case ("tactician"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -381,6 +376,7 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.TACTICIAN;
+                    selected = true;
                     break;
                 case ("protector"):
                     lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
@@ -406,9 +402,10 @@ public class ChangeClass implements CommandExecutor {
                     meta.setLore(lore);
                     lore.clear();
                     wizard.kitID = Kit.PROTECTOR;
+                    selected = true;
                     break;
             }
-            if (wandList.isEmpty()) {
+            if (!selected) {
                 sender.sendMessage(args[0] + " is not a valid Class");
             } else {
                 boolean uniqueClass = true;
@@ -448,11 +445,15 @@ public class ChangeClass implements CommandExecutor {
                     ItemMeta swordMeta = sword.getItemMeta();
                     if (wizard.kitID.equals(Kit.BERSERKER)) {
                         sword.setType(Material.STONE_SWORD);
-                        swordMeta.setDisplayName((ChatColor.RESET+("Berserker Blade")));
+                        swordMeta.setDisplayName((ChatColor.RESET+("x")));
                     }
                     swordMeta.setUnbreakable(true);
                     sword.setItemMeta(swordMeta);
                     p.getInventory().addItem(sword);
+
+                    for (ItemStack stack:give) {
+                        p.getInventory().addItem(stack);
+                    }
 
                     for (ItemMeta i : wandList) {
                         ItemStack wand = new ItemStack(Material.STICK);

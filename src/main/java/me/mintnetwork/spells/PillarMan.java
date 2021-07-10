@@ -16,6 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -26,7 +27,17 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class PillarMan {
+public class PillarMan extends KitItems {
+
+
+    public PillarMan(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
     public static void VoidPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
         if (Mana.spendMana(p, Utils.VOID_PILLAR_COST)) {
             Zombie pillar = (Zombie) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize()).add(.5, .5, .5), EntityType.ZOMBIE);

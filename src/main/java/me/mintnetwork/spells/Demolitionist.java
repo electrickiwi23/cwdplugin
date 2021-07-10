@@ -7,6 +7,7 @@ import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -15,7 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Demolitionist {
+public class Demolitionist extends KitItems {
+
+
+    public Demolitionist(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
 
     public static void TNTLine(Player p, Plugin plugin) {
         p.playSound(p.getEyeLocation(),Sound.ENTITY_TNT_PRIMED,1.3F,1);

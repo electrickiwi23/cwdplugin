@@ -8,6 +8,7 @@ import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -15,7 +16,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
-public class SkyFlyer {
+public class Aviator extends KitItems {
+
+
+    public Aviator(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
         if (Mana.spendMana(p, Utils.AIR_NEEDLES_COST)) {
             p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ARROW_SHOOT,.3F,1);

@@ -11,6 +11,7 @@ import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +23,17 @@ import org.bukkit.util.Vector;
 import java.util.Collection;
 import java.util.Map;
 
-public class Shadow {
+public class Shadow extends KitItems {
+
+
+    public Shadow(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
     public static void ShadowRetreat(Player p,Plugin plugin) {
 
         if (Mana.spendMana(p, Utils.SHADOW_RETREAT_COST)) {

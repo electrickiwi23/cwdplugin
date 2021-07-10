@@ -11,11 +11,14 @@ import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
@@ -25,7 +28,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
-public class Protector {
+public class Protector extends KitItems {
+
+
+    public Protector(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
 
     public static void Slam(Player p, Plugin plugin) {
 

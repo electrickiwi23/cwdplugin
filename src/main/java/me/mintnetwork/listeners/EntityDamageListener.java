@@ -127,7 +127,7 @@ public class  EntityDamageListener implements Listener {
                                 @Override
                                 public void run() {
                                     Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
-                                    live.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + ("&n&l" + victim.getName() + ":"));
+                                    live.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + ("" + victim.getName() + ":"));
                                     live.sendMessage(ChatColor.RED + ("Health: " + Math.ceil(((Player) victim).getHealth())));
                                     live.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
                                     live.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage((Player) victim ) * 100) + "%"));

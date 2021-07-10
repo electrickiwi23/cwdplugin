@@ -18,6 +18,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -25,7 +26,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
-public class Builder {
+public class Builder extends KitItems {
+
+
+    public Builder(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
     public static void QuickBuild(Player p, Plugin plugin, BlockFace face, Block block) {
         if (Mana.spendMana(p, Utils.QUICK_BUILD_COST)) {
             final Location[] current = {block.getLocation().add(face.getDirection().normalize())};

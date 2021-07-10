@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,7 +30,17 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Cleric {
+public class Cleric extends KitItems {
+
+
+    public Cleric(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
 
     public static void HealBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.HEAL_BOLT_COST)) {

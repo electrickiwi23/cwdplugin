@@ -57,18 +57,47 @@ public class ClassSelect implements CommandExecutor {
 
     }
 
+    public static Inventory createInfoMenu(Kit kit) {
+        Inventory Inv = Bukkit.createInventory(null, 18, ChatColor.BOLD + ChatColor.stripColor(kit.KitItems.menuItem.getItemMeta().getDisplayName()));
+        ItemStack tempItem = kit.KitItems.menuItem.clone();
+        ItemMeta tempMeta = tempItem.getItemMeta();
+        ArrayList<String> lore = new ArrayList<>(Collections.singletonList(ChatColor.WHITE + "Left Click to select class"));
+        lore.addAll(tempMeta.getLore());
+        tempMeta.setLore(lore);
+        tempItem.setItemMeta(tempMeta);
+
+
+        Inv.setItem(4,tempItem);
+        Inv.setItem(11,kit.KitItems.ult);
+        Inv.setItem(12,kit.KitItems.wands.get(0));
+        Inv.setItem(13,kit.KitItems.wands.get(1));
+        Inv.setItem(14,kit.KitItems.wands.get(2));
+        Inv.setItem(15,kit.KitItems.passive);
+
+        ItemStack item = new ItemStack(Material.BARRIER);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.RED + "Close Menu");
+        item.setItemMeta(meta);
+        Inv.setItem(8, item);
+
+        return Inv;
+    }
+
+
     public static void createClassMenu(){
         classInv = Bukkit.createInventory(null, 18, ChatColor.BOLD+"Select Class");
 
         ItemStack item;
         ItemMeta meta;
         List<String> lore = new ArrayList<String>();
-        String select = ChatColor.GRAY + "Click to select class";
+        String select = ChatColor.GRAY + "Left Click to select class";
+        String info = ChatColor.GRAY + "Right Click for more info";
 
 
         //  alchemist 0
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Use powerful area of effect");
         lore.add("spells to control the battlefield");
         lore.add("and help your teammates.");
@@ -88,6 +117,7 @@ public class ClassSelect implements CommandExecutor {
         //  bard 1
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Use the power of music to heal");
         lore.add("your allies and ward off enemies.");
 
@@ -103,6 +133,7 @@ public class ClassSelect implements CommandExecutor {
         //  berserker 2
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Chase down and stab your enemies");
         lore.add("with your increased close range capabilities.");
 
@@ -117,6 +148,7 @@ public class ClassSelect implements CommandExecutor {
         //  bloodmage 3
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Excel in 1v1 and team fights with lifesteal");
         lore.add("and abilities focused on survivability.");
 
@@ -131,6 +163,7 @@ public class ClassSelect implements CommandExecutor {
         //  builder 4
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Dominate the terrain by shaping the");
         lore.add("environment to your teams advantage.");
 
@@ -145,6 +178,7 @@ public class ClassSelect implements CommandExecutor {
         //  cleric 5
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Be the ultimate support by providing");
         lore.add("healing and cleansing your teammates.");
 
@@ -159,6 +193,7 @@ public class ClassSelect implements CommandExecutor {
         //  skyflyer 6
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Dominate the skies with enhanced");
         lore.add("movement and the power of flight.");
 
@@ -173,6 +208,7 @@ public class ClassSelect implements CommandExecutor {
         //  demolitionist 7
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Exterminate your enemies with large");
         lore.add("area of effect explosions");
 
@@ -187,6 +223,7 @@ public class ClassSelect implements CommandExecutor {
         //  painter 8
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Smother your enemies with toxic");
         lore.add("paint to paint over your competition");
 
@@ -201,6 +238,7 @@ public class ClassSelect implements CommandExecutor {
         //  pillarman 9
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Pillarz sounds like the next hit rock band");
         lore.add("-me");
 
@@ -215,6 +253,7 @@ public class ClassSelect implements CommandExecutor {
         //  shadow 10
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Escape into the night to");
         lore.add("bewilder and confuse your foes.");
 
@@ -229,6 +268,7 @@ public class ClassSelect implements CommandExecutor {
         //  spellslinger 11
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Command the elements to deal");
         lore.add("with enemies at range");
 
@@ -243,6 +283,7 @@ public class ClassSelect implements CommandExecutor {
         //  tactician 12
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Win engagements by setting up");
         lore.add("teamfights in favorable situations");
 
@@ -257,6 +298,7 @@ public class ClassSelect implements CommandExecutor {
         //  protector 13
         lore.clear();
         lore.add(select);
+        lore.add(info);
         lore.add("Support and protect your teammates");
         lore.add("with a variety of magic");
 

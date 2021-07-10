@@ -12,6 +12,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +23,17 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Painter {
+public class Painter extends KitItems {
+
+
+    public Painter(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
     public static void SprayPaint(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.SPRAY_PAINT_COST)) {
             for (int i = 0; i < 5; i++) {

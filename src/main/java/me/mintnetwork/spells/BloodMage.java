@@ -26,7 +26,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BloodMage {
+public class BloodMage extends KitItems {
+
+
+    public BloodMage(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
 
     public static void BloodBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.BLOOD_BOLT_COST)) {

@@ -182,16 +182,16 @@ public class RightClickListener implements Listener {
                                         break;
 
                                     case("Cloud Burst"):
-                                        SkyFlyer.CloudBurst(p,plugin);
+                                        Aviator.CloudBurst(p,plugin);
                                         break;
                                     case("Air Dash"):
-                                        SkyFlyer.AirDash(p,plugin);
+                                        Aviator.AirDash(p,plugin);
                                         break;
                                     case("Air Needles"):
-                                        SkyFlyer.AirNeedles(p,em,plugin);
+                                        Aviator.AirNeedles(p,em,plugin);
                                         break;
                                     case("Tornado Blast"):
-                                        SkyFlyer.TornadoBlast(p,plugin);
+                                        Aviator.TornadoBlast(p,plugin);
                                         break;
 
                                     case("Song of Healing"):

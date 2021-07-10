@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -32,6 +31,13 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler()
     public void onClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        String[] classSlots = {
+                "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
+                "pillarman", "shadow", "spellslinger", "tactician", "protector"
+        };
+
         if (event.getView().getTitle().equals(ChatColor.BOLD + "Select Class")) {
             event.setCancelled(true);
             if (event.getClickedInventory() == event.getView().getTopInventory()) {
@@ -39,44 +45,45 @@ public class InventoryClickListener implements Listener {
                 if (event.getCurrentItem().getItemMeta() == null) return;
                 if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-                Player player = (Player) event.getWhoClicked();
-
 
                 if (event.getCurrentItem().getType() == Material.LIME_STAINED_GLASS_PANE || event.getCurrentItem().getType() == Material.RED_STAINED_GLASS_PANE) {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, .5F, 1);
                     return;
                 }
 
-                String[] slots = {
-                        "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
-                        "pillarman", "shadow", "spellslinger", "tactician", "protector"
-                };
 
-                if (event.getSlot() < slots.length) {
-                    player.performCommand("changeclass " + slots[event.getSlot()]);
-                    player.sendMessage(ChatColor.GOLD + "Class Selected");
+                if (event.getSlot() < classSlots.length) {
+                    if (event.getClick().isLeftClick()) {
 
-                    Team team = TeamsInit.getTeam(player);
+                        player.performCommand("changeclass " + classSlots[event.getSlot()]);
+                        player.sendMessage(ChatColor.GOLD + "Class Selected");
 
-                    //red pane
-                    if (team != null) {
-                        Set<String> playerNames = team.getEntries();
-                        ArrayList<Player> players = new ArrayList<Player>();
-                        for (String playerName : playerNames) {
-                            if (Bukkit.getPlayer(playerName) != null) {
-                                players.add(Bukkit.getPlayer(playerName));
+                        Team team = TeamsInit.getTeam(player);
+
+                        //red pane
+                        if (team != null) {
+                            Set<String> playerNames = team.getEntries();
+                            ArrayList<Player> players = new ArrayList<Player>();
+                            for (String playerName : playerNames) {
+                                if (Bukkit.getPlayer(playerName) != null) {
+                                    players.add(Bukkit.getPlayer(playerName));
+                                }
                             }
+
+                            for (Player ply : players) {
+                                if (event.getClickedInventory().equals(ChatColor.BOLD + "Select Class")) {
+                                    event.getClickedInventory().setContents(ClassSelect.classEditInventory(ply, ClassSelect.classInv).getContents());
+                                }
+                            }
+
                         }
 
-                        for (Player ply : players) {
-                            if (event.getClickedInventory().equals(ChatColor.BOLD + "Select Class")) {
-                                event.getClickedInventory().setContents(ClassSelect.classEditInventory(ply, ClassSelect.classInv).getContents());
-                            }
-                        }
+                    } else if (event.isRightClick()){
+                        player.openInventory(ClassSelect.createInfoMenu(Kit.values()[event.getSlot()]));
 
                     }
                 }
-                player.closeInventory();
+                if (!event.isRightClick()) player.closeInventory();
                 return;
             }
         } else if (event.getView().getTitle().equals(ChatColor.BOLD + "Select Wands")) {
@@ -86,7 +93,7 @@ public class InventoryClickListener implements Listener {
                 if (event.getCurrentItem().getItemMeta() == null) return;
                 if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-                Player player = (Player) event.getWhoClicked();
+
 
 
                 if (event.getCurrentItem().getType() == Material.LIME_STAINED_GLASS_PANE) {
@@ -119,6 +126,52 @@ public class InventoryClickListener implements Listener {
                 }
 
             }
+        } else {
+            for (int i = 0; i < Kit.values().length; i++) {
+                Kit kit = Kit.values()[i];
+                if (kit.KitItems.menuItem.getType()==Material.FIRE) return;
+                if (event.getView().getTitle().equals(ChatColor.BOLD + ChatColor.stripColor(kit.KitItems.menuItem.getItemMeta().getDisplayName()))){
+                    event.setCancelled(true);
+                    if (event.getClickedInventory() == event.getView().getTopInventory()) {
+                        if (event.getCurrentItem() == null) return;
+                        if (event.getCurrentItem().getItemMeta() == null) return;
+                        if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+
+                        if (event.getSlot()==4){
+                             player.performCommand("changeclass " + classSlots[i]);
+                             player.sendMessage(ChatColor.GOLD + "Class Selected");
+
+                             Team team = TeamsInit.getTeam(player);
+
+                             //red pane
+                             if (team != null) {
+                                 Set<String> playerNames = team.getEntries();
+                                 ArrayList<Player> players = new ArrayList<Player>();
+                                 for (String playerName : playerNames) {
+                                     if (Bukkit.getPlayer(playerName) != null) {
+                                         players.add(Bukkit.getPlayer(playerName));
+                                     }
+                                 }
+
+                                 for (Player ply : players) {
+                                     if (event.getClickedInventory().equals(ChatColor.BOLD + "Select Class")) {
+                                         event.getClickedInventory().setContents(ClassSelect.classEditInventory(ply, ClassSelect.classInv).getContents());
+                                     }
+                                 }
+
+                             }
+                            player.closeInventory();
+                             break;
+                         }
+                        if (event.getSlot()==8){
+                            player.openInventory(ClassSelect.classEditInventory(player, ClassSelect.classInv));
+                            break;
+
+                        }
+                    }
+                }
+            }
+
         }
     }
 }

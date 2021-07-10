@@ -15,6 +15,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -23,7 +24,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
-public class SpellSlinger {
+public class SpellSlinger extends KitItems {
+
+
+    public SpellSlinger(){
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta1 = wand1.getItemMeta();
+
+
+        wands.add(wand1);
+        //create itemstacks for each wand of the class
+    }
 
     public static void LightningBolt(Player p, Plugin plugin, EffectManager em) {
         if (Mana.spendMana(p, Utils.LIGHTNING_BOLT_COST)) {

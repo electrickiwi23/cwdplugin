@@ -6,12 +6,12 @@ import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,10 +20,75 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-public class Bard {
+public class Bard extends KitItems {
+
+    public Bard(){
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_SONG_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET + "Song of Healing");
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_POTION_COST);
+        lore.add(ChatColor.GRAY + "Throw a potion which heals");
+        lore.add(ChatColor.GRAY + "allies within its radius over time.");
+        meta.setDisplayName(ChatColor.RESET+("Healing Potion"));
+        meta.setLore(lore);
+        lore.clear();
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.DEBUFF_POTION_COST);
+        lore.add(ChatColor.GRAY + "Throws a potion which slows and ");
+        lore.add(ChatColor.GRAY + "weakens anyone within its radius.");
+        meta.setDisplayName(ChatColor.RESET+("Plague Potion"));
+        meta.setLore(lore);
+        lore.clear();
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+
+        lore.add(ChatColor.GRAY +"Throws a potion which shields ");
+        lore.add(ChatColor.GRAY +"allies within its radius");
+        meta.setDisplayName(ChatColor.RESET+("Elixir of Immortality"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Occasionally gets splash potions ");
+        lore.add(ChatColor.GRAY + "to use on your allys and enemies.");
+        meta.setDisplayName(ChatColor.RESET + "Mobile Brewery");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add("Use powerful area of effect");
+        lore.add("spells to control the battlefield");
+        lore.add("and help your teammates.");
+
+        menuItem.setType(Material.SPLASH_POTION);
+        meta = menuItem.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        meta.setDisplayName(ChatColor.DARK_GREEN+"Alchemist");
+        meta.setLore(lore);
+
+        PotionMeta potionMeta = (PotionMeta) meta;
+        potionMeta.setColor(Color.LIME);
+        menuItem.setItemMeta(potionMeta);
+
+        //create itemstacks for each wand of the class
+    }
     public static void SpeedSong(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.SPEED_SONG_COST)) {
             String teamName = TeamsInit.getTeamName(p);

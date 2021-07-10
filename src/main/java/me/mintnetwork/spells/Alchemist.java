@@ -22,6 +22,8 @@ public class Alchemist extends KitItems {
 
 
     public Alchemist(){
+        ultTime = Utils.ALCHEMIST_ULT_TIME;
+
         ArrayList<String> lore = new ArrayList<>();
 
         ItemStack wand1 = new ItemStack(Material.STICK);
@@ -58,7 +60,7 @@ public class Alchemist extends KitItems {
 
         lore.add(ChatColor.GRAY +"Throws a potion which shields ");
         lore.add(ChatColor.GRAY +"allies within its radius");
-        meta.setDisplayName(ChatColor.RESET+("Elixir of Immortality"));
+        meta.setDisplayName(ChatColor.GOLD+("Elixir of Immortality"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();

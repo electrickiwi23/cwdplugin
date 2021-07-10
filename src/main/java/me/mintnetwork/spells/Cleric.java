@@ -34,6 +34,8 @@ public class Cleric extends KitItems {
 
 
     public Cleric(){
+        ultTime = Utils.CLERIC_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

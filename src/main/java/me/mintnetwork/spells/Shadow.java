@@ -27,6 +27,8 @@ public class Shadow extends KitItems {
 
 
     public Shadow(){
+        ultTime = Utils.SHADOW_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

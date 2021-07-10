@@ -306,7 +306,7 @@ public class RightClickListener implements Listener {
                                         GenericCast.StormStrike(p,plugin);
                                         break;
                                     case("Mana Bullet"):
-                                        GenericCast.ManaBullet(p);
+                                        GenericCast.ManaBullet(p,plugin);
                                         break;
                                 }
                             }

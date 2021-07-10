@@ -32,6 +32,8 @@ public class Protector extends KitItems {
 
 
     public Protector(){
+        ultTime = Utils.PROTECTOR_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

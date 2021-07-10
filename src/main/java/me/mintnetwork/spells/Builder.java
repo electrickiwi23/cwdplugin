@@ -30,6 +30,8 @@ public class Builder extends KitItems {
 
 
     public Builder(){
+        ultTime = Utils.BUILDER_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

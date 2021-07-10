@@ -30,6 +30,8 @@ public class BloodMage extends KitItems {
 
 
     public BloodMage(){
+        ultTime = Utils.BLOOD_MAGE_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

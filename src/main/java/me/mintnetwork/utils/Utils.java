@@ -67,6 +67,23 @@ public class Utils {
     public static final int MOLOTOV_COST = 3;
     public static final int GRAPPLE_HOOK_COST = 3;
 
+    //Ultimate charge times for Classes
+    public static final int ALCHEMIST_ULT_TIME = 450;
+    public static final int BARD_ULT_TIME = 900;
+    public static final int BERSERKER_ULT_TIME = 750;
+    public static final int BLOOD_MAGE_ULT_TIME = 750;
+    public static final int BUILDER_ULT_TIME = 600;
+    public static final int CLERIC_ULT_TIME = 600;
+    public static final int AVIATOR_ULT_TIME = 720;
+    public static final int DEMOLITIONIST_ULT_TIME = 720;
+    public static final int PAINTER_ULT_TIME = 525;
+    public static final int PILLAR_MAN_ULT_TIME = 1200;
+    public static final int SHADOW_ULT_TIME = 1050;
+    public static final int SPELL_SLINGER_ULT_TIME = 720;
+    public static final int TACTICIAN_ULT_TIME = 750;
+    public static final int PROTECTOR_ULT_TIME = 720;
+
+
 
     //utils
 //    public static String chat (String s) {

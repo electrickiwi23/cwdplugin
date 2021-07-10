@@ -28,6 +28,8 @@ public class SpellSlinger extends KitItems {
 
 
     public SpellSlinger(){
+        ultTime = Utils.SPELL_SLINGER_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

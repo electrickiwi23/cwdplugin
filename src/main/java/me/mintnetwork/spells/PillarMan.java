@@ -31,6 +31,8 @@ public class PillarMan extends KitItems {
 
 
     public PillarMan(){
+        ultTime = Utils.PILLAR_MAN_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

@@ -20,6 +20,8 @@ public class Demolitionist extends KitItems {
 
 
     public Demolitionist(){
+        ultTime = Utils.DEMOLITIONIST_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

@@ -33,6 +33,8 @@ public class Berserker extends KitItems {
 
 
     public Berserker(){
+        ultTime = Utils.BERSERKER_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

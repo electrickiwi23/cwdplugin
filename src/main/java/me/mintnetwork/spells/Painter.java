@@ -27,6 +27,8 @@ public class Painter extends KitItems {
 
 
     public Painter(){
+        ultTime = Utils.PAINTER_ULT_TIME;
+
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta1 = wand1.getItemMeta();
 

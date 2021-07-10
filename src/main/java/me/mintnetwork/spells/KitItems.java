@@ -10,4 +10,5 @@ public abstract class KitItems {
     public ItemStack ult = new ItemStack(Material.DIAMOND_HOE);
     public ItemStack passive = new ItemStack(Material.PAPER);
     public ItemStack menuItem = new ItemStack(Material.FIRE);
+    public int ultTime;
 }

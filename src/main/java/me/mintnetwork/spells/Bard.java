@@ -25,6 +25,8 @@ import java.util.Map;
 public class Bard extends KitItems {
 
     public Bard(){
+        ultTime = Utils.BARD_ULT_TIME;
+
         ArrayList<String> lore = new ArrayList<>();
 
         ItemStack wand1 = new ItemStack(Material.STICK);
@@ -67,7 +69,7 @@ public class Bard extends KitItems {
         lore.clear();
 
         lore.add(ChatColor.GRAY + "Occasionally gets splash potions ");
-        lore.add(ChatColor.GRAY + "to use on your allys and enemies.");
+        lore.add(ChatColor.GRAY + "to use on your allies and enemies.");
         meta.setDisplayName(ChatColor.RESET + "Mobile Brewery");
         meta.setLore(lore);
         passive.setItemMeta(meta);

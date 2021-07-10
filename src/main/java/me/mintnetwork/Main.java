@@ -23,7 +23,6 @@ public final class Main extends JavaPlugin {
         // Plugin startup logic
         new RightClickListener(this);
         new CancelTill(this);
-        new GameStart(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
         Passives.PassivesStart(this);

@@ -16,16 +16,11 @@ import java.util.UUID;
 
 public class GameStart {
 
-    private final Main plugin;
-
     public static boolean gameRunning = false;
-    public static String gameMode = "skirmish";
+    public static GameMode gameMode = GameMode.SKIRMISH;
     public static boolean hasStarted = false;
     public static int timer = 0;
 
-    public GameStart(Main plugin) {
-        this.plugin = plugin;
-    };
 
     public static void startCountdown(Main plugin, GameMode gameMode, World world, int additional){
         final int[] count = {0};
@@ -106,12 +101,11 @@ public class GameStart {
     public static void startBR(Main plugin,World world){
             startGeneric(plugin);
             for (UUID uuid : WizardInit.playersWizards.keySet()) {
-                Player player = Bukkit.getPlayer(uuid);
                 Wizard w = WizardInit.playersWizards.get(uuid);
                 w.ElimLives = 1;
             }
 
-            gameMode = "battle royale";
+            gameMode = GameMode.BATTLE_ROYAL;
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
@@ -129,7 +123,7 @@ public class GameStart {
     public static void startFlares(Main plugin,World world,int time){
         startGeneric(plugin);
 
-        gameMode = "flares";
+        gameMode = GameMode.FLARES;
         ScoreboardInit.InitPoints("Zone Capture", time + ":00",plugin);
         startTimer(time * 60,plugin);
         CapturePoint.CreateFlares(world,plugin);
@@ -137,7 +131,7 @@ public class GameStart {
 
     public static void startKoth(Main plugin, World world, int i){
         startGeneric(plugin);
-        gameMode = "koth";
+        gameMode = GameMode.KING_OF_THE_HILL;
 
         String string = (i + ":" + "00");
 
@@ -149,7 +143,7 @@ public class GameStart {
     public static void startElimination(Main plugin,int lives){
         startGeneric(plugin);
         // Set gameMode
-        gameMode = "elimination";
+        gameMode = GameMode.ELIMINATION;
         // Set wizard's lives
         for (UUID uuid: WizardInit.playersWizards.keySet()) {
             Wizard w = WizardInit.playersWizards.get(uuid);
@@ -169,7 +163,7 @@ public class GameStart {
         }
 
         gameRunning = false;
-        gameMode = "skirmish";
+        gameMode = GameMode.SKIRMISH;
     }
 
     public static void startTimer(int amount,Main plugin){
@@ -203,8 +197,7 @@ public class GameStart {
                     }
                     endGame(winner);
                     this.cancel();
-                    ;
-                }
+                                    }
 
                 for (CapturePoint site : CapturePoint.capturePoints) {
                     if (site.getTeam() != null) {

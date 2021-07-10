@@ -735,66 +735,76 @@ public class GenericCast {
         }
     }
 
-    public static void ManaBullet(Player p) {
+    public static void ManaBullet(Player p,Plugin plugin) {
         if (Mana.spendMana(p, Utils.MANA_BULLET_COST)) {
-            Location current = p.getEyeLocation().add(p.getEyeLocation().getDirection());
-            Vector direction = p.getEyeLocation().getDirection();
-            int range = 0;
-            while (true) {
-                if (current.isWorldLoaded()) {
-                    RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .1, null);
-                    if (ray != null) {
-                        Location hitLocation = null;
-                        LivingEntity hitEntity = null;
-                        try {
-                            hitEntity = (LivingEntity) ray.getHitEntity();
-                        } catch (Exception ignore) {
-                        }
-                        try {
-                            hitLocation = ray.getHitPosition().toLocation(p.getWorld());
-                        } catch (Exception ignore) {
-                        }
-                        if (hitLocation != null && hitEntity == null) {
-                            if (BlockDecay.decay.containsKey(ray.getHitBlock())) {
-                                DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
-                                block.damage(30);
-                                block.setForceful(true);
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+
+
+                    Location current = p.getEyeLocation().add(p.getEyeLocation().getDirection());
+                    Vector direction = p.getEyeLocation().getDirection();
+                    int range = 0;
+                    while (true) {
+                        if (current.isWorldLoaded()) {
+                            RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .1, null);
+                            if (ray != null) {
+                                Location hitLocation = null;
+                                LivingEntity hitEntity = null;
+                                try {
+                                    hitEntity = (LivingEntity) ray.getHitEntity();
+                                } catch (Exception ignore) {
+                                }
+                                try {
+                                    hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                                } catch (Exception ignore) {
+                                }
+                                if (hitLocation != null && hitEntity == null) {
+                                    if (BlockDecay.decay.containsKey(ray.getHitBlock())) {
+                                        DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
+                                        block.damage(30);
+                                        block.setForceful(true);
+                                    }
+                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
+                                    break;
+                                }
+                                if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
+
+                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
+
+                                    ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                                    stand.setInvisible(true);
+                                    stand.setMarker(true);
+                                    stand.setCustomNameVisible(false);
+                                    stand.setCustomName(p.getDisplayName() + "'s Mana Bullet");
+                                    TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
+
+                                    hitEntity.damage(2, stand);
+
+                                    stand.remove();
+                                    break;
+                                }
                             }
-                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
+                            current = current.add(direction);
+                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 1, 0, 0, 0, 0);
+
+                            range++;
+                            if (range >= 30) break;
+
+                            //code for shield reflection--------------------------------------------------------
+                            for (Entity shield : Shield.shieldMap.keySet()) {
+                                if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
+                                    direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
+                                }
+                            }
+                            //----------------------------------------------------------------------------------
+                        } else {
                             break;
                         }
-                        if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
 
-                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
-
-                            ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
-                            stand.setInvisible(true);
-                            stand.setMarker(true);
-                            stand.setCustomNameVisible(false);
-                            stand.setCustomName(p.getDisplayName() + "'s Mana Bullet");
-                            TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
-
-                            hitEntity.damage(2, stand);
-
-                            stand.remove();
-                            break;
-                        }
                     }
-                    current = current.add(direction);
-                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 1, 0, 0, 0, 0);
-
-                    range++;
-                    if (range >= 30) break;
-
-                    //code for shield reflection--------------------------------------------------------
-                    for (Entity shield : Shield.shieldMap.keySet()) {
-                        if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
-                            direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
-                        }
-                    }
-                    //----------------------------------------------------------------------------------
-                } else {break;}
-            }
+                }
+            },2);
         }
     }
 }

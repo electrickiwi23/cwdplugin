@@ -65,7 +65,7 @@ public class ScoreboardInit {
         }
 
 
-        if (GameStart.gameMode.equals("flares")) {
+        if (GameStart.gameMode.equals(GameMode.FLARES)) {
             sidebar.getScore("          " + timer).setScore(9);
             sidebar.getScore("                   ").setScore(8);
             sidebar.getScore("                 ").setScore(4);

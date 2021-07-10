@@ -9,6 +9,7 @@ import me.mintnetwork.listeners.*;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
+import me.mintnetwork.utils.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,24 +44,10 @@ public final class Main extends JavaPlugin {
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         getCommand("start").setTabCompleter(new StartAutoCompleter());
 
-        FileConfiguration config = this.getConfig();
-
-        config.addDefault("FlareAx",0.0);
-        config.addDefault("FlareAy",0.0);
-        config.addDefault("FlareAz",0.0);
-        config.addDefault("FlareBx",0.0);
-        config.addDefault("FlareBy",0.0);
-        config.addDefault("FlareBz",0.0);
-        config.addDefault("FlareCx",0.0);
-        config.addDefault("FlareCy",0.0);
-        config.addDefault("FlareCz",0.0);
 
         TeamsInit.refreshTeams();
 
-        config.options().copyDefaults(true);
-        saveConfig();
-
-        this.saveDefaultConfig();
+        Config.configSetup(this);
 
         new FireworkExpolodeListener(this);
         new BlockPlaceListener(this);

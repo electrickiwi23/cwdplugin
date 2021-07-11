@@ -1,7 +1,5 @@
 package me.mintnetwork.utils;
 
-import org.bukkit.ChatColor;
-
 public class Utils {
     // mana costs of non class spells
     public static final int FIREWORK_BOLT_COST = 3;
@@ -84,9 +82,4 @@ public class Utils {
     public static final int PROTECTOR_ULT_TIME = 720;
 
 
-
-    //utils
-//    public static String chat (String s) {
-//        return ChatColor.translateAlternateColorCodes('&', s);
-//    }
 }

@@ -28,8 +28,6 @@ public class DebugCommand implements CommandExecutor {
 
         Ultimate.FullCharge((Player) sender);
 
-        System.out.println(":)");
-
         return false;
     }
 }

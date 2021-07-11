@@ -23,11 +23,62 @@ public class Aviator extends KitItems {
         ultTime = Utils.AVIATOR_ULT_TIME;
 
         ItemStack wand1 = new ItemStack(Material.STICK);
-        ItemMeta meta1 = wand1.getItemMeta();
+        ItemMeta meta = wand1.getItemMeta();
 
 
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.CLOUD_BURST_COST);
+        lore.add("Propel yourself high into the air ");
+        lore.add("using a burst of smoke.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        wand1.setItemMeta(meta);
         wands.add(wand1);
-        //create itemstacks for each wand of the class
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.AIR_DASH_COST);
+        lore.add("Hurl yourself quickly in the direction ");
+        lore.add("you are facing using the air.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.AIR_NEEDLES_COST);
+        lore.add("Shoot out a trio of needles that deal ");
+        lore.add("a moderate amount of damage.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("Create a powerful wind current that traps");
+        lore.add("those in its radius, and disables abilities.");
+        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
+        lore.add(ChatColor.GRAY + "and take no fall damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add("Dominate the skies with enhanced");
+        lore.add("movement and the power of flight.");
+
+        menuItem.setType(Material.FEATHER);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.AQUA+"Aviator");
+        meta.setLore(lore);
+
+        menuItem.setItemMeta(meta);
+
     }
     public static void AirNeedles(Player p, EffectManager em, Plugin plugin) {
         if (Mana.spendMana(p, Utils.AIR_NEEDLES_COST)) {

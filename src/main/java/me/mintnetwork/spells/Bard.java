@@ -32,62 +32,59 @@ public class Bard extends KitItems {
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta = wand1.getItemMeta();
 
+
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_SONG_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET + "Song of Healing");
+        meta.setDisplayName(ChatColor.RESET+("Song of Healing"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_POTION_COST);
-        lore.add(ChatColor.GRAY + "Throw a potion which heals");
-        lore.add(ChatColor.GRAY + "allies within its radius over time.");
-        meta.setDisplayName(ChatColor.RESET+("Healing Potion"));
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_SONG_COST);
+        lore.add("Your singing allows your teammates");
+        lore.add("who listen to run faster.");
         meta.setLore(lore);
         lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Song of Haste"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.DEBUFF_POTION_COST);
-        lore.add(ChatColor.GRAY + "Throws a potion which slows and ");
-        lore.add(ChatColor.GRAY + "weakens anyone within its radius.");
-        meta.setDisplayName(ChatColor.RESET+("Plague Potion"));
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.STUN_SONG_COST);
+        lore.add("Throws a bouncy jukebox explodes that after ");
+        lore.add("a short amount of time  stunning enemies.");
         meta.setLore(lore);
         lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Concussion Ring"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-
-        lore.add(ChatColor.GRAY +"Throws a potion which shields ");
-        lore.add(ChatColor.GRAY +"allies within its radius");
-        meta.setDisplayName(ChatColor.RESET+("Elixir of Immortality"));
+        lore.add("Your song entrances your enemies and forces");
+        lore.add("them to look your direction.");
+        meta.setDisplayName(ChatColor.RESET+("Siren Song"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Occasionally gets splash potions ");
-        lore.add(ChatColor.GRAY + "to use on your allies and enemies.");
-        meta.setDisplayName(ChatColor.RESET + "Mobile Brewery");
+        lore.add(ChatColor.GRAY + "Press shift to float on the air "); //todo keelan
+        lore.add(ChatColor.GRAY + "and take no fall damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Bardic Inspiration");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add("Use powerful area of effect");
-        lore.add("spells to control the battlefield");
-        lore.add("and help your teammates.");
+        lore.add("Use the power of music to heal");
+        lore.add("your allies and ward off enemies.");
 
-        menuItem.setType(Material.SPLASH_POTION);
+        menuItem.setType(Material.MUSIC_DISC_CAT);
         meta = menuItem.getItemMeta();
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        meta.setDisplayName(ChatColor.DARK_GREEN+"Alchemist");
+        meta.setDisplayName(ChatColor.AQUA+"Bard");
+        meta.addItemFlags(ItemFlag.values());
         meta.setLore(lore);
 
-        PotionMeta potionMeta = (PotionMeta) meta;
-        potionMeta.setColor(Color.LIME);
-        menuItem.setItemMeta(potionMeta);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

@@ -7,13 +7,16 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Aviator extends KitItems {
@@ -21,6 +24,8 @@ public class Aviator extends KitItems {
 
     public Aviator(){
         ultTime = Utils.AVIATOR_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
 
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta = wand1.getItemMeta();

@@ -35,11 +35,52 @@ public class Berserker extends KitItems {
     public Berserker(){
         ultTime = Utils.BERSERKER_ULT_TIME;
 
+        ArrayList<String> lore = new ArrayList<>();
+
         ItemStack wand1 = new ItemStack(Material.STICK);
-        ItemMeta meta1 = wand1.getItemMeta();
+        ItemMeta meta = wand1.getItemMeta();
 
 
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_BOOST_COST);
+        lore.add("Enhances your sprinting ability for ");
+        lore.add("a short period of time.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Speed Rush"));
+        wand1.setItemMeta(meta);
         wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FORCE_PULL_COST);
+        lore.add("Pull any enemies close to you ");
+        lore.add("using sheer will.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Force Pull"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        lore.add("Buffs your damage and knockback for a");
+        lore.add("Short period of time.");
+        meta.setDisplayName(ChatColor.RESET+("Unleash Rage"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Upgrades your sword for more damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Stone Age");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add("Chase down and stab your enemies");
+        lore.add("with your increased close range capabilities.");
+
+        menuItem.setType(Material.STONE_SWORD);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.RED+"Berserker");
+        meta.setLore(lore);
+
         //create itemstacks for each wand of the class
     }
     public static void SwordLunge(Player p){

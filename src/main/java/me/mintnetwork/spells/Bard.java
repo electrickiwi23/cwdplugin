@@ -34,7 +34,8 @@ public class Bard extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_SONG_COST);
-        lore.add("TEXT");
+        lore.add("Your singing heals your teammates");
+        lore.add("who listen for a large amount.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Song of Healing"));

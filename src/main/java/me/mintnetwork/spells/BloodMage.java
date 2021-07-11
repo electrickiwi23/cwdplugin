@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -32,11 +33,60 @@ public class BloodMage extends KitItems {
     public BloodMage(){
         ultTime = Utils.BLOOD_MAGE_ULT_TIME;
 
+        ArrayList<String> lore = new ArrayList<>();
+
         ItemStack wand1 = new ItemStack(Material.STICK);
-        ItemMeta meta1 = wand1.getItemMeta();
+        ItemMeta meta = wand1.getItemMeta();
 
 
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Blood Bolt"));
+        wand1.setItemMeta(meta);
         wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + "");
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Life Sacrifice"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Blood Tracker"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
+        lore.add(ChatColor.GRAY + "and take no fall damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "CLASS DESC");
+
+        menuItem.setType(Material.FEATHER);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        meta.setLore(lore);
+
         //create itemstacks for each wand of the class
     }
 

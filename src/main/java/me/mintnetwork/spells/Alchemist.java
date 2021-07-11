@@ -29,6 +29,7 @@ public class Alchemist extends KitItems {
         ItemStack wand1 = new ItemStack(Material.STICK);
         ItemMeta meta = wand1.getItemMeta();
 
+
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.ACID_POTION_COST);
         lore.add(ChatColor.GRAY + "Throw a potion which deals massive");
         lore.add(ChatColor.GRAY + "damage within its radius over time.");

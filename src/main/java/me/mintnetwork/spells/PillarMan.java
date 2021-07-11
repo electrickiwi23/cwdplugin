@@ -163,8 +163,7 @@ public class PillarMan extends KitItems {
                 }
                 limit.add(pillar);
             } else {
-                ArrayList<Entity> limit = new ArrayList<
-                        Entity>();
+                ArrayList<Entity> limit = new ArrayList<Entity>();
                 limit.add(pillar);
                 limitMap.put(p,limit);
             }

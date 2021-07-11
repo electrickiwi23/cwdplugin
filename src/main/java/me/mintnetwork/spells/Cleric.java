@@ -1,9 +1,10 @@
 package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.CircleEffect;
 import de.slikey.effectlib.effect.SphereEffect;
+import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
@@ -106,9 +107,21 @@ public class Cleric extends KitItems {
     public static void HealPillar(Player p, Plugin plugin, BlockFace face, Block block) {
         if (face.getDirection().equals(new Vector(0, 1, 0))) {
             if (Mana.spendMana(p, Utils.HEAL_PILLAR_COST)) {
+                Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
                 Block pillarLocation = block.getLocation().add(face.getDirection()).getBlock();
                 Block cakeLocation = pillarLocation.getLocation().add(0, 1, 0).getBlock();
                 if (cakeLocation.isPassable()) {
+
+                    ArrayList<Block> limit = wizard.HealPillars;
+
+                    limit.removeIf(block1 -> block1.getType()!=Material.CAKE);
+
+                    if (limit.size()>=3){
+                        limit.get(0).breakNaturally();
+                        limit.remove(0);
+                    }
+                    limit.add(cakeLocation);
+
                     cakeLocation.setType(Material.CAKE);
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {

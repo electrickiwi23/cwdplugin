@@ -77,7 +77,7 @@ public class Ultimate {
                                 if (wizard.Ult < wizard.kitID.KitItems.ultTime) {
                                     wizard.Ult++;
                                 }
-                                if (wizard.Ult == 479) {
+                                if (wizard.Ult == wizard.kitID.KitItems.ultTime-1) {
                                     player.sendMessage("ULTIMATE CHARGED");
                                 }
                                 if (player.getInventory().contains(Material.DIAMOND_HOE)) {

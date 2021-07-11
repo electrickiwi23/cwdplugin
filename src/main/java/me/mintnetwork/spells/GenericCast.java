@@ -81,8 +81,13 @@ public class GenericCast {
     public static void EngineBurst(Player p) {
         if (Mana.spendMana(p, Utils.ENGINE_BLAST_COST)) {
 
+
+
             Location center = p.getLocation().add(p.getEyeLocation().getDirection().multiply(2));
             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, center.add(0, 1, 0), 4, .4, .4, .4);
+
+            p.getWorld().playSound(center,Sound.ENTITY_GENERIC_EXPLODE,.8f,1);
+            p.getWorld().playSound(center,Sound.ENTITY_GENERIC_EXTINGUISH_FIRE,.8f,1);
 
             for (Entity e : p.getWorld().getNearbyEntities(center, 3, 3, 3)) {
 
@@ -155,6 +160,9 @@ public class GenericCast {
             final int[] age = {0};
             String TeamName = TeamsInit.getTeamName(p);
             TeamsInit.addToTeam(bat, TeamName);
+
+            bat.getWorld().playSound(bat.getLocation(),Sound.ENTITY_BAT_AMBIENT,1,1);
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -195,13 +203,14 @@ public class GenericCast {
 
     public static void TNTRing(Player p) {
         if (Mana.spendMana(p, Utils.TNT_RING_COST)) {
+            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_TNT_PRIMED,1.2f,1);
             for (int i = 0; i < 8; i++) {
                 TNTPrimed tnt = (TNTPrimed) p.getWorld().spawnEntity(p.getEyeLocation(), EntityType.PRIMED_TNT);
                 Location location = p.getLocation();
                 location.setYaw(location.getYaw() + (45 * i));
                 location.setPitch(0);
                 tnt.setFuseTicks(120);
-                tnt.setVelocity(location.getDirection().add(new Vector(0, 1, 0)).multiply(.22));
+                tnt.setVelocity(location.getDirection().add(new Vector(0, 1, 0)).multiply(.3));
             }
         }
     }
@@ -285,6 +294,8 @@ public class GenericCast {
 
     public static void EndWarp(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.END_WARP_COST)) {
+            p.getWorld().playSound(p.getEyeLocation(),Sound.ENTITY_ENDER_PEARL_THROW,1,1);
+
             EnderPearl bolt = p.launchProjectile(EnderPearl.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());
@@ -449,6 +460,8 @@ public class GenericCast {
 
             p.getWorld().spawnParticle(Particle.FLASH, p.getLocation().add(0, 1, 0), 1);
 
+            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_FIREWORK_ROCKET_BLAST,.6F,1);
+
             RayTraceResult ray = p.getWorld().rayTraceBlocks(current, direction, 6, FluidCollisionMode.NEVER, true);
             Block hitBlock = null;
             current = current.add(direction.multiply(6));
@@ -465,6 +478,7 @@ public class GenericCast {
 
             Vector v = p.getVelocity();
             p.teleport(current.subtract(direction));
+            p.getWorld().playSound(current.subtract(direction),Sound.ENTITY_ENDERMAN_TELEPORT,.6F,1);
             p.setVelocity(v);
 
         }
@@ -699,6 +713,8 @@ public class GenericCast {
 
                                                 if (count[0] >= 20) {
                                                     current[0].getWorld().strikeLightning(finalHitLocation);
+                                                    current[0].getWorld().playSound(current[0],Sound.ENTITY_LIGHTNING_BOLT_IMPACT,1,1);
+                                                    current[0].getWorld().playSound(current[0],Sound.ENTITY_LIGHTNING_BOLT_THUNDER,1,1);
                                                     this.cancel();
                                                 }
                                             }
@@ -780,6 +796,7 @@ public class GenericCast {
                                     TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
 
                                     hitEntity.damage(2, stand);
+                                    p.playSound(p.getEyeLocation(),Sound.ENTITY_ARROW_HIT_PLAYER,1,1);
 
                                     stand.remove();
                                     break;

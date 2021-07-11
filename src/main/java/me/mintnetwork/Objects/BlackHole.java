@@ -6,6 +6,7 @@ import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -37,6 +38,8 @@ public class BlackHole {
             public void run() {
 
                 if (age>60) {
+                    if ((age&10)==0&&age<150) location.getWorld().playSound(location, Sound.AMBIENT_CAVE, .1f,1);
+
                     for (Block block : BlockDecay.decay.keySet()) {
                         if (block.getLocation().add(.5, .5, .5).distance(location) <= 4) {
                             BlockDecay.decay.get(block).damage((float) ((5 - block.getLocation().add(.5, .5, .5).distance(location)) / 3.0F));
@@ -86,7 +89,7 @@ public class BlackHole {
 
 
                 age++;
-                if (age>=200) remove();
+                if (age>=260) remove();
             }
         }.runTaskTimer(plugin, 1, 1);
     }

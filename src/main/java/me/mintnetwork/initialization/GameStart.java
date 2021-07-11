@@ -140,15 +140,7 @@ public class GameStart {
                     }
                 }
             }
-
-
-
-
-
-
         }
-
-
     }
 
     public static void startCountdown(Main plugin, GameMode gameMode, World world, int additional){
@@ -221,6 +213,7 @@ public class GameStart {
                 w.Mana = 3;
                 w.Ult = 0;
                 p.setLevel(3);
+                TeamsInit.updateArmor(p);
             }
         };
 

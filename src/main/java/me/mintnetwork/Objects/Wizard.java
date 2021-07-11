@@ -1,5 +1,6 @@
 package me.mintnetwork.Objects;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ public class Wizard {
 
     public ArrayList<ItemStack> wands = new ArrayList<>();
     public FallingBlock thrownAnvil = null;
+    public ArrayList<Block> HealPillars = new ArrayList<>();
 
     public int ElimLives = 0;
     public Wizard(Player p){

@@ -531,6 +531,8 @@ public class ProjectileHitListener implements Listener {
                 }
 
                 if (ID.get(snow).equals("Molotov")) {
+                    Location location = snow.getLocation();
+                    ArrayList<Block> fires = new ArrayList<>();
                     for (int i = 0; i < 4; i++) {
                         int finalI = i;
                         Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -538,23 +540,31 @@ public class ProjectileHitListener implements Listener {
                             public void run() {
                                 for (int j = 0; j < 2 * finalI + 1; j++) {
                                     for (int k = 0; k < 2 * finalI + 1; k++) {
-                                        if (!(Math.abs(j - finalI) == 3 && Math.abs(k - finalI) == 3)) {
+                                        if (!(Math.abs(j - finalI) == 2 && Math.abs(k - finalI) == 2)) {
                                             for (int l = 0; l < 2 * finalI + 1; l++) {
                                                 Location block = new Location(snow.getWorld(), snow.getLocation().getX() + j - finalI, snow.getLocation().getY() + k - finalI, snow.getLocation().getZ() + l - finalI);
                                                 if (block.getBlock().getType().isAir()) {
                                                     block.getBlock().setType(Material.FIRE);
+                                                    fires.add(block.getBlock());
                                                 }
                                             }
                                         }
-
                                     }
-
                                 }
-
                             }
                         }, i * 4);
-
                     }
+                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            snow.getWorld().playSound(location,Sound.BLOCK_FIRE_EXTINGUISH,1.2f,1);
+                            for (Block block:fires) {
+                                if (block.getType()==Material.FIRE){
+                                    block.setType(Material.AIR);
+                                }
+                            }
+                        }
+                    },300);
                     snow.remove();
                     Entity stand = linked.get(snow);
                     task.get(stand).cancel();

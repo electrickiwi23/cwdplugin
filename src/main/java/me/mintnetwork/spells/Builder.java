@@ -36,53 +36,53 @@ public class Builder extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.QUICK_BUILD_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("Quick Build"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.POPUP_TOWER_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        meta.setDisplayName(ChatColor.RESET+("Pop up Tower"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BUILD_BOLT_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        meta.setDisplayName(ChatColor.RESET+("Bridge Bolt"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+"Netherite Wall");
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "Gets a wool block of your team's");
+        lore.add(ChatColor.GRAY + "color every two seconds, max 1 stack.");
+        meta.setDisplayName(ChatColor.WHITE + "Builder's Materials");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "Dominate the terrain by shaping the");
+        lore.add(ChatColor.GRAY + "environment to your teams advantage.");
 
-        menuItem.setType(Material.FEATHER);
+        menuItem.setType(Material.CRAFTING_TABLE);
         meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        meta.setDisplayName(ChatColor.YELLOW+"Builder");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

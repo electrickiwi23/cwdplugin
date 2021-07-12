@@ -44,34 +44,34 @@ public class Cleric extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_BOLT_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_PILLAR_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        meta.setDisplayName(ChatColor.RESET+("Healing Pillars"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PURIFICATION_WAVE_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+("Divine Intervention"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
@@ -83,14 +83,14 @@ public class Cleric extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "Be the ultimate support by providing");
+        lore.add(ChatColor.GRAY + "healing and cleansing your teammates.");
 
-        menuItem.setType(Material.FEATHER);
+        menuItem.setType(Material.GOLDEN_APPLE);
         meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        meta.setDisplayName(ChatColor.WHITE+"Cleric");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

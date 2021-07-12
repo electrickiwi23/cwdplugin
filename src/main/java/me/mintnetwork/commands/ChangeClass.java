@@ -445,7 +445,7 @@ public class ChangeClass implements CommandExecutor {
                     ItemMeta swordMeta = sword.getItemMeta();
                     if (wizard.kitID.equals(Kit.BERSERKER)) {
                         sword.setType(Material.STONE_SWORD);
-                        swordMeta.setDisplayName((ChatColor.RESET+("x")));
+                        swordMeta.setDisplayName((ChatColor.RESET+("Berserker Blade")));
                     }
                     swordMeta.setUnbreakable(true);
                     sword.setItemMeta(swordMeta);

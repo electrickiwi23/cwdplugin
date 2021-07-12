@@ -48,7 +48,7 @@ public class BloodMage extends KitItems {
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_SACRIFICE_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
@@ -57,7 +57,7 @@ public class BloodMage extends KitItems {
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_TRACKER_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
@@ -66,7 +66,7 @@ public class BloodMage extends KitItems {
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+("Blood Link Ritual"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
@@ -78,14 +78,14 @@ public class BloodMage extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "Excel in 1v1 and team fights with lifesteal");
+        lore.add(ChatColor.GRAY + "and abilities focused on survivability.");
 
-        menuItem.setType(Material.FEATHER);
-        meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        menuItem.setType(Material.REDSTONE);
+        meta =menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.DARK_RED+"Blood Mage");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

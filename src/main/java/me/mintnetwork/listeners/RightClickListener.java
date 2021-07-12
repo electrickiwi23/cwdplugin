@@ -50,7 +50,7 @@ public class RightClickListener implements Listener {
                         if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
 //                                if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
                             if (StatusEffects.CanCast(p)) {
-                                if (Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName().contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
+                                if (ChatColor.stripColor((Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta())).getDisplayName()).contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
 
                                 switch(ChatColor.stripColor(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName())){
                                     case ("Lightning Bolt"):
@@ -62,7 +62,7 @@ public class RightClickListener implements Listener {
                                     case ("Ice Bolt"):
                                         SpellSlinger.SnowBolt(p,plugin);
                                         break;
-                                    case ("Elemental Blast"):
+                                    case ("Elemental Release"):
                                         SpellSlinger.ElementBlast(p,plugin,em);
                                         break;
 
@@ -216,7 +216,7 @@ public class RightClickListener implements Listener {
                                     case("Grapple Hook"):
                                         Tactician.GrappleHook(p,plugin);
                                         break;
-                                    case("Air Strike"):
+                                    case("Orbital Strike"):
                                         Tactician.AirStrike(p,plugin);
                                         break;
 
@@ -233,13 +233,13 @@ public class RightClickListener implements Listener {
                                         Alchemist.ImmortalPotionUlt(p);
                                         break;
 
-                                    case ("Arial Slam" ):
+                                    case ("Aerial Slam" ):
                                         Protector.Slam(p,plugin);
                                         break;
                                     case ("Dome of Safety"):
                                         Protector.ShieldDome(p,em,plugin);
                                         break;
-                                    case ("Armor Aura"):
+                                    case ("Crystal Armor"):
                                         Protector.GiveArmor(p,em,plugin);
                                         break;
                                     case ("Aura of Protection"):

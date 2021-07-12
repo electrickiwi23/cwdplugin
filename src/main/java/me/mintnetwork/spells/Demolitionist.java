@@ -28,53 +28,53 @@ public class Demolitionist extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_LINE_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("TNT Line"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_GRENADE_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        meta.setDisplayName(ChatColor.RESET+("TNT Grenade"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_STICK_GRENADE_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        meta.setDisplayName(ChatColor.RESET+("Sticky Grenade"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+("Cluster Bomb"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "Your Armor is enchanted with blast protection");
+        lore.add(ChatColor.GRAY + "making you take less damage from explosions.");
+        meta.setDisplayName(ChatColor.WHITE + "Blast-Proof Armor");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "Exterminate your enemies with large");
+        lore.add(ChatColor.GRAY + "area of effect explosions");
 
-        menuItem.setType(Material.FEATHER);
+        menuItem.setType(Material.TNT);
         meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        meta.setDisplayName(ChatColor.DARK_RED+"Demolitionist");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

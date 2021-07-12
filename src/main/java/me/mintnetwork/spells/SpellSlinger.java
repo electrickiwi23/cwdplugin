@@ -14,8 +14,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,53 +39,55 @@ public class SpellSlinger extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.LIGHTNING_BOLT_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("Lightning Bolt"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIRE_BOLT_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        meta.setDisplayName(ChatColor.RESET+("Fire Bolt"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNOW_BOLT_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        meta.setDisplayName(ChatColor.RESET+("Ice Bolt"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+("Elemental Release"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "Due to your intense magic training,");
+        lore.add(ChatColor.GRAY + "you naturally generate mana slightly faster.");
+        meta.setDisplayName(ChatColor.WHITE + "Efficient Arcana");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY + "Command the elements to deal");
+        lore.add(ChatColor.GRAY + "with enemies at range.");
 
-        menuItem.setType(Material.FEATHER);
-        meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
-        meta.setLore(lore);
+        menuItem.setType(Material.TIPPED_ARROW);
+        PotionMeta potionMeta = (PotionMeta) menuItem.getItemMeta();
+        potionMeta.setDisplayName(ChatColor.WHITE +"Spell Slinger");
+        potionMeta.setLore(lore);
+        potionMeta.setColor(Color.ORANGE);
+        potionMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        menuItem.setItemMeta(potionMeta);
 
         //create itemstacks for each wand of the class
     }

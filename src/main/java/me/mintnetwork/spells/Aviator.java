@@ -7,10 +7,8 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,8 +30,8 @@ public class Aviator extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.CLOUD_BURST_COST);
-        lore.add("Propel yourself high into the air ");
-        lore.add("using a burst of smoke.");
+        lore.add(ChatColor.GRAY + "Propel yourself high into the air ");
+        lore.add(ChatColor.GRAY +"using a burst of smoke.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
@@ -42,8 +40,8 @@ public class Aviator extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.AIR_DASH_COST);
-        lore.add("Hurl yourself quickly in the direction ");
-        lore.add("you are facing using the air.");
+        lore.add(ChatColor.GRAY + "Hurl yourself quickly in the direction ");
+        lore.add(ChatColor.GRAY + "you are facing using the air.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Air Dash"));
@@ -52,17 +50,17 @@ public class Aviator extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.AIR_NEEDLES_COST);
-        lore.add("Shoot out a trio of needles that deal ");
-        lore.add("a moderate amount of damage.");
+        lore.add(ChatColor.GRAY + "Shoot out a trio of needles that deal ");
+        lore.add(ChatColor.GRAY + "a moderate amount of damage.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Air Needles"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Create a powerful wind current that traps");
-        lore.add("those in its radius, and disables abilities.");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        lore.add(ChatColor.GRAY + "Create a powerful wind current that traps");
+        lore.add(ChatColor.GRAY + "those in its radius, and disables abilities.");
+        meta.setDisplayName(ChatColor.GOLD+"Tornado Blast");
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();

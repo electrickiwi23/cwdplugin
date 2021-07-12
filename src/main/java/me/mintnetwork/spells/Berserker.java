@@ -37,13 +37,24 @@ public class Berserker extends KitItems {
 
         ArrayList<String> lore = new ArrayList<>();
 
+        ItemStack Sword = new ItemStack(Material.STICK);
+
+        ItemMeta meta = Sword.getItemMeta();
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SWORD_LUNGE_COST);
+        lore.add(ChatColor.GRAY + "Right click with your sword to ");
+        lore.add(ChatColor.GRAY + "lunge forward mid combat.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Ferocious lunge"));
+        Sword.setItemMeta(meta);
+        wands.add(Sword);
+
         ItemStack wand1 = new ItemStack(Material.STICK);
-        ItemMeta meta = wand1.getItemMeta();
 
-
+        meta = wand1.getItemMeta();
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_BOOST_COST);
-        lore.add("Enhances your sprinting ability for ");
-        lore.add("a short period of time.");
+        lore.add(ChatColor.GRAY + "Enhances your sprinting ability for ");
+        lore.add(ChatColor.GRAY + "a short period of time.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Speed Rush"));
@@ -52,17 +63,17 @@ public class Berserker extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FORCE_PULL_COST);
-        lore.add("Pull any enemies close to you ");
-        lore.add("using sheer will.");
+        lore.add(ChatColor.GRAY + "Pull any enemies close to you ");
+        lore.add(ChatColor.GRAY + "using sheer will.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Force Pull"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
-        lore.add("Buffs your damage and knockback for a");
-        lore.add("Short period of time.");
-        meta.setDisplayName(ChatColor.RESET+("Unleash Rage"));
+        lore.add(ChatColor.GRAY + "Buffs your damage and knockback for a");
+        lore.add(ChatColor.GRAY + "Short period of time.");
+        meta.setDisplayName(ChatColor.GOLD+("Unleash Rage"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
@@ -73,20 +84,21 @@ public class Berserker extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add("Chase down and stab your enemies");
-        lore.add("with your increased close range capabilities.");
+        lore.add(ChatColor.GRAY + "Chase down and stab your enemies");
+        lore.add(ChatColor.GRAY + "with your increased close range capabilities.");
 
         menuItem.setType(Material.STONE_SWORD);
         meta = menuItem.getItemMeta();
         meta.setDisplayName(ChatColor.RED+"Berserker");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }
     public static void SwordLunge(Player p){
         if (Mana.spendMana(p,2)){
             p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GOAT_LONG_JUMP,1,1);
-         p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize().multiply(1.2));
+         p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize());
 
         }
     }

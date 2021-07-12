@@ -38,53 +38,54 @@ public class Protector extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SLAM_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("Aerial Slam"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHIELD_DOME_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Dash"));
+        meta.setDisplayName(ChatColor.RESET+("Dome of Safety"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + "#");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GIVE_ARMOR_COST);
         lore.add("TEXT");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Air Needles"));
+        meta.setDisplayName(ChatColor.RESET+("Crystal Armor"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
         lore.add("TEXT");
-        meta.setDisplayName(ChatColor.RESET+("Tornado Blast"));
+        meta.setDisplayName(ChatColor.GOLD+("Aura of Protection"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "You have 2 hearts more health,");
+        lore.add(ChatColor.GRAY + "but move 15% slower.");
+        meta.setDisplayName(ChatColor.WHITE + "Reinforced");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
-        lore.add(ChatColor.GRAY + "CLASS DESC");
+        lore.add(ChatColor.GRAY +"Support and protect your teammates");
+        lore.add(ChatColor.GRAY +"with a variety of magic");
 
-        menuItem.setType(Material.FEATHER);
+        menuItem.setType(Material.SHIELD);
         meta = menuItem.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN+"CLASS");
+        meta.setDisplayName(ChatColor.GOLD +"Protector");
         meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+        menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
     }

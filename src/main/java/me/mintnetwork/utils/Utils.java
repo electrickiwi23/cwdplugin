@@ -28,6 +28,7 @@ public class Utils {
     public static final int SPEED_SONG_COST = 4;
     public static final int HEAL_SONG_COST = 3;
     public static final int STUN_SONG_COST = 3;
+    public static final int SWORD_LUNGE_COST = 2;
     public static final int SPEED_BOOST_COST = 3;
     public static final int FORCE_PULL_COST = 4;
     public static final int BLOOD_BOLT_COST = 3;

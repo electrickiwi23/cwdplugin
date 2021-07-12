@@ -34,8 +34,8 @@ public class Bard extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_SONG_COST);
-        lore.add("Your singing heals your teammates");
-        lore.add("who listen for a large amount.");
+        lore.add(ChatColor.GRAY + "Your singing heals your teammates");
+        lore.add(ChatColor.GRAY + "who listen for a large amount.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Song of Healing"));
@@ -44,8 +44,8 @@ public class Bard extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_SONG_COST);
-        lore.add("Your singing allows your teammates");
-        lore.add("who listen to run faster.");
+        lore.add(ChatColor.GRAY + "Your singing allows your teammates");
+        lore.add(ChatColor.GRAY + "who listen to run faster.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Song of Haste"));
@@ -54,37 +54,36 @@ public class Bard extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.STUN_SONG_COST);
-        lore.add("Throws a bouncy jukebox explodes that after ");
-        lore.add("a short amount of time  stunning enemies.");
+        lore.add(ChatColor.GRAY + "Throws a bouncy jukebox explodes that after ");
+        lore.add(ChatColor.GRAY + "a short amount of time  stunning enemies.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Concussion Ring"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Your song entrances your enemies and forces");
-        lore.add("them to look your direction.");
-        meta.setDisplayName(ChatColor.RESET+("Siren Song"));
+        lore.add(ChatColor.GRAY + "Your song entrances your enemies and forces");
+        lore.add(ChatColor.GRAY + "them to look your direction.");
+        meta.setDisplayName(ChatColor.GOLD+("Siren Song"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air "); //todo keelan
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
+        lore.add(ChatColor.GRAY + "Inspire teammates around you, giving");
+        lore.add(ChatColor.GRAY + "them points that buff their next attack.");
         meta.setDisplayName(ChatColor.WHITE + "Bardic Inspiration");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add("Use the power of music to heal");
-        lore.add("your allies and ward off enemies.");
+        lore.add(ChatColor.GRAY + "Use the power of music to heal");
+        lore.add(ChatColor.GRAY + "your allies and ward off enemies.");
 
         menuItem.setType(Material.MUSIC_DISC_CAT);
         meta = menuItem.getItemMeta();
         meta.setDisplayName(ChatColor.AQUA+"Bard");
         meta.addItemFlags(ItemFlag.values());
         meta.setLore(lore);
-
         menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class

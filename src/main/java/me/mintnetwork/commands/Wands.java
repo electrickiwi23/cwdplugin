@@ -145,7 +145,7 @@ public class Wands implements CommandExecutor {
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HIVE_BOLT_COST);
         lore.add("Shoots out angry bees which attack anyone near. BEEware!");
 
-        item.setType(Material.HONEY_BOTTLE);
+        item.setType(Material.HONEYCOMB);
         meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE +"Hive Bolt");
         meta.setLore(lore);
@@ -321,7 +321,7 @@ public class Wands implements CommandExecutor {
                     ItemStack pane = inv.getItem(i);
                     pane.setType(Material.LIME_STAINED_GLASS_PANE);
                     ItemMeta meta = pane.getItemMeta();
-                    meta.setLore(Arrays.asList("You have already selected this wand"));
+                    meta.setLore(Arrays.asList(ChatColor.RED + "You have already selected this wand"));
                     pane.setItemMeta(meta);
                     inv.setItem(i, pane);
                 }

@@ -1,6 +1,7 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
@@ -22,108 +23,30 @@ public class Ultimate {
     }
 
     public static boolean hasUlt(Player p) {
-
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         boolean has = false;
 
-        switch (wizard.kitID) {
-            case SPELL_SLINGER:
-            case PAINTER:
-                if (wizard.Ult >= 480) {
-                    has = true;
-                }
-                break;
-            case DEMOLITIONIST:
-            case AVIATOR:
-            case BERSERKER:
-            case ALCHEMIST:
-            case BARD:
-            case BLOOD_MAGE:
-            case BUILDER:
-            case CLERIC:
-            case TACTICIAN:
-            case PROTECTOR:
-                if (wizard.Ult >= 720) {
-                    has = true;
-                }
-                break;
-            case SHADOW:
-            case PILLAR_MAN:
-                if (wizard.Ult >= 960) {
-                    has = true;
-                }
-                break;
+        if (wizard.kitID!= Kit.NONE){
+            has = wizard.Ult >= wizard.kitID.KitItems.ultTime;
         }
         return has;
     }
 
     public static boolean spendUlt(Player p) {
-
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
-        boolean has = false;
-
-
-        switch (wizard.kitID) {
-            case SPELL_SLINGER:
-            case PAINTER:
-                if (wizard.Ult >= 480) {
-                    has = true;
-                }
-                break;
-            case DEMOLITIONIST:
-            case AVIATOR:
-            case BERSERKER:
-            case ALCHEMIST:
-            case BARD:
-            case BLOOD_MAGE:
-            case BUILDER:
-            case CLERIC:
-            case TACTICIAN:
-            case PROTECTOR:
-                if (wizard.Ult >= 720) {
-                    has = true;
-                }
-                break;
-            case SHADOW:
-            case PILLAR_MAN:
-                if (wizard.Ult >= 960) {
-                    has = true;
-                }
-                break;
-        }
+        boolean has = hasUlt(p);
         if (has){
             wizard.Ult = 0;
         }
-
         return has;
     }
 
     public static double getUltPercentage(Player p) {
-
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
         double percentage = 0;
 
-        switch (wizard.kitID) {
-            case SPELL_SLINGER:
-            case PAINTER:
-                percentage = wizard.Ult/480.0;
-                break;
-            case DEMOLITIONIST:
-            case AVIATOR:
-            case BERSERKER:
-            case ALCHEMIST:
-            case BARD:
-            case BLOOD_MAGE:
-            case BUILDER:
-            case CLERIC:
-            case TACTICIAN:
-            case PROTECTOR:
-                percentage = wizard.Ult/720.0;
-                break;
-            case SHADOW:
-            case PILLAR_MAN:
-                percentage = wizard.Ult/960.0;
-                break;
+        if (wizard.kitID!= Kit.NONE){
+            percentage = wizard.Ult /(double) wizard.kitID.KitItems.ultTime;
         }
 
         return percentage;
@@ -132,27 +55,8 @@ public class Ultimate {
     public static void FullCharge(Player p){
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
 
-        switch (wizard.kitID) {
-            case SPELL_SLINGER:
-            case PAINTER:
-                wizard.Ult = 480;
-                break;
-            case DEMOLITIONIST:
-            case AVIATOR:
-            case BERSERKER:
-            case ALCHEMIST:
-            case BARD:
-            case BLOOD_MAGE:
-            case BUILDER:
-            case CLERIC:
-            case TACTICIAN:
-            case PROTECTOR:
-                wizard.Ult = 720;
-                break;
-            case SHADOW:
-            case PILLAR_MAN:
-                wizard.Ult = 960;
-                break;
+        if (wizard.kitID!= Kit.NONE){
+            wizard.Ult = wizard.kitID.KitItems.ultTime;
         }
     }
 
@@ -169,77 +73,23 @@ public class Ultimate {
                         Player player = Bukkit.getPlayer(uuid);
                         Wizard wizard = WizardInit.playersWizards.get(uuid);
                         if (player != null) {
-                            if (wizard.kitID!=null) {
-                                switch (wizard.kitID) {
-                                    case SPELL_SLINGER:
-                                    case PAINTER:
-                                        if (wizard.Ult < 480) {
-                                            wizard.Ult++;
-                                        }
-                                        if (wizard.Ult == 479) {
-                                            player.sendMessage("ULTIMATE CHARGED");
-                                        }
-
-                                        if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                            for (ItemStack i : player.getInventory().getContents()) {
-                                                if (i != null) {
-                                                    if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                        ItemMeta itemMeta = i.getItemMeta();
-                                                        ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
-                                                        i.setItemMeta(itemMeta);
-                                                    }
-                                                }
+                            if (wizard.kitID!=Kit.NONE) {
+                                if (wizard.Ult < wizard.kitID.KitItems.ultTime) {
+                                    wizard.Ult++;
+                                }
+                                if (wizard.Ult == wizard.kitID.KitItems.ultTime-1) {
+                                    player.sendMessage("ULTIMATE CHARGED");
+                                }
+                                if (player.getInventory().contains(Material.DIAMOND_HOE)) {
+                                    for (ItemStack i : player.getInventory().getContents()) {
+                                        if (i != null) {
+                                            if (i.getType().equals(Material.DIAMOND_HOE)) {
+                                                ItemMeta itemMeta = i.getItemMeta();
+                                                ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
+                                                i.setItemMeta(itemMeta);
                                             }
                                         }
-                                        break;
-                                    case DEMOLITIONIST:
-                                    case AVIATOR:
-                                    case BERSERKER:
-                                    case ALCHEMIST:
-                                    case BARD:
-                                    case BLOOD_MAGE:
-                                    case BUILDER:
-                                    case CLERIC:
-                                    case TACTICIAN:
-                                    case PROTECTOR:
-                                        if (wizard.Ult < 720) {
-                                            wizard.Ult++;
-                                        }
-                                        if (wizard.Ult == 719) {
-                                            player.sendMessage("ULTIMATE CHARGED");
-                                        }
-                                        if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                            for (ItemStack i : player.getInventory().getContents()) {
-                                                if (i != null) {
-                                                    if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                        ItemMeta itemMeta = i.getItemMeta();
-                                                        ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
-                                                        i.setItemMeta(itemMeta);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case SHADOW:
-                                    case PILLAR_MAN:
-                                        if (wizard.Ult < 960) {
-                                            wizard.Ult++;
-                                        }
-                                        if (wizard.Ult == 959) {
-                                            player.sendMessage("ULTIMATE CHARGED");
-                                        }
-                                        if (player.getInventory().contains(Material.DIAMOND_HOE)) {
-                                            for (ItemStack i : player.getInventory().getContents()) {
-                                                if (i != null) {
-                                                    if (i.getType().equals(Material.DIAMOND_HOE)) {
-                                                        ItemMeta itemMeta = i.getItemMeta();
-                                                        ((Damageable) itemMeta).setDamage((int) ((1561) - 1561 * getUltPercentage(player)));
-                                                        i.setItemMeta(itemMeta);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        break;
+                                    }
                                 }
                             }
                         }

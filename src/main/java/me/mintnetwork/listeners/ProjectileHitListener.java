@@ -15,6 +15,7 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Fire;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -75,7 +76,6 @@ public class ProjectileHitListener implements Listener {
                          Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
                              @Override
                              public void run() {
-                                 finalHit.setCustomName(String.valueOf(finalHit.getHealth()));
                                  finalHit.setNoDamageTicks(0);
                              }
                          });
@@ -108,7 +108,7 @@ public class ProjectileHitListener implements Listener {
                     cloud.setRadiusPerTick((float) -.005);
                     cloud.setDuration(200);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, true, true), false);
-                    cloud.setReapplicationDelay(10);
+                    cloud.setReapplicationDelay(14);
                     cloud.setCustomName("Acid Pool");
                 }
                 if (ID.get(potion).equals("Heal Potion")) {
@@ -119,7 +119,7 @@ public class ProjectileHitListener implements Listener {
                     cloud.setRadiusPerTick((float) -.005);
                     cloud.setDuration(150);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 3, false, false), false);
-                    cloud.setReapplicationDelay(20);
+                    cloud.setReapplicationDelay(17);
                     cloud.setSource(shooter);
                 }
                 if (ID.get(potion).equals("Debuff Potion")) {
@@ -205,7 +205,16 @@ public class ProjectileHitListener implements Listener {
                         hit.setFireTicks(60);
                     }
                     if (hitBlock != null) {
+                        hitBlock.getWorld().playSound(hitBlock.getLocation().add(.5,.5,.5),Sound.ITEM_FLINTANDSTEEL_USE,1,1);
                         hitBlock.getLocation().add(hitFace.getDirection()).getBlock().setType(Material.FIRE);
+                        if (hitBlock.getLocation().add(hitFace.getDirection()).getBlock().getType()==Material.FIRE) {
+                            Fire fire = (Fire) hitBlock.getLocation().add(hitFace.getDirection()).getBlock().getBlockData();
+                            if (fire.getAllowedFaces().contains(hitFace.getOppositeFace())) {
+                                fire.setFace(hitFace.getOppositeFace(), true);
+                                hitBlock.getLocation().add(hitFace.getDirection()).getBlock().setBlockData(fire);
+                            }
+                        }
+
                     }
                     task.get(snow).cancel();
                 }
@@ -224,9 +233,13 @@ public class ProjectileHitListener implements Listener {
 
                 if (ID.get(snow).equals("BloodBolt")) {
                     if (hit != null) {
-                        hit.damage(5,snow);
-                        shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 2));
-                        if (hit instanceof Player) BloodMage.BloodLink((Player) shooter, (Player) hit);
+                        if (TeamsInit.getTeamName(hit).equals("")||!TeamsInit.getTeamName(hit).equals(TeamsInit.getTeamName(shooter))) {
+                            hit.damage(5, snow);
+                            if (hit instanceof Player) {
+                                BloodMage.BloodLink((Player) shooter, (Player) hit);
+                                shooter.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 50, 2));
+                            }
+                        }
                     }
                     if (hitBlock != null){
                         if (BlockDecay.decay.containsKey(hitBlock)){
@@ -449,74 +462,9 @@ public class ProjectileHitListener implements Listener {
                     }
                 }
 
-                if (ID.get(snow).equals("TornadoUlt")){
-                    task.get(snow).cancel();
-                    TornadoEffect tornado = new TornadoEffect(em);
-                    tornado.maxTornadoRadius = 6;
-                    tornado.particleOffsetX = (float) 1;
-                    tornado.particleOffsetZ = (float) 1;
-                    tornado.cloudParticle = Particle.CLOUD;
-                    tornado.tornadoParticle = Particle.SPELL_MOB;
-                    tornado.tornadoColor = Color.WHITE;
-                    tornado.tornadoHeight = 1;
-                    tornado.distance = .15;
-                    tornado.iterations = 100;
-                    tornado.setLocation(snow.getLocation());
-                    em.start(tornado);
-
-                    Location l = snow.getLocation();
-
-                    ArmorStand stand = (ArmorStand) snow.getWorld().spawnEntity(snow.getLocation(), EntityType.ARMOR_STAND);
-                    stand.setMarker(true);
-                    stand.setInvisible(true);
-                    String teamName = TeamsInit.getTeamName(shooter);
-                    ProjectileInfo.TornadoTeam.put(stand, teamName);
-
-                    BukkitTask tick = new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            for (Entity e : l.getWorld().getNearbyEntities(l, 7, 16, 7)
-                            ) {
-                                if (e instanceof LivingEntity) {
-                                    if (!(e instanceof ArmorStand)) {
-                                        Location entityLocation = e.getLocation().clone();
-                                        entityLocation.setY(l.getY());
-                                        if (entityLocation.distance(l) <= 6) {
-                                            if (e.getLocation().getY() >= l.getY() - 1) {
-                                                String victimTeam = TeamsInit.getTeamName(e);
-                                                if (l.getY() >= e.getLocation().getY() - 10) {
-                                                    if (e.getVelocity().getY()<=0){
-                                                        e.setVelocity(e.getVelocity().add(new Vector(0, .4, 0)));
-                                                    } else if (e.getVelocity().getY() <= 1.5) {
-                                                        e.setVelocity(e.getVelocity().add(new Vector(0, .2, 0)));
-                                                    }
-                                                } else if(!teamName.equals(victimTeam)){
-                                                    e.setVelocity(e.getVelocity().multiply(.3));
-                                                }
-                                                l.getWorld().spawnParticle(Particle.CLOUD, e.getLocation(), 1, .1, .1, .1, 0);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }.runTaskTimer(plugin, 1, 1);
-
-                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            stand.remove();
-                            tornado.cancel();
-                            tick.cancel();
-                        }
-                    },400);
-
-
-
-
-                }
-
                 if (ID.get(snow).equals("Molotov")) {
+                    Location location = snow.getLocation();
+                    ArrayList<Block> fires = new ArrayList<>();
                     for (int i = 0; i < 4; i++) {
                         int finalI = i;
                         Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -524,23 +472,31 @@ public class ProjectileHitListener implements Listener {
                             public void run() {
                                 for (int j = 0; j < 2 * finalI + 1; j++) {
                                     for (int k = 0; k < 2 * finalI + 1; k++) {
-                                        if (!(Math.abs(j - finalI) == 3 && Math.abs(k - finalI) == 3)) {
+                                        if (!(Math.abs(j - finalI) == 2 && Math.abs(k - finalI) == 2)) {
                                             for (int l = 0; l < 2 * finalI + 1; l++) {
                                                 Location block = new Location(snow.getWorld(), snow.getLocation().getX() + j - finalI, snow.getLocation().getY() + k - finalI, snow.getLocation().getZ() + l - finalI);
                                                 if (block.getBlock().getType().isAir()) {
                                                     block.getBlock().setType(Material.FIRE);
+                                                    fires.add(block.getBlock());
                                                 }
                                             }
                                         }
-
                                     }
-
                                 }
-
                             }
                         }, i * 4);
-
                     }
+                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            snow.getWorld().playSound(location,Sound.BLOCK_FIRE_EXTINGUISH,1.2f,1);
+                            for (Block block:fires) {
+                                if (block.getType()==Material.FIRE){
+                                    block.setType(Material.AIR);
+                                }
+                            }
+                        }
+                    },300);
                     snow.remove();
                     Entity stand = linked.get(snow);
                     task.get(stand).cancel();

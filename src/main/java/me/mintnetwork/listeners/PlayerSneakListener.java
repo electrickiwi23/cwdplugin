@@ -69,7 +69,7 @@ public class PlayerSneakListener implements Listener {
                     StatusEffects.cloudFloating.add(p);
                 }
             } else if(wizard.kitID.equals(Kit.PILLAR_MAN)){
-                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(.6);
+                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1000000,0,true,false));
             }
 

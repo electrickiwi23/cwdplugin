@@ -8,13 +8,14 @@ import me.mintnetwork.Objects.Kit;
 import me.mintnetwork.Objects.ShadowGrapple;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
-import me.mintnetwork.spells.BloodMage;
-import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.spells.BloodMage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -69,6 +70,8 @@ public class StatusEffects {
     public static Map<Player, Integer> activeBloodUlt = new HashMap<>();
 
     public static Map<Player, HashMap<Player,Integer>> bloodLink = new HashMap<>();
+
+    public static ArrayList<Player> stormUlt = new ArrayList<>();
 
     public void statusEffects(Main plugin) {
         EffectManager em = new EffectManager(plugin);
@@ -208,7 +211,9 @@ public class StatusEffects {
 
 
                 for (Player p : cloudFloating) {
-                    p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation().add(0,-1,0), 1, .1, .1, .1, 0);
+                    if (stormUlt.contains(p)){
+                        p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,-1,0), 1, .1, .1, .1, 0,new Particle.DustOptions(Color.fromBGR(80,80,80), 3));
+                    } else p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation().add(0,-1,0), 1, .1, .1, .1, 0);
                 }
 
                 for (Player p: RageUlt.keySet()){
@@ -228,14 +233,33 @@ public class StatusEffects {
                         RageUlt.remove(p);
 
                         for (ItemStack i:p.getInventory().getContents()) {
-                            if (i.getType().equals(Material.IRON_SWORD)){
-                                i.removeEnchantment(Enchantment.KNOCKBACK);
+                            if (i!=null) {
+                                if (i.getType().equals(Material.STONE_SWORD)) {
+                                    i.removeEnchantment(Enchantment.KNOCKBACK);
+                                }
                             }
                         }
 
                     }
 
                 }
+
+                for (int i = 0; i < stormUlt.size(); i++) {
+                    Player p = stormUlt.get(i);
+                    for (Player e : Bukkit.getOnlinePlayers()) {
+                        if (e != p) {
+                            p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0, 1, 0), 2, .2, .4, .2, 0, new Particle.DustOptions(Color.fromBGR(80,80,80), 2));
+                        }
+                    }
+                    p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0, 1, 0), 1, .2, .4, .2, 0, new Particle.DustOptions(Color.YELLOW, 1));
+                    if (p.isDead()){
+                        stormUlt.remove(p);
+                        i--;
+                    }
+                }
+
+
+
 
                 List<LivingEntity> removeBloodWeak = new ArrayList<>();
 
@@ -440,7 +464,7 @@ public class StatusEffects {
                             if (!teamName.equals(TeamsInit.getTeamName(e))) {
                                 if (e.getLocation().distance(p.getLocation()) <= 30) {
                                     if (((LivingEntity) e).hasLineOfSight(p)) {
-                                        Vector v = e.getVelocity();
+                                        Vector v = e.getVelocity().clone();
                                         e.teleport(e.getLocation().setDirection(p.getLocation().toVector().subtract(e.getLocation().toVector()).normalize()));
                                         e.setVelocity(v);
                                         e.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, ((LivingEntity) e).getEyeLocation(), 1, .25, .25, .25, 0);
@@ -468,12 +492,12 @@ public class StatusEffects {
                     direction.setPitch(0);
                     direction.setYaw((x % 20) * 18 - 180);
 
-                    p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(direction.getDirection()).add(0,healTeam.get(p)/12.0,0),1,.1,.1,.1,0);
+                    p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(direction.getDirection()).add(0,healTeam.get(p)/8.0,0),1,.1,.1,.1,0);
                     p.playSound(p.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) .4, (float) (healTeam.get(p)/20.0+.5));
 
                     healTeam.replace(p, healTeam.get(p) + 1);
 
-                    if (healTeam.get(p) >= 30) {
+                    if (healTeam.get(p) >= 20) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL,1,10));
                         p.getWorld().spawnParticle(Particle.HEART,p.getLocation().add(0,1,0),10,.3,.4,.3,0);
 
@@ -598,23 +622,6 @@ public class StatusEffects {
         }
 
 //        ugly code for if you are in a tornado
-
-        for (Entity e : p.getWorld().getNearbyEntities(p.getLocation(),7,16,7)) {
-            if (e instanceof ArmorStand) {
-                if (ProjectileInfo.TornadoTeam.containsKey(e)) {
-                    if (!ProjectileInfo.TornadoTeam.get(e).equals(teamName)) {
-
-                        Location entityLocation = p.getLocation().clone();
-                        entityLocation.setY(e.getLocation().getY());
-                        if (entityLocation.distance(e.getLocation()) <= 6) {
-                            if (p.getLocation().getY() >= e.getLocation().getY() - 1) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         return true;
     }

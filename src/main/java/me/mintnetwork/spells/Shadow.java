@@ -9,8 +9,11 @@ import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,11 +22,76 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-public class Shadow {
-    public static void ShadowRetreat(Player p,Plugin plugin) {
+public class Shadow extends KitItems {
+
+
+    public Shadow() {
+        ultTime = Utils.SHADOW_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_INVISIBILITY_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET + ("Darkness Camouflage"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_RETREAT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET + ("Shadow Dash"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_GRAPPLE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET + ("Pray Abduction"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD + ("Consuming Midnight"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "If you haven't taken or dealt damage ");
+        lore.add(ChatColor.GRAY + "in the last 10 seconds, your next");
+        lore.add(ChatColor.GRAY + "attack deals extra damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Shadow Blade");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Escape into the night to");
+        lore.add(ChatColor.GRAY + "bewilder and confuse your foes.");
+
+        menuItem.setType(Material.BLACK_DYE);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "The Shadow");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
+
+    public static void ShadowRetreat(Player p, Plugin plugin) {
 
         if (Mana.spendMana(p, Utils.SHADOW_RETREAT_COST)) {
             for (Entity e : p.getNearbyEntities(4, 4, 4)) {
@@ -37,13 +105,13 @@ public class Shadow {
             p.getWorld().spawnParticle(Particle.SQUID_INK, p.getEyeLocation(), 30, .1, .1, .1, .3);
             p.setGravity(false);
             double tempY = p.getEyeLocation().getDirection().getY();
-            Vector direction = p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.4,Math.min(.4,tempY))).normalize().multiply(1);
+            Vector direction = p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.4, Math.min(.4, tempY))).normalize().multiply(1);
             p.setVelocity(direction);
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
                     p.setVelocity(direction);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 4, .2, .4, .2, 0,new Particle.DustOptions(Color.BLACK,2));
+                    p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 4, .2, .4, .2, 0, new Particle.DustOptions(Color.BLACK, 2));
                 }
             }.runTaskTimer(plugin, 1, 1);
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -104,7 +172,7 @@ public class Shadow {
         }
     }
 
-    public static void ShadowGrapple(Player p,Plugin plugin) {
+    public static void ShadowGrapple(Player p, Plugin plugin) {
         Vector direction = p.getEyeLocation().getDirection();
         RayTraceResult ray = p.getWorld().rayTrace(p.getEyeLocation().add(direction), direction, 5, FluidCollisionMode.NEVER, true, .1, null);
         Particle.DustOptions dust = new Particle.DustOptions(Color.BLACK, 3);
@@ -117,7 +185,7 @@ public class Shadow {
             } catch (Exception ignore) {
             }
             if (hit != null) {
-                if (hit!=p) {
+                if (hit != p) {
                     if (hit instanceof LivingEntity && Mana.spendMana(p, Utils.SHADOW_GRAPPLE_COST)) {
 
 
@@ -133,9 +201,9 @@ public class Shadow {
         }
     }
 
-    public static void ConsumingNight(Player p, Plugin plugin, EffectManager em){
+    public static void ConsumingNight(Player p, Plugin plugin, EffectManager em) {
         Vector direction = p.getEyeLocation().getDirection();
-        RayTraceResult ray =  p.getWorld().rayTrace(p.getEyeLocation().add(direction),direction,50,FluidCollisionMode.NEVER,true,.1,null);
+        RayTraceResult ray = p.getWorld().rayTrace(p.getEyeLocation().add(direction), direction, 50, FluidCollisionMode.NEVER, true, .1, null);
         if (ray != null) {
             if (Ultimate.spendUlt(p)) {
                 Location hit = ray.getHitPosition().toLocation(p.getWorld());

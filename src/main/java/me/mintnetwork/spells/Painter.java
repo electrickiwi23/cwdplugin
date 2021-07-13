@@ -9,9 +9,10 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +23,69 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Painter {
+public class Painter extends KitItems {
+
+
+    public Painter(){
+        ultTime = Utils.PAINTER_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPRAY_PAINT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Spray Paint"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PAINT_BOMB_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Paint Canister"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BRUSH_STROKE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Brush Stroke"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Paint Activate"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Hitting enemies with your sword puts paint ");
+        lore.add(ChatColor.GRAY + "on them. When they have enough paint,");
+        lore.add(ChatColor.GRAY + "It bursts dealing massive damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Colorful Blade");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Smother your enemies with toxic");
+        lore.add(ChatColor.GRAY + "paint to paint over your competition");
+
+        menuItem.setType(Material.PURPLE_DYE);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Painter");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
     public static void SprayPaint(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.SPRAY_PAINT_COST)) {
             for (int i = 0; i < 5; i++) {
@@ -132,8 +195,11 @@ public class Painter {
                 Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
                 velocity.put(grenade, p.getEyeLocation().getDirection());
                 Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-
-                grenade.setItem(new ItemStack(Material.FIREWORK_STAR));
+                ItemStack item = new ItemStack(Material.FIREWORK_STAR);
+                FireworkEffectMeta meta = (FireworkEffectMeta) item.getItemMeta();
+                meta.setEffect(FireworkEffect.builder().withColor(Color.LIME).build());
+                item.setItemMeta(meta);
+                grenade.setItem(item);
 
                 ID.put(grenade, "PaintGrenade");
                 Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();

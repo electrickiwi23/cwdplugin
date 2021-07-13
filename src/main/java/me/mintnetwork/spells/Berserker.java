@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -28,7 +29,80 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Berserker {
+public class Berserker extends KitItems {
+
+
+    public Berserker(){
+        ultTime = Utils.BERSERKER_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack Sword = new ItemStack(Material.STONE_SWORD);
+
+        ItemMeta meta = Sword.getItemMeta();
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SWORD_LUNGE_COST);
+        lore.add(ChatColor.GRAY + "Right click with your sword to ");
+        lore.add(ChatColor.GRAY + "lunge forward mid combat.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Ferocious lunge"));
+        Sword.setItemMeta(meta);
+        wands.add(Sword);
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+
+        meta = wand1.getItemMeta();
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_BOOST_COST);
+        lore.add(ChatColor.GRAY + "Enhances your sprinting ability for ");
+        lore.add(ChatColor.GRAY + "a short period of time.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Speed Rush"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FORCE_PULL_COST);
+        lore.add(ChatColor.GRAY + "Pull any enemies close to you ");
+        lore.add(ChatColor.GRAY + "using sheer will.");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Force Pull"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        lore.add(ChatColor.GRAY + "Buffs your damage and knockback for a");
+        lore.add(ChatColor.GRAY + "Short period of time.");
+        meta.setDisplayName(ChatColor.GOLD+("Unleash Rage"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Upgrades your sword for more damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Stone Age");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Chase down and stab your enemies");
+        lore.add(ChatColor.GRAY + "with your increased close range capabilities.");
+
+        menuItem.setType(Material.STONE_SWORD);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.RED+"Berserker");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
+    public static void SwordLunge(Player p){
+        if (Mana.spendMana(p,2)){
+            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GOAT_LONG_JUMP,1,1);
+         p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize());
+
+        }
+    }
+
     public static void SpeedBoost(Player p) {
         if (Mana.spendMana(p, Utils.SPEED_BOOST_COST)) {
             Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
@@ -89,7 +163,7 @@ public class Berserker {
         if (Ultimate.spendUlt(p)) {
             for (ItemStack i : p.getInventory().getContents()) {
                 if (i != null) {
-                    if (i.getType().equals(Material.IRON_SWORD)) {
+                    if (i.getType().equals(Material.STONE_SWORD)) {
                         i.addEnchantment(Enchantment.KNOCKBACK, 1);
                     }
                 }

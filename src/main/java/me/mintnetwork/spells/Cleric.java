@@ -1,15 +1,17 @@
 package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.CircleEffect;
 import de.slikey.effectlib.effect.SphereEffect;
+import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -20,6 +22,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,7 +32,68 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Cleric {
+public class Cleric extends KitItems {
+
+
+    public Cleric(){
+        ultTime = Utils.CLERIC_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_PILLAR_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Healing Pillars"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PURIFICATION_WAVE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Divine Intervention"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
+        lore.add(ChatColor.GRAY + "and take no fall damage.");
+        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Be the ultimate support by providing");
+        lore.add(ChatColor.GRAY + "healing and cleansing your teammates.");
+
+        menuItem.setType(Material.GOLDEN_APPLE);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE+"Cleric");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
 
     public static void HealBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.HEAL_BOLT_COST)) {
@@ -93,9 +157,21 @@ public class Cleric {
     public static void HealPillar(Player p, Plugin plugin, BlockFace face, Block block) {
         if (face.getDirection().equals(new Vector(0, 1, 0))) {
             if (Mana.spendMana(p, Utils.HEAL_PILLAR_COST)) {
+                Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
                 Block pillarLocation = block.getLocation().add(face.getDirection()).getBlock();
                 Block cakeLocation = pillarLocation.getLocation().add(0, 1, 0).getBlock();
                 if (cakeLocation.isPassable()) {
+
+                    ArrayList<Block> limit = wizard.HealPillars;
+
+                    limit.removeIf(block1 -> block1.getType()!=Material.CAKE);
+
+                    if (limit.size()>=3){
+                        limit.get(0).breakNaturally();
+                        limit.remove(0);
+                    }
+                    limit.add(cakeLocation);
+
                     cakeLocation.setType(Material.CAKE);
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {

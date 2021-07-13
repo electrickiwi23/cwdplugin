@@ -14,112 +14,182 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
+import oshi.util.Util;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-public class Tactician {
+public class Tactician extends KitItems {
+
+
+    public Tactician(){
+        ultTime = Utils.TACTICIAN_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNIPER_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Sniper Bolt"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MOLOTOV_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Molotov Cocktail"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GRAPPLE_HOOK_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Grapple Hook"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Orbital Strike"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "When you deal damage to an enemy, you ");
+        lore.add(ChatColor.GRAY + "get a readout of information about them.");
+        meta.setDisplayName(ChatColor.WHITE + "Advanced Intel");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Win engagements by setting up");
+        lore.add(ChatColor.GRAY + "teamfights in favorable situations");
+
+        menuItem.setType(Material.SPYGLASS);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.BLUE +"Tactician");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
     public static void SniperBolt(Player p, Plugin plugin) {
         if (Mana.spendMana(p, Utils.SNIPER_BOLT_COST)){
-            Location spread = p.getEyeLocation();
-            if (!p.isSneaking()) {
-                float pitch = spread.getPitch() + (float) (Math.random() * 60 - 30);
-                float yaw = spread.getYaw() + (float) (Math.random() * 60 - 30);
-                spread.setPitch(pitch);
-                spread.setYaw(yaw);
-            }
-            Vector direction = spread.getDirection();
-            Location current = p.getEyeLocation().add(direction);
-            p.getWorld().spawnParticle(Particle.FLASH, p.getEyeLocation().add(p.getEyeLocation().getDirection()), 1, 0, 0, 0, 0);
-            p.getWorld().playSound(current, Sound.ENTITY_GENERIC_EXPLODE, 10, 1);
-            int range = 0;
-            boolean hasHit = false;
-            while (!hasHit) {
-                if (current.isWorldLoaded()) {
-                    RayTraceResult ray = p.getWorld().rayTrace(current, direction, 1, FluidCollisionMode.NEVER, true, .1, null);
-                    Location hitLocation = null;
-                    LivingEntity hitEntity = null;
-                    if (ray != null) {
-                        try {
-                            hitEntity = (LivingEntity) ray.getHitEntity();
-                        } catch (Exception ignore) {
-                        }
-                        try {
-                            hitLocation = ray.getHitPosition().toLocation(p.getWorld());
-                        } catch (Exception ignore) {
-                        }
-                        if (hitLocation != null && hitEntity == null) {
-                            hasHit = true;
-                            if (BlockDecay.decay.containsKey(ray.getHitBlock())){
-                                DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
-                                block.damage(120);
-                                block.setForceful(true);
-                                if (block.health<=0){
-                                    block.remove();
-                                    hasHit = false;
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Location spread = p.getEyeLocation();
+                    if (!p.isSneaking()) {
+                        float pitch = spread.getPitch() + (float) (Math.random() * 60 - 30);
+                        float yaw = spread.getYaw() + (float) (Math.random() * 60 - 30);
+                        spread.setPitch(pitch);
+                        spread.setYaw(yaw);
+                    }
+                    Vector direction = spread.getDirection();
+                    Location current = p.getEyeLocation().add(direction);
+                    p.getWorld().spawnParticle(Particle.FLASH, p.getEyeLocation().add(p.getEyeLocation().getDirection()), 1, 0, 0, 0, 0);
+                    p.getWorld().playSound(current, Sound.ENTITY_GENERIC_EXPLODE, 10, 1);
+                    int range = 0;
+                    boolean hasHit = false;
+                    while (!hasHit) {
+                        if (current.isWorldLoaded()) {
+                            RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .2, null);
+                            if (ray != null) {
+                                Location hitLocation = null;
+                                LivingEntity hitEntity = null;
+                                try {
+                                    hitEntity = (LivingEntity) ray.getHitEntity();
+                                } catch (Exception ignore) {
                                 }
-                            }
-                        }
-                        if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
-                            hasHit = true;
-
-                            ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(),EntityType.ARMOR_STAND);
-                            stand.setInvisible(true);
-                            stand.setMarker(true);
-                            stand.setCustomNameVisible(false);
-                            stand.setCustomName(p.getDisplayName() + "'s Sniper Bolt");
-                            TeamsInit.addToTeam(stand,TeamsInit.getTeamName(p));
-
-                            Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
-                            if (hitEntity instanceof Player) {
-                                if (wizard.PassiveTick >= 10) {
-                                    wizard.PassiveTick = 0;
-                                    Player finalHitEntity = (Player) hitEntity;
-                                    Bukkit.getScheduler().runTask(plugin, new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Wizard victimWiz = WizardInit.playersWizards.get(finalHitEntity.getUniqueId());
-                                            p.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + (finalHitEntity.getName() + ":"));
-                                            p.sendMessage(ChatColor.RED + ("Health: " + Math.ceil((finalHitEntity).getHealth())));
-                                            p.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
-                                            p.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage(finalHitEntity) * 100) + "%"));
+                                try {
+                                    hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                                } catch (Exception ignore) {
+                                }
+                                if (hitLocation != null && hitEntity == null) {
+                                    hasHit = true;
+                                    if (BlockDecay.decay.containsKey(ray.getHitBlock())) {
+                                        DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
+                                        block.damage(120);
+                                        block.setForceful(true);
+                                        if (block.health <= 0) {
+                                            block.remove();
+                                            hasHit = false;
                                         }
-                                    });
+                                    }
+                                }
+                                if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
+                                    hasHit = true;
+
+                                    ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                                    stand.setInvisible(true);
+                                    stand.setMarker(true);
+                                    stand.setCustomNameVisible(false);
+                                    stand.setCustomName(p.getDisplayName() + "'s Sniper Bolt");
+                                    TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
+
+                                    Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
+                                    if (hitEntity instanceof Player) {
+                                        if (wizard.PassiveTick >= 10) {
+                                            wizard.PassiveTick = 0;
+                                            Player finalHitEntity = (Player) hitEntity;
+                                            Bukkit.getScheduler().runTask(plugin, new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Wizard victimWiz = WizardInit.playersWizards.get(finalHitEntity.getUniqueId());
+                                                    p.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + (finalHitEntity.getName() + ":"));
+                                                    p.sendMessage(ChatColor.RED + ("Health: " + Math.ceil((finalHitEntity).getHealth())));
+                                                    p.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
+                                                    p.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage(finalHitEntity) * 100) + "%"));
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    if (Math.abs(hitLocation.getY() - hitEntity.getEyeLocation().getY()) <= .25) {
+                                        hitEntity.damage(10, stand);
+                                        p.playSound(p.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
+                                    } else {
+                                        hitEntity.damage(5, stand);
+                                    }
+                                    stand.remove();
+                                }
+
+                            }
+                            if (!hasHit) {
+                                current = current.add(direction.multiply(2));
+                                p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current, 1, 0, 0, 0, 0);
+                                p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current.add(direction), 1, 0, 0, 0, 0);
+                                range++;
+                                if (range >= 75) hasHit = true;
+                                for (Entity shield : Shield.shieldMap.keySet()) {
+                                    if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
+                                        direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
+                                    }
                                 }
                             }
-
-                            if (Math.abs(hitLocation.getY() - hitEntity.getEyeLocation().getY()) <= .25) {
-                                hitEntity.damage(10, stand);
-                                p.playSound(p.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
-                            } else {
-                                hitEntity.damage(5, stand);
-                            }
-                            stand.remove();
-                        }
-
-                    }
-                    if (!hasHit) {
-                        current = current.add(direction);
-                        p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current, 1, 0, 0, 0, 0);
-                        range++;
-                        if (range >= 150) hasHit = true;
-                        Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-                        for (Entity shield : Shield.shieldMap.keySet()) {
-                            if (shield.getLocation().distance(current)<Shield.shieldMap.get(shield).getRadius()+.5){
-                                direction = Shield.shieldMap.get(shield).reflectVector(current,direction);
-                            }
+                        } else {
+                            hasHit = true;
                         }
                     }
-                } else {
-                    hasHit = true;
                 }
-            }
+            },2);
         }
     }
 

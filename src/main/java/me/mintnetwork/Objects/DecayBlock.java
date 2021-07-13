@@ -19,6 +19,7 @@ public class DecayBlock {
     public int ID;
     public Material decayInto;
     public boolean forceful = false;
+    public boolean falling = false;
 
     public DecayBlock(int health,float rate,Block b){
         block=b;
@@ -48,29 +49,31 @@ public class DecayBlock {
     }
 
     public boolean tickBlock() {
-        health -= decayRate;
+        if (!falling) {
+            health -= decayRate;
 
-        if (block.getType().isAir()) {
-            forceful = true;
-            health = 0;
-        }
-
-        if (maxHealth != health) {
-            int damage = (int) Math.ceil(((double) maxHealth - health + 1) / maxHealth * 9);
-
-            PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(ID, (new BlockPosition(block.getX(), block.getY(), block.getZ())), damage);
-            try {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    ((CraftPlayer) player).getHandle().b.sendPacket(packet);
-                }
-
-            } catch (Exception ignored) {
+            if (block.getType().isAir()) {
+                forceful = true;
+                health = 0;
             }
-        }
 
-        if (health<=0){
-            remove();
-            return true;
+            if (maxHealth != health) {
+                int damage = (int) Math.ceil(((double) maxHealth - health + 1) / maxHealth * 9);
+
+                PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(ID, (new BlockPosition(block.getX(), block.getY(), block.getZ())), damage);
+                try {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer) player).getHandle().b.sendPacket(packet);
+                    }
+
+                } catch (Exception ignored) {
+                }
+            }
+
+            if (health <= 0) {
+                remove();
+                return true;
+            }
         }
         return false;
     }

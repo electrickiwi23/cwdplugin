@@ -14,16 +14,83 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-public class SpellSlinger {
+public class SpellSlinger extends KitItems {
+
+
+    public SpellSlinger(){
+        ultTime = Utils.SPELL_SLINGER_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.LIGHTNING_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Lightning Bolt"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIRE_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Fire Bolt"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNOW_BOLT_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Ice Bolt"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Elemental Release"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Due to your intense magic training,");
+        lore.add(ChatColor.GRAY + "you naturally generate mana slightly faster.");
+        meta.setDisplayName(ChatColor.WHITE + "Efficient Arcana");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Command the elements to deal");
+        lore.add(ChatColor.GRAY + "with enemies at range.");
+
+        menuItem.setType(Material.TIPPED_ARROW);
+        PotionMeta potionMeta = (PotionMeta) menuItem.getItemMeta();
+        potionMeta.setDisplayName(ChatColor.WHITE +"Spell Slinger");
+        potionMeta.setLore(lore);
+        potionMeta.setColor(Color.ORANGE);
+        potionMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        menuItem.setItemMeta(potionMeta);
+
+        //create itemstacks for each wand of the class
+    }
 
     public static void LightningBolt(Player p, Plugin plugin, EffectManager em) {
         if (Mana.spendMana(p, Utils.LIGHTNING_BOLT_COST)) {
@@ -140,6 +207,7 @@ public class SpellSlinger {
 
     public static void FireBolt(Player p,Plugin plugin){
         if (Mana.spendMana(p, Utils.FIRE_BOLT_COST)) {
+            p.getWorld().playSound(p.getEyeLocation(),Sound.ENTITY_BLAZE_SHOOT,1,1);
             Snowball bolt = p.launchProjectile(Snowball.class);
             Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
             velocity.put(bolt, p.getEyeLocation().getDirection());

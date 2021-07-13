@@ -72,7 +72,6 @@ public class  EntityDamageListener implements Listener {
             }
 
             if (victim instanceof Player) {
-                Wizard victimWizard = WizardInit.playersWizards.get(victim.getUniqueId());
 
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
@@ -80,9 +79,6 @@ public class  EntityDamageListener implements Listener {
                     speedMap.put((Player) entity, 30);
                 }
 
-                if (victimWizard.kitID.equals(Kit.BERSERKER)){
-                    Mana.addMana((Player) victim,(int)Math.round(event.getDamage()));
-                }
 
 
 
@@ -127,7 +123,7 @@ public class  EntityDamageListener implements Listener {
                                 @Override
                                 public void run() {
                                     Wizard victimWiz = WizardInit.playersWizards.get(victim.getUniqueId());
-                                    live.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + ("&n&l" + victim.getName() + ":"));
+                                    live.sendMessage(ChatColor.UNDERLINE + "" + ChatColor.BOLD + ("" + victim.getName() + ":"));
                                     live.sendMessage(ChatColor.RED + ("Health: " + Math.ceil(((Player) victim).getHealth())));
                                     live.sendMessage(ChatColor.GREEN + ("Mana: " + victimWiz.Mana));
                                     live.sendMessage(ChatColor.GOLD + ("Ultimate: " + (int) (Ultimate.getUltPercentage((Player) victim ) * 100) + "%"));

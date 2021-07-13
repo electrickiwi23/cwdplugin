@@ -1,6 +1,7 @@
 package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.initialization.GameMode;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.utils.Utils;
@@ -35,13 +36,13 @@ public class Start implements CommandExecutor {
                 switch (args[0].toLowerCase()) {
                     case ("skirmish"):
                     case ("test"):
-                        GameStart.startGeneric(plugin);
+                        GameStart.startCountdown(plugin, GameMode.SKIRMISH,((Player) sender).getWorld(),0);
                         break;
                     case ("elimination"):
                     case ("elim"):
                         if (args.length>=2){
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
-                                GameStart.startElimination(plugin,Math.abs(Integer.parseInt(args[1])));
+                                GameStart.startCountdown(plugin, GameMode.ELIMINATION,((Player) sender).getWorld(),Integer.parseInt(args[1]));
                             }else{
                                 sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }
@@ -52,13 +53,13 @@ public class Start implements CommandExecutor {
                         break;
                     case("br"):
                     case("battleroyale"):
-                        GameStart.startBR(plugin,((Player) sender).getWorld());
+                        GameStart.startCountdown(plugin, GameMode.BATTLE_ROYAL,((Player) sender).getWorld(),0);
                         break;
                     case("flares"):
                     case("flare"):
                         if (args.length>=2) {
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
-                                GameStart.startFlares(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
+                                GameStart.startCountdown(plugin, GameMode.FLARES,((Player) sender).getWorld(),Integer.parseInt(args[1]));
                             }else{
                                 sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }
@@ -72,7 +73,7 @@ public class Start implements CommandExecutor {
 
                         if (args.length>=2) {
                             if(args[1].matches("[0-9]+") && args[1].length() > 0) {
-                                GameStart.startKoth(plugin,((Player) sender).getWorld(),Integer.parseInt(args[1]));
+                                GameStart.startCountdown(plugin, GameMode.KING_OF_THE_HILL,((Player) sender).getWorld(),Integer.parseInt(args[1]));
                             }else{
                                 sender.sendMessage(ChatColor.RED+("You must enter a number."));
                             }

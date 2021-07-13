@@ -16,6 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -26,7 +27,68 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class PillarMan {
+public class PillarMan extends KitItems {
+
+
+    public PillarMan(){
+        ultTime = Utils.PILLAR_MAN_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.VOID_PILLAR_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Void Rift"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BEAM_PILLAR_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Beam Pillar"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MANA_PILLAR_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Mana Pillar"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Skeleton Spirit"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "When crouching you take less damage");
+        lore.add(ChatColor.GRAY + "and don't take knockback.");
+        meta.setDisplayName(ChatColor.WHITE + "Reinforced Stance");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Pillarz sounds like the next hit rock band");
+        lore.add(ChatColor.GRAY + "-me");
+
+        menuItem.setType(Material.QUARTZ_PILLAR);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.DARK_PURPLE+ "Pillar Man");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
     public static void VoidPillar(Player p, Plugin plugin, Block block, BlockFace face, EffectManager em) {
         if (Mana.spendMana(p, Utils.VOID_PILLAR_COST)) {
             Zombie pillar = (Zombie) p.getWorld().spawnEntity(block.getLocation().add(face.getDirection().normalize()).add(.5, .5, .5), EntityType.ZOMBIE);
@@ -150,8 +212,7 @@ public class PillarMan {
                 }
                 limit.add(pillar);
             } else {
-                ArrayList<Entity> limit = new ArrayList<
-                        Entity>();
+                ArrayList<Entity> limit = new ArrayList<Entity>();
                 limit.add(pillar);
                 limitMap.put(p,limit);
             }

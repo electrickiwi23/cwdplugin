@@ -7,6 +7,7 @@ import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -15,9 +16,71 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Demolitionist {
+public class Demolitionist extends KitItems {
+
+
+    public Demolitionist(){
+        ultTime = Utils.DEMOLITIONIST_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_LINE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("TNT Line"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_GRENADE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("TNT Grenade"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_STICK_GRENADE_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Sticky Grenade"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Cluster Bomb"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Your Armor is enchanted with blast protection");
+        lore.add(ChatColor.GRAY + "making you take less damage from explosions.");
+        meta.setDisplayName(ChatColor.WHITE + "Blast-Proof Armor");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "Exterminate your enemies with large");
+        lore.add(ChatColor.GRAY + "area of effect explosions");
+
+        menuItem.setType(Material.TNT);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.DARK_RED+"Demolitionist");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
 
     public static void TNTLine(Player p, Plugin plugin) {
+        p.playSound(p.getEyeLocation(),Sound.ENTITY_TNT_PRIMED,1.3F,1);
         if (Mana.spendMana(p, Utils.TNT_LINE_COST)) {
             for (int i = 1; i < 6; i++) {
                 int finalI = i;

@@ -5,6 +5,7 @@ import me.mintnetwork.Main;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,9 +50,9 @@ public class RightClickListener implements Listener {
                         if (p.getInventory().getItemInMainHand().getType() != Material.AIR) {
 //                                if (p.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
                             if (StatusEffects.CanCast(p)) {
-                                if (Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName().contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
+                                if (ChatColor.stripColor((Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta())).getDisplayName()).contains("Blood Link Ritual")) BloodMage.BloodUlt(p,em);
 
-                                switch(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName()){
+                                switch(ChatColor.stripColor(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getDisplayName())){
                                     case ("Lightning Bolt"):
                                         SpellSlinger.LightningBolt(p,plugin,em);
                                         break;
@@ -61,10 +62,13 @@ public class RightClickListener implements Listener {
                                     case ("Ice Bolt"):
                                         SpellSlinger.SnowBolt(p,plugin);
                                         break;
-                                    case ("Elemental Blast"):
+                                    case ("Elemental Release"):
                                         SpellSlinger.ElementBlast(p,plugin,em);
                                         break;
 
+                                    case "Berserker Blade":
+                                        Berserker.SwordLunge(p);
+                                        break;
                                     case ("Speed Rush"):
                                         Berserker.SpeedBoost(p);
                                         break;
@@ -131,7 +135,7 @@ public class RightClickListener implements Listener {
                                         break;
                                     case("Pop up Tower"):
                                         if (event.getClickedBlock() != null) {
-                                            Builder.PopUpTower(p, plugin, event.getBlockFace(), event.getClickedBlock());
+                                            Builder.PopUpTower(p, plugin, event.getClickedBlock());
                                         }
                                         break;
                                     case("Bridge Bolt"):
@@ -178,16 +182,16 @@ public class RightClickListener implements Listener {
                                         break;
 
                                     case("Cloud Burst"):
-                                        SkyFlyer.CloudBurst(p,plugin);
+                                        Aviator.CloudBurst(p,plugin);
                                         break;
                                     case("Air Dash"):
-                                        SkyFlyer.AirDash(p,plugin);
+                                        Aviator.AirDash(p,plugin);
                                         break;
                                     case("Air Needles"):
-                                        SkyFlyer.AirNeedles(p,em,plugin);
+                                        Aviator.AirNeedles(p,em,plugin);
                                         break;
-                                    case("Tornado Blast"):
-                                        SkyFlyer.TornadoBlast(p,plugin);
+                                    case("Thunderstorm Overdrive"):
+                                        Aviator.StormUlt(p,plugin);
                                         break;
 
                                     case("Song of Healing"):
@@ -212,7 +216,7 @@ public class RightClickListener implements Listener {
                                     case("Grapple Hook"):
                                         Tactician.GrappleHook(p,plugin);
                                         break;
-                                    case("Air Strike"):
+                                    case("Orbital Strike"):
                                         Tactician.AirStrike(p,plugin);
                                         break;
 
@@ -229,13 +233,13 @@ public class RightClickListener implements Listener {
                                         Alchemist.ImmortalPotionUlt(p);
                                         break;
 
-                                    case ("Arial Slam" ):
+                                    case ("Aerial Slam" ):
                                         Protector.Slam(p,plugin);
                                         break;
                                     case ("Dome of Safety"):
                                         Protector.ShieldDome(p,em,plugin);
                                         break;
-                                    case ("Armor Aura"):
+                                    case ("Crystal Armor"):
                                         Protector.GiveArmor(p,em,plugin);
                                         break;
                                     case ("Aura of Protection"):
@@ -284,7 +288,7 @@ public class RightClickListener implements Listener {
                                         GenericCast.ChildBomber(p,plugin);
                                         break;
                                     case("Zombie Summon"):
-                                        GenericCast.ZombieSpawn(p);
+                                        GenericCast.ZombieSpawn(p,plugin);
                                         break;
                                     case("Slime Ball"):
                                         GenericCast.SlimeBomb(p,plugin);

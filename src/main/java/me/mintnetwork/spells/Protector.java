@@ -10,12 +10,12 @@ import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
@@ -23,9 +23,72 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-public class Protector {
+public class Protector extends KitItems {
+
+
+    public Protector(){
+        ultTime = Utils.PROTECTOR_ULT_TIME;
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        ItemStack wand1 = new ItemStack(Material.STICK);
+        ItemMeta meta = wand1.getItemMeta();
+
+
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SLAM_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Aerial Slam"));
+        wand1.setItemMeta(meta);
+        wands.add(wand1);
+
+        ItemStack wand2 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHIELD_DOME_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Dome of Safety"));
+        wand2.setItemMeta(meta);
+        wands.add(wand2);
+
+        ItemStack wand3 = new ItemStack(Material.STICK);
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GIVE_ARMOR_COST);
+        lore.add("TEXT");
+        meta.setLore(lore);
+        lore.clear();
+        meta.setDisplayName(ChatColor.RESET+("Crystal Armor"));
+        wand3.setItemMeta(meta);
+        wands.add(wand3);
+
+        lore.add("TEXT");
+        meta.setDisplayName(ChatColor.GOLD+("Aura of Protection"));
+        meta.setLore(lore);
+        ult.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY + "You have 2 hearts more health,");
+        lore.add(ChatColor.GRAY + "but move 15% slower.");
+        meta.setDisplayName(ChatColor.WHITE + "Reinforced");
+        meta.setLore(lore);
+        passive.setItemMeta(meta);
+        lore.clear();
+
+        lore.add(ChatColor.GRAY +"Support and protect your teammates");
+        lore.add(ChatColor.GRAY +"with a variety of magic");
+
+        menuItem.setType(Material.SHIELD);
+        meta = menuItem.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD +"Protector");
+        meta.setLore(lore);
+        menuItem.setItemMeta(meta);
+        menuItem.setItemMeta(meta);
+
+        //create itemstacks for each wand of the class
+    }
 
     public static void Slam(Player p, Plugin plugin) {
 
@@ -125,6 +188,7 @@ public class Protector {
 
            currentVictim.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,300,0));
            StatusEffects.EnergyShield.add(currentVictim);
+           currentVictim.getWorld().playSound(currentVictim.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_PLACE,1,1);
            currentVictim.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).addModifier(new AttributeModifier("EnergyShield",1,AttributeModifier.Operation.ADD_NUMBER));
 
         }

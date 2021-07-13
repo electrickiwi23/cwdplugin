@@ -82,5 +82,9 @@ public class Utils {
     public static final int TACTICIAN_ULT_TIME = 750;
     public static final int PROTECTOR_ULT_TIME = 720;
 
+    //Properties of Ults
+    public static final int STORM_ULT_DURATION = 300;
+
+
 
 }

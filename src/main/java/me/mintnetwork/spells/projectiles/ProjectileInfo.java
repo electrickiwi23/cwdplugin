@@ -62,6 +62,5 @@ public class ProjectileInfo {
 
     public static Map<Player, ArrayList<Entity>> ManaPillarLimit = new HashMap<>();
 
-    public static Map<ArmorStand, String> TornadoTeam = new HashMap<>();
 
 }

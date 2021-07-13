@@ -1,7 +1,9 @@
 package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.Mana;
+import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
@@ -10,8 +12,11 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -34,7 +39,7 @@ public class Aviator extends KitItems {
         lore.add(ChatColor.GRAY +"using a burst of smoke.");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Cloud Bust"));
+        meta.setDisplayName(ChatColor.RESET+("Cloud Burst"));
         wand1.setItemMeta(meta);
         wands.add(wand1);
 
@@ -58,9 +63,9 @@ public class Aviator extends KitItems {
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY + "Create a powerful wind current that traps");
-        lore.add(ChatColor.GRAY + "those in its radius, and disables abilities.");
-        meta.setDisplayName(ChatColor.GOLD+"Tornado Blast");
+        lore.add(ChatColor.GRAY + "Charges you with energy that makes movement spells");
+        lore.add(ChatColor.GRAY + "cost much less and gives them an electric Kick.");
+        meta.setDisplayName(ChatColor.GOLD+"Thunderstorm Overdrive");
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
@@ -72,8 +77,8 @@ public class Aviator extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add("Dominate the skies with enhanced");
-        lore.add("movement and the power of flight.");
+        lore.add(ChatColor.GRAY + "Dominate the skies with enhanced");
+        lore.add(ChatColor.GRAY + "movement and the power of flight.");
 
         menuItem.setType(Material.FEATHER);
         meta = menuItem.getItemMeta();
@@ -162,17 +167,60 @@ public class Aviator extends KitItems {
     }
 
     public static void CloudBurst(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, Utils.CLOUD_BURST_COST)) {
+        final boolean storm = StatusEffects.stormUlt.contains(p);
+        if ((storm&&Mana.spendMana(p,1))||Mana.spendMana(p, Utils.CLOUD_BURST_COST)) {
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP,.7F,1);
-            p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
+            if (storm) {
+                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 10, .6, .6, .6, 0,new Particle.DustOptions(Color.fromBGR(80,80,80),3));
+            } else   p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 10, .6, .6, .6, 0);
             final int[] count = {0};
             p.setVelocity(new Vector(0, 1.4, 0));
             BukkitTask task = new BukkitRunnable() {
                 @Override
                 public void run() {
                     count[0]++;
-                    p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .2, .2, .2, 0);
-                    if (count[0] >= 5) {
+                    if (storm){
+                        p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 2, .2, .2, .2, 0,new Particle.DustOptions(Color.fromBGR(80,80,80),3));
+                    }else  p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .2, .2, .2, 0);
+                    if (count[0] >= 8) {
+                        if (storm) {
+                            RayTraceResult ray = p.getWorld().rayTraceBlocks(p.getLocation(), new Vector(0, -1, 0), 20, FluidCollisionMode.NEVER);
+                            Location hitLocation = p.getLocation().add(0,-20,0);
+                            hitLocation.getWorld().playSound(p.getLocation(),Sound.ENTITY_LIGHTNING_BOLT_THUNDER,1,1);
+                            if (ray != null) {
+                                hitLocation = ray.getHitPosition().toLocation(p.getWorld());
+                                hitLocation.getWorld().playSound(hitLocation,Sound.ENTITY_LIGHTNING_BOLT_IMPACT,1,1);
+                                for (Entity e:hitLocation.getWorld().getNearbyEntities(hitLocation,3,3,3)) {
+                                    if (e instanceof LivingEntity&&e.getLocation().distance(hitLocation)<3){
+                                        if (!TeamsInit.getTeamName(e).equals("")&&!TeamsInit.getTeamName(e).equals(TeamsInit.getTeamName(p))) {
+                                            ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                                            stand.setInvisible(true);
+                                            stand.setMarker(true);
+                                            stand.setCustomNameVisible(false);
+                                            stand.setCustomName(p.getDisplayName() + "'s Lightning");
+                                            TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
+
+                                            e.setVelocity(new Vector(0, 0, 0));
+                                            ((LivingEntity) e).damage(3,stand);
+                                            final int[] count = {0};
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    count[0]++;
+                                                    e.setVelocity(new Vector(0, 0, 0));
+                                                    if (count[0] ==4) this.cancel();
+                                                }
+                                            }.runTaskTimer(plugin,0,1);
+                                        }
+                                    }
+                                }
+                            }
+                            Location current = p.getLocation();
+                            for (int i = 0; i < p.getLocation().distance(hitLocation); i++) {
+                                current.add(0,-1,0);
+                                current.getWorld().spawnParticle(Particle.REDSTONE, current, 1, 0, 0, 0, 0,new Particle.DustOptions(Color.YELLOW,3));
+                            }
+                        }
                         this.cancel();
                     }
                 }
@@ -181,7 +229,8 @@ public class Aviator extends KitItems {
     }
 
     public static void AirDash(Player p, Plugin plugin) {
-        if (Mana.spendMana(p, Utils.AIR_DASH_COST)) {
+        final boolean storm = StatusEffects.stormUlt.contains(p);
+        if ((storm&&Mana.spendMana(p,1))||Mana.spendMana(p, Utils.AIR_DASH_COST)) {
             p.setGravity(false);
             double tempY = p.getEyeLocation().getDirection().getY();
             p.setVelocity(p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.3,Math.min(.3,tempY))).normalize().multiply(1.5));
@@ -190,7 +239,40 @@ public class Aviator extends KitItems {
                 public void run() {
                     double tempY = p.getEyeLocation().getDirection().getY();
                     p.setVelocity(p.getEyeLocation().getDirection().setY(0).normalize().setY(Math.max(-.3,Math.min(.3,tempY))).normalize().multiply(1.5));
-                    p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .1, .1, .1, 0);
+                    if (storm) {
+                        for (Entity e:p.getNearbyEntities(3,3,3)) {
+                            if (e instanceof LivingEntity&&e.getLocation().distance(p.getLocation())<3&&((LivingEntity) e).getNoDamageTicks()==0){
+                                if (!TeamsInit.getTeamName(e).equals("")&&!TeamsInit.getTeamName(e).equals(TeamsInit.getTeamName(p))) {
+                                    Location current = p.getLocation();
+                                    Vector direction = e.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(.25);
+                                    for (int i = 0; i < 8; i++) {
+                                        current.add(direction);
+                                        current.getWorld().spawnParticle(Particle.REDSTONE, current, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.YELLOW, 1));
+                                        if (e.getBoundingBox().contains(current.toVector())) break;
+                                    }
+                                    ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                                    stand.setInvisible(true);
+                                    stand.setMarker(true);
+                                    stand.setCustomNameVisible(false);
+                                    stand.setCustomName(p.getDisplayName() + "'s Static Shock");
+                                    TeamsInit.addToTeam(stand, TeamsInit.getTeamName(p));
+
+                                    ((LivingEntity) e).damage(2,stand);
+                                    e.setVelocity(new Vector(0, 0, 0));
+                                    final int[] count = {0};
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            count[0]++;
+                                            e.setVelocity(new Vector(0, 0, 0));
+                                            if (count[0] ==4) this.cancel();
+                                        }
+                                    }.runTaskTimer(plugin,0,1);
+                                }
+                            }
+                        }
+                        p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 2, .1, .1, .1, 0,new Particle.DustOptions(Color.fromBGR(80,80,80),3));
+                    }else   p.getWorld().spawnParticle(Particle.CLOUD, p.getLocation(), 2, .1, .1, .1, 0);
                 }
             }.runTaskTimer(plugin, 1, 1);
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -204,21 +286,21 @@ public class Aviator extends KitItems {
         }
     }
 
-    public static void TornadoBlast(Player p, Plugin plugin) {
+    public static void StormUlt(Player p, Plugin plugin){
         if (Ultimate.spendUlt(p)) {
-            Snowball grenade = p.launchProjectile(Snowball.class);
-            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(grenade, p.getEyeLocation().getDirection());
-            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-            grenade.setItem(new ItemStack(Material.BONE_MEAL));
-            ID.put(grenade, "TornadoUlt");
-            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            tick.put(grenade, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+
+            p.getWorld().strikeLightningEffect(p.getLocation());
+
+            p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 3, 1);
+            StatusEffects.stormUlt.add(p);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,Utils.STORM_ULT_DURATION,1,false,false));
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    p.getWorld().spawnParticle(Particle.CLOUD, grenade.getLocation(), 3, .2, .2, .2, 0);
+                    StatusEffects.stormUlt.remove(p);
                 }
-            }, 1, 1));
+            },Utils.STORM_ULT_DURATION);
         }
     }
+
 }

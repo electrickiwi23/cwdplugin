@@ -75,8 +75,8 @@ public class Painter extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add("Smother your enemies with toxic");
-        lore.add("paint to paint over your competition");
+        lore.add(ChatColor.GRAY + "Smother your enemies with toxic");
+        lore.add(ChatColor.GRAY + "paint to paint over your competition");
 
         menuItem.setType(Material.PURPLE_DYE);
         meta = menuItem.getItemMeta();

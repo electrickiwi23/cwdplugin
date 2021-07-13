@@ -206,9 +206,9 @@ public class Bard extends KitItems {
                 BukkitTask task = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 0.840896);
-                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 0.943874);
-                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1.6, (float) 1.122462);
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1, (float) 0.840896);
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1, (float) 0.943874);
+                        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BELL_RESONATE, (float) 1, (float) 1.122462);
                         count[0]++;
                         if (count[0] >= 240) {
                             this.cancel();

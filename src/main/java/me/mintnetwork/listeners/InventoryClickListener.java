@@ -129,6 +129,7 @@ public class InventoryClickListener implements Listener {
         } else {
             for (int i = 0; i < Kit.values().length; i++) {
                 Kit kit = Kit.values()[i];
+                if (kit==Kit.NONE) return;
                 if (kit.KitItems.menuItem.getType()==Material.FIRE) return;
                 if (event.getView().getTitle().equals(ChatColor.BOLD + ChatColor.stripColor(kit.KitItems.menuItem.getItemMeta().getDisplayName()))){
                     event.setCancelled(true);

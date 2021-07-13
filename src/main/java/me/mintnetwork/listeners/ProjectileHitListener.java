@@ -76,7 +76,6 @@ public class ProjectileHitListener implements Listener {
                          Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
                              @Override
                              public void run() {
-                                 finalHit.setCustomName(String.valueOf(finalHit.getHealth()));
                                  finalHit.setNoDamageTicks(0);
                              }
                          });
@@ -461,73 +460,6 @@ public class ProjectileHitListener implements Listener {
                             }
                         }
                     }
-                }
-
-                if (ID.get(snow).equals("TornadoUlt")){
-                    task.get(snow).cancel();
-                    TornadoEffect tornado = new TornadoEffect(em);
-                    tornado.maxTornadoRadius = 6;
-                    tornado.particleOffsetX = (float) 1;
-                    tornado.particleOffsetZ = (float) 1;
-                    tornado.cloudParticle = Particle.CLOUD;
-                    tornado.tornadoParticle = Particle.SPELL_MOB;
-                    tornado.tornadoColor = Color.WHITE;
-                    tornado.tornadoHeight = 1;
-                    tornado.distance = .15;
-                    tornado.iterations = 100;
-                    tornado.setLocation(snow.getLocation());
-                    em.start(tornado);
-
-                    Location l = snow.getLocation();
-
-                    ArmorStand stand = (ArmorStand) snow.getWorld().spawnEntity(snow.getLocation(), EntityType.ARMOR_STAND);
-                    stand.setMarker(true);
-                    stand.setInvisible(true);
-                    String teamName = TeamsInit.getTeamName(shooter);
-                    ProjectileInfo.TornadoTeam.put(stand, teamName);
-
-                    BukkitTask tick = new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            for (Entity e : l.getWorld().getNearbyEntities(l, 7, 16, 7)
-                            ) {
-                                if (e instanceof LivingEntity) {
-                                    if (!(e instanceof ArmorStand)) {
-                                        Location entityLocation = e.getLocation().clone();
-                                        entityLocation.setY(l.getY());
-                                        if (entityLocation.distance(l) <= 6) {
-                                            if (e.getLocation().getY() >= l.getY() - 1) {
-                                                String victimTeam = TeamsInit.getTeamName(e);
-                                                if (l.getY() >= e.getLocation().getY() - 10) {
-                                                    if (e.getVelocity().getY()<=0){
-                                                        e.setVelocity(e.getVelocity().add(new Vector(0, .4, 0)));
-                                                    } else if (e.getVelocity().getY() <= 1.5) {
-                                                        e.setVelocity(e.getVelocity().add(new Vector(0, .2, 0)));
-                                                    }
-                                                } else if(!teamName.equals(victimTeam)){
-                                                    e.setVelocity(e.getVelocity().multiply(.3));
-                                                }
-                                                l.getWorld().spawnParticle(Particle.CLOUD, e.getLocation(), 1, .1, .1, .1, 0);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }.runTaskTimer(plugin, 1, 1);
-
-                    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            stand.remove();
-                            tornado.cancel();
-                            tick.cancel();
-                        }
-                    },400);
-
-
-
-
                 }
 
                 if (ID.get(snow).equals("Molotov")) {

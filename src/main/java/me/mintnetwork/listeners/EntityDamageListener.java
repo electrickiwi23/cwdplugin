@@ -72,7 +72,6 @@ public class  EntityDamageListener implements Listener {
             }
 
             if (victim instanceof Player) {
-                Wizard victimWizard = WizardInit.playersWizards.get(victim.getUniqueId());
 
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
@@ -80,9 +79,6 @@ public class  EntityDamageListener implements Listener {
                     speedMap.put((Player) entity, 30);
                 }
 
-                if (victimWizard.kitID.equals(Kit.BERSERKER)){
-                    Mana.addMana((Player) victim,(int)Math.round(event.getDamage()));
-                }
 
 
 

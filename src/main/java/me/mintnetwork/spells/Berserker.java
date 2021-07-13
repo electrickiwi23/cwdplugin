@@ -37,7 +37,7 @@ public class Berserker extends KitItems {
 
         ArrayList<String> lore = new ArrayList<>();
 
-        ItemStack Sword = new ItemStack(Material.STICK);
+        ItemStack Sword = new ItemStack(Material.STONE_SWORD);
 
         ItemMeta meta = Sword.getItemMeta();
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SWORD_LUNGE_COST);

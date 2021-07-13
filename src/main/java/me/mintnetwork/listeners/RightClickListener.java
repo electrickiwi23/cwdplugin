@@ -190,8 +190,8 @@ public class RightClickListener implements Listener {
                                     case("Air Needles"):
                                         Aviator.AirNeedles(p,em,plugin);
                                         break;
-                                    case("Tornado Blast"):
-                                        Aviator.TornadoBlast(p,plugin);
+                                    case("Thunderstorm Overdrive"):
+                                        Aviator.StormUlt(p,plugin);
                                         break;
 
                                     case("Song of Healing"):

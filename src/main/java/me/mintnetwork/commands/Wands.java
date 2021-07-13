@@ -321,7 +321,7 @@ public class Wands implements CommandExecutor {
                     ItemStack pane = inv.getItem(i);
                     pane.setType(Material.LIME_STAINED_GLASS_PANE);
                     ItemMeta meta = pane.getItemMeta();
-                    meta.setLore(Arrays.asList("You have already selected this wand"));
+                    meta.setLore(Arrays.asList(ChatColor.RED + "You have already selected this wand"));
                     pane.setItemMeta(meta);
                     inv.setItem(i, pane);
                 }

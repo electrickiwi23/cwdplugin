@@ -6,12 +6,9 @@ import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,11 +88,63 @@ public class GameStart {
                     }
                 }
             }
+        }else if(world.getName().equals("oasis")){
+            Location[] spawns = new Location[]{new Location(world,67.5,63.5,8.5,0,0),
+                    new Location(world,67.5,63.5,240.5,180,0)};
+            for (Location location:spawns) {
+                Material mat = Material.GLASS;
+
+                switch ((int) location.getYaw()){
+                    case 0:
+                        mat = Material.BLUE_STAINED_GLASS;
+                        break;
+                    case (180):
+                        mat = Material.RED_STAINED_GLASS;
+                        break;
+                }
+
+                Location window = location.clone().add(location.clone().getDirection().multiply(25)).add(0,-1,0);
+                for (int i = -2; i < 3; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        Location current = window.clone();
+                        current.add(location.getDirection().rotateAroundY(Math.toRadians(-90)).multiply(i));
+                        current.add(0, j, 0);
+                        if (current.getBlock().getType()==Material.AIR) {
+                            current.getBlock().setType(mat);
+                        }
+                    }
+                }
+                window = location.clone().add(location.clone().getDirection().normalize().multiply(20));
+                window.add(location.clone().getDirection().rotateAroundY(Math.toRadians(-90)).normalize().multiply(15));
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 6; j++) {
+                        Location current = window.clone();
+                        current.add(location.clone().getDirection().rotateAroundY(Math.toRadians(-90)).normalize().multiply(i));
+                        current.add(0, j, 0);
+                        if (current.getBlock().getType()==Material.AIR) {
+                            current.getBlock().setType(mat);
+                        }
+                    }
+                }
+                window = location.clone().add(location.getDirection().normalize().multiply(20));
+                window.add(location.getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(15));
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 6; j++) {
+                        Location current = window.clone();
+                        current.add(location.clone().getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(i));
+                        current.add(0, j, 0);
+                        if (current.getBlock().getType()==Material.AIR) {
+                            current.getBlock().setType(mat);
+                        }
+                    }
+                }
+            }
         }
     }
 
     public static void ClearGlass(World world){
-        ArrayList<Material> glass = new ArrayList<Material>(Arrays.asList(Material.LIME_STAINED_GLASS, Material.RED_STAINED_GLASS, Material.BLUE_STAINED_GLASS, Material.YELLOW_STAINED_GLASS));
+        System.out.println(world.getName());
+        ArrayList<Material> glass = new ArrayList<>(Arrays.asList(Material.LIME_STAINED_GLASS, Material.RED_STAINED_GLASS, Material.BLUE_STAINED_GLASS, Material.YELLOW_STAINED_GLASS));
         if (world.getName().equals("woodlands")){
 
             Location[] spawns = new Location[]{new Location(world,148.5,68.5,32.5,90,0),
@@ -131,6 +180,47 @@ public class GameStart {
                 window.add(location.getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(8));
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
+                        Location current = window.clone();
+                        current.add(location.clone().getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(i));
+                        current.add(0, j, 0);
+                        if (glass.contains(current.getBlock().getType())) {
+                            current.getBlock().breakNaturally();
+                        }
+                    }
+                }
+            }
+        } else if(world.getName().equals("oasis")){
+
+            Location[] spawns = new Location[]{new Location(world,67.5,63.5,8.5,0,0),
+                    new Location(world,67.5,63.5,240.5,180,0)};
+            for (Location location:spawns) {
+                Location window = location.clone().add(location.clone().getDirection().multiply(25)).add(0,-1,0);
+                for (int i = -2; i < 3; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        Location current = window.clone();
+                        current.add(location.getDirection().rotateAroundY(Math.toRadians(-90)).multiply(i));
+                        current.add(0, j, 0);
+                        if (glass.contains(current.getBlock().getType())) {
+                            current.getBlock().breakNaturally();
+                        }
+                    }
+                }
+                window = location.clone().add(location.clone().getDirection().normalize().multiply(20));
+                window.add(location.clone().getDirection().rotateAroundY(Math.toRadians(-90)).normalize().multiply(15));
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 6; j++) {
+                        Location current = window.clone();
+                        current.add(location.clone().getDirection().rotateAroundY(Math.toRadians(-90)).normalize().multiply(i));
+                        current.add(0, j, 0);
+                        if (glass.contains(current.getBlock().getType())) {
+                            current.getBlock().breakNaturally();
+                        }
+                    }
+                }
+                window = location.clone().add(location.getDirection().normalize().multiply(20));
+                window.add(location.getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(15));
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 6; j++) {
                         Location current = window.clone();
                         current.add(location.clone().getDirection().rotateAroundY(Math.toRadians(90)).normalize().multiply(i));
                         current.add(0, j, 0);
@@ -288,7 +378,8 @@ public class GameStart {
         SetGlass(world);
 
         for (Player p:Bukkit.getOnlinePlayers()) {
-            p.sendTitle(winner.getColor()+ winner.getDisplayName()+ " team has won.", "", 10 ,80, 20);
+            String str = winner.getDisplayName();
+            p.sendTitle(winner.getColor()+ str.substring(0, 1).toUpperCase() + str.substring(1) + " team has won.", "", 10 ,80, 20);
         }
 
         gameRunning = false;

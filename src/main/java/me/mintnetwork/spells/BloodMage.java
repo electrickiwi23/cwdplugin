@@ -40,7 +40,7 @@ public class BloodMage extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Shoot a bolt that heals you if it hits an opponent.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Blood Bolt"));
@@ -49,7 +49,7 @@ public class BloodMage extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_SACRIFICE_COST);
-        lore.add("TEXT");
+        lore.add("Sacrifice some of your life to gain mana.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Life Sacrifice"));
@@ -58,28 +58,30 @@ public class BloodMage extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_TRACKER_COST);
-        lore.add("TEXT");
+        lore.add("Summons a flying imp that lock on and ");
+        lore.add("debuffs your enemies on contact.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Blood Tracker"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Create a link to enemies you have hit ");
+        lore.add("and damages them for as much damage as you take.");
         meta.setDisplayName(ChatColor.GOLD+("Blood Link Ritual"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "Regen a small amount of health ");
+        lore.add(ChatColor.GRAY + "for damage you deal.");
+        meta.setDisplayName(ChatColor.WHITE + "Life Steal");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Excel in 1v1 and team fights with lifesteal");
-        lore.add(ChatColor.GRAY + "and abilities focused on survivability.");
+        lore.add(ChatColor.GRAY + "Survive longer, and come back from low health ");
+        lore.add(ChatColor.GRAY + "with regenerative abilities.");
 
         menuItem.setType(Material.REDSTONE);
         meta =menuItem.getItemMeta();

@@ -29,7 +29,7 @@ public class Demolitionist extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_LINE_COST);
-        lore.add("TEXT");
+        lore.add("Throw blocks of tnt out at a straight line");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("TNT Line"));
@@ -38,7 +38,7 @@ public class Demolitionist extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_GRENADE_COST);
-        lore.add("TEXT");
+        lore.add("Throw a grenade which explodes after a few seconds");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("TNT Grenade"));
@@ -47,14 +47,16 @@ public class Demolitionist extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_STICK_GRENADE_COST);
-        lore.add("TEXT");
+        lore.add("Throw a grenade which sticks to enemies");
+        lore.add("and detonates after a short period.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Sticky Grenade"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Throws a piece of Tnt which rapidly divides ");
+        lore.add("into multiple after exploding once.");
         meta.setDisplayName(ChatColor.GOLD+("Cluster Bomb"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

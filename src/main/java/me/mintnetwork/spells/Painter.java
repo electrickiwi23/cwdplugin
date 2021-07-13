@@ -36,7 +36,8 @@ public class Painter extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPRAY_PAINT_COST);
-        lore.add("TEXT");
+        lore.add("Shoots out a spray of paint that damages ");
+        lore.add("and paints enemies in front of you.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Spray Paint"));
@@ -45,7 +46,8 @@ public class Painter extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PAINT_BOMB_COST);
-        lore.add("TEXT");
+        lore.add("Throw a canister out that can be detonated");
+        lore.add("later for damage and paint status.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Paint Canister"));
@@ -54,14 +56,16 @@ public class Painter extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BRUSH_STROKE_COST);
-        lore.add("TEXT");
+        lore.add("Dash forward painting and dealing ");
+        lore.add("damage to anyone in your path.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Brush Stroke"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Activate your paint causing anyone painted burst");
+        lore.add("dealing damage to themselves and anyone around them.");
         meta.setDisplayName(ChatColor.GOLD+("Paint Activate"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

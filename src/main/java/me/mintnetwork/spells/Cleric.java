@@ -45,7 +45,7 @@ public class Cleric extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Heals anyone hit by this bolt for a moderate amount.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
@@ -54,7 +54,7 @@ public class Cleric extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_PILLAR_COST);
-        lore.add("TEXT");
+        lore.add("Create a small platform that heals anyone near it.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Healing Pillars"));
@@ -63,22 +63,23 @@ public class Cleric extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PURIFICATION_WAVE_COST);
-        lore.add("TEXT");
+        lore.add("Creates a field that removes debuffs from anyone ");
+        lore.add("inside when it sparkles.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Regenerates all allies within a large ");
+        lore.add("radius to full health.");
         meta.setDisplayName(ChatColor.GOLD+("Divine Intervention"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Press shift to float on the air ");
-        lore.add(ChatColor.GRAY + "and take no fall damage.");
-        meta.setDisplayName(ChatColor.WHITE + "Wind Cushion");
+        lore.add(ChatColor.GRAY + "Slowly regenerate health passively.");
+        meta.setDisplayName(ChatColor.WHITE + "Healing spirit");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();

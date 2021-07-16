@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -18,6 +19,7 @@ public class DecayBlock {
     public float decayRate;
     public int ID;
     public Material decayInto;
+    public BlockData intoData;
     public boolean forceful = false;
     public boolean falling = false;
 
@@ -34,11 +36,12 @@ public class DecayBlock {
         forceful = b;
     }
 
-    public DecayBlock(int health,float rate,Block b,Material into){
+    public DecayBlock(int health,float rate,Block b,Material into,BlockData data){
         decayInto = into;
         block=b;
         this.decayRate = rate;
         this.health=health;
+        intoData = data;
         ID=new Random().nextInt();
         BlockDecay.decay.put(block,this);
     }
@@ -83,6 +86,7 @@ public class DecayBlock {
             block.breakNaturally();
         } else{
             block.setType(decayInto);
+            block.setBlockData(intoData);
         }
 
         BlockDecay.decay.remove(block);

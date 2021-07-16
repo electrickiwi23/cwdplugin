@@ -12,7 +12,7 @@ public enum Kit {
     AVIATOR(new Aviator()),
     DEMOLITIONIST(new Demolitionist()),
     PAINTER(new Painter()),
-    PILLAR_MAN(new PillarMan()),
+//    PILLAR_MAN(new PillarMan()),
     SHADOW(new Shadow()),
     SPELL_SLINGER(new SpellSlinger()),
     TACTICIAN(new Tactician()),

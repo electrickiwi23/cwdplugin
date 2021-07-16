@@ -1,16 +1,16 @@
 package me.mintnetwork.repeaters;
 
 import me.mintnetwork.Main;
+import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
-import me.mintnetwork.utils.Utils;
-import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,11 @@ public class Passives {
     ;
 
     public static void PassivesStart(Main plugin) {
-        SlowLoopPassives(plugin);
+        StartPassives(plugin);
     }
 
 
-    public static void SlowLoopPassives(Main plugin) {
+    public static void StartPassives(Main plugin) {
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {

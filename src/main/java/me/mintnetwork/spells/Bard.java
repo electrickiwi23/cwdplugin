@@ -1,6 +1,7 @@
 package me.mintnetwork.spells;
 
 import me.mintnetwork.initialization.TeamsInit;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
@@ -11,7 +12,6 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -54,8 +54,9 @@ public class Bard extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.STUN_SONG_COST);
-        lore.add(ChatColor.GRAY + "Throws a bouncy jukebox explodes that after ");
-        lore.add(ChatColor.GRAY + "a short amount of time  stunning enemies.");
+        lore.add(ChatColor.GRAY + "Throws a bouncy jukebox that ");
+        lore.add(ChatColor.GRAY + "explodes after a short amount");
+        lore.add(ChatColor.GRAY + "of time stunning enemies.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Concussion Ring"));
@@ -199,8 +200,11 @@ public class Bard extends KitItems {
     }
         public static void SirenSong(Player p, Plugin plugin) {
             if (Ultimate.spendUlt(p)) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 300, 2));
-                StatusEffects.sirenSong.put(p, 150);
+                p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Utils.SIREN_SONG_DURATION, 2));
+                StatusEffects.sirenSong.put(p, Utils.SIREN_SONG_DURATION/2);
+                WizardInit.playersWizards.get(p.getUniqueId()).Mana=0;
+                WizardInit.playersWizards.get(p.getUniqueId()).ManaTick=0;
+
 
                 final int[] count = {0};
                 BukkitTask task = new BukkitRunnable() {

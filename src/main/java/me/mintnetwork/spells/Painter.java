@@ -36,8 +36,9 @@ public class Painter extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPRAY_PAINT_COST);
-        lore.add("Shoots out a spray of paint that damages ");
-        lore.add("and paints enemies in front of you.");
+        lore.add(ChatColor.GRAY +"Shoots out a spray of paint");
+        lore.add(ChatColor.GRAY +"that damages and paints");
+        lore.add(ChatColor.GRAY +"enemies in front of you.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Spray Paint"));
@@ -46,8 +47,9 @@ public class Painter extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PAINT_BOMB_COST);
-        lore.add("Throw a canister out that can be detonated");
-        lore.add("later for damage and paint status.");
+        lore.add(ChatColor.GRAY +"Throw a canister out that ");
+        lore.add(ChatColor.GRAY +"can be detonated later for");
+        lore.add(ChatColor.GRAY +"damage and paint status.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Paint Canister"));
@@ -56,16 +58,18 @@ public class Painter extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BRUSH_STROKE_COST);
-        lore.add("Dash forward painting and dealing ");
-        lore.add("damage to anyone in your path.");
+        lore.add(ChatColor.GRAY +"Dash forward painting and");
+        lore.add(ChatColor.GRAY +"dealing damage to anyone");
+        lore.add(ChatColor.GRAY + "in your path.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Brush Stroke"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Activate your paint causing anyone painted burst");
-        lore.add("dealing damage to themselves and anyone around them.");
+        lore.add(ChatColor.GRAY +"Activate your paint causing anyone");
+        lore.add(ChatColor.GRAY +"painted burst dealing damage to ");
+        lore.add(ChatColor.GRAY +"themselves and anyone around them.");
         meta.setDisplayName(ChatColor.GOLD+("Paint Activate"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
@@ -184,7 +188,7 @@ public class Painter extends KitItems {
             for (int i = 0; i < PaintCanister.canisterArrayList.size(); i++) {
                 PaintCanister canister = PaintCanister.canisterArrayList.get(i);
                 if (canister.getOwner()==p){
-                    if (canister.getAge()>=60) {
+                    if (canister.getAge()>=30) {
                         canister.explode(plugin);
                         i--;
                     }
@@ -246,41 +250,6 @@ public class Painter extends KitItems {
 //
 //                }
 //            },1,1));
-            }
-        }
-    }
-
-    public static void PaintReveal(Player p){
-        Map<LivingEntity, Integer> painted = StatusEffects.paintTimer;
-        if (painted.keySet().size()>0){
-            if (Mana.spendMana(p,Utils.PAINT_ACTIVATE)){
-                Particle.DustOptions dust = new Particle.DustOptions(Color.RED, 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
-                dust = new Particle.DustOptions(Color.ORANGE, 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
-                dust = new Particle.DustOptions(Color.YELLOW, 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
-                dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0),20, .7, 4, .7, 0, dust);
-                dust = new Particle.DustOptions(Color.BLUE, 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
-                dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust);
-                for (LivingEntity e: painted.keySet()) {
-                    e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,60,1));
-                    dust = new Particle.DustOptions(Color.RED, 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
-                    dust = new Particle.DustOptions(Color.ORANGE, 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
-                    dust = new Particle.DustOptions(Color.YELLOW, 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
-                    dust = new Particle.DustOptions(Color.fromBGR(0, 255, 0), 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0),20, .7, 4, .7, 0, dust,true);
-                    dust = new Particle.DustOptions(Color.BLUE, 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
-                    dust = new Particle.DustOptions(Color.fromBGR(255, 0, 255), 2);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation().add(0,1,0), 20, .7, 4, .7, 0, dust,true);
-                }
             }
         }
     }

@@ -35,7 +35,7 @@ public class InventoryClickListener implements Listener {
 
         String[] classSlots = {
                 "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
-                "pillarman", "shadow", "spellslinger", "tactician", "protector"
+                "shadow", "spellslinger", "tactician", "protector"
         };
 
         if (event.getView().getTitle().equals(ChatColor.BOLD + "Select Class")) {
@@ -114,7 +114,7 @@ public class InventoryClickListener implements Listener {
 
                 String[] slots = {
                         "fireworkbolt", "jumpboost", "engineblast", "dragonorb", "batsonar", "tntring", "hivebolt", "blackhole", "endwarp",
-                        "babyboomer", "zombiesummon", "slimeball", "flashstep", "shoulderblitz", "anviltoss", "stormstrike", "manabullet"
+                        "babyboomer", "zombiesummon", "slimeball", "flashstep", "shoulderblitz", "anviltoss", "stormstrike", "manabullet","voidpillar"
                 };
 
                 if (event.getSlot() < slots.length) {

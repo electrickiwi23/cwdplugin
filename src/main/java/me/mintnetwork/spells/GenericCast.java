@@ -336,7 +336,7 @@ public class GenericCast {
             } else if (TeamName.equals("green")) {
                 meta.setColor(Color.fromRGB(128, 199, 31));
             } else if (TeamName.equals("yellow")) {
-                meta.setColor(Color.fromRGB(120, 120, 2));
+                meta.setColor(Color.fromRGB(254, 216, 61));
             }
 
             TeamsInit.addToTeam(zombie, TeamName);
@@ -395,7 +395,7 @@ public class GenericCast {
             } else if (TeamName.equals("green")) {
                 meta.setColor(Color.fromRGB(128, 199, 31));
             } else if (TeamName.equals("yellow")) {
-                meta.setColor(Color.fromRGB(120, 120, 2));
+                meta.setColor(Color.fromRGB(254, 216, 61));
             }
             ArrayList<Zombie> zombies = new ArrayList<>();
 

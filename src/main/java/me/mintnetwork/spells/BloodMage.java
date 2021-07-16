@@ -40,7 +40,8 @@ public class BloodMage extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_BOLT_COST);
-        lore.add("Shoot a bolt that heals you if it hits an opponent.");
+        lore.add(ChatColor.GRAY +"Shoot a bolt that drains the");
+        lore.add(ChatColor.GRAY +"life out of the enemy it hits");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Blood Bolt"));
@@ -48,8 +49,9 @@ public class BloodMage extends KitItems {
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_SACRIFICE_COST);
-        lore.add("Sacrifice some of your life to gain mana.");
+        lore.add(ChatColor.DARK_RED + "Life Cost: " + Utils.BLOOD_SACRIFICE_COST);
+        lore.add(ChatColor.GRAY + "Sacrifice some of your life");
+        lore.add(ChatColor.GRAY + "in exchange for mana.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Life Sacrifice"));
@@ -58,16 +60,17 @@ public class BloodMage extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_TRACKER_COST);
-        lore.add("Summons a flying imp that lock on and ");
-        lore.add("debuffs your enemies on contact.");
+        lore.add(ChatColor.GRAY +"Summons a flying imp that lock on and ");
+        lore.add(ChatColor.GRAY +"debuffs your enemies on contact.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Blood Tracker"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Create a link to enemies you have hit ");
-        lore.add("and damages them for as much damage as you take.");
+        lore.add(ChatColor.GRAY +"Create a link to enemies you");
+        lore.add(ChatColor.GRAY +"have hit and damages them for");
+        lore.add(ChatColor.GRAY +"as much damage as you take.");
         meta.setDisplayName(ChatColor.GOLD+("Blood Link Ritual"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

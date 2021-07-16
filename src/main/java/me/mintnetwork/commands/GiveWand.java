@@ -1,7 +1,6 @@
 package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
-import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.initialization.WizardInit;
 import org.bukkit.ChatColor;
@@ -12,8 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
 
 public class GiveWand implements CommandExecutor {
 
@@ -36,62 +33,64 @@ public class GiveWand implements CommandExecutor {
             }
 
             if (args.length==1) {
-
                     ItemStack baseWand = new ItemStack(Material.STICK);
                     ItemMeta meta = baseWand.getItemMeta();
 
                         switch (args[0].toLowerCase()) {
                             case ("fireworkbolt"):
-                                meta.setDisplayName(ChatColor.RESET + ("Firework Bolt"));
+                                meta = Wands.genericWands.get(0);
                                 break;
                             case ("jumpboost"):
-                                meta.setDisplayName(ChatColor.RESET + ("Jump Boost"));
+                                meta = Wands.genericWands.get(1);
                                 break;
                             case ("engineblast"):
-                                meta.setDisplayName(ChatColor.RESET + ("Engine Blast"));
-                                break;
+                                meta = Wands.genericWands.get(2);
+                            break;
                             case ("dragonorb"):
-                                meta.setDisplayName(ChatColor.RESET + ("Dragon Orb"));
-                                break;
+                                meta = Wands.genericWands.get(3);
+                            break;
                             case ("batsonar"):
-                                meta.setDisplayName(ChatColor.RESET + ("Bat Sonar"));;
-                                break;
+                                meta = Wands.genericWands.get(4);
+                            break;
                             case ("tntring"):
-                                meta.setDisplayName(ChatColor.RESET + ("TNT Ring"));
-                                break;
+                                meta = Wands.genericWands.get(5);
+                            break;
                             case ("hivebolt"):
-                                meta.setDisplayName(ChatColor.RESET + ("Hive Bolt"));
-                                break;
+                                meta = Wands.genericWands.get(6);
+                            break;
                             case ("blackhole"):
-                                meta.setDisplayName(ChatColor.RESET + ("Black Hole"));
-                                break;
+                                meta = Wands.genericWands.get(7);
+                            break;
                             case ("endwarp"):
-                                meta.setDisplayName(ChatColor.RESET + ("End Warp"));
-                                break;
+                                meta = Wands.genericWands.get(8);
+                            break;
                             case ("babyboomer"):
-                                meta.setDisplayName(ChatColor.RESET + ("Baby Boomer"));
-                                break;
+                                meta = Wands.genericWands.get(9);
+                            break;
                             case ("zombiesummon"):
-                                meta.setDisplayName(ChatColor.RESET + ("Zombie Summon"));
-                                break;
+                                meta = Wands.genericWands.get(10);
+                            break;
                             case ("slimeball"):
-                                meta.setDisplayName(ChatColor.RESET + ("Slime Ball"));
-                                break;
+                                meta = Wands.genericWands.get(11);
+                            break;
                             case ("flashstep"):
-                                meta.setDisplayName(ChatColor.RESET + ("Flash Step"));
-                                break;
+                                meta = Wands.genericWands.get(12);
+                            break;
                             case ("shoulderblitz"):
-                                meta.setDisplayName(ChatColor.RESET + ("Shoulder Blitz"));
-                                break;
+                                meta = Wands.genericWands.get(13);
+                            break;
                             case ("anviltoss"):
-                                meta.setDisplayName(ChatColor.RESET + ("Anvil Toss"));
-                                break;
+                                meta = Wands.genericWands.get(14);
+                            break;
                             case ("stormstrike"):
-                                meta.setDisplayName(ChatColor.RESET + ("Storm Strike"));
-                                break;
+                                meta = Wands.genericWands.get(15);
+                            break;
                             case("manabullet"):
-                                meta.setDisplayName(ChatColor.RESET + ("Mana Bullet"));
-                                break;
+                                meta = Wands.genericWands.get(16);
+                            break;
+                            case("voidpillar"):
+                                meta = Wands.genericWands.get(17);
+                            break;
 
 
                         }
@@ -99,9 +98,9 @@ public class GiveWand implements CommandExecutor {
                         p.getInventory().addItem(baseWand);
 
                         wizard.wands.add(baseWand);
-                } else{
-                    p.sendMessage(ChatColor.RED+("You must select a spell."));
-                }
+                } else {
+                p.sendMessage(ChatColor.RED + ("You must select a spell."));
+            }
 //        }
         return false;
     }

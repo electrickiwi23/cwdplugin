@@ -63,8 +63,9 @@ public class Aviator extends KitItems {
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY + "Charges you with energy that makes movement spells");
-        lore.add(ChatColor.GRAY + "cost much less and gives them an electric Kick.");
+        lore.add(ChatColor.GRAY + "Charges you with energy that makes");
+        lore.add(ChatColor.GRAY + "movement spells cost much less");
+        lore.add(ChatColor.GRAY + "and gives them an electric Kick.");
         meta.setDisplayName(ChatColor.GOLD+"Thunderstorm Overdrive");
         meta.setLore(lore);
         ult.setItemMeta(meta);
@@ -202,6 +203,8 @@ public class Aviator extends KitItems {
 
                                             e.setVelocity(new Vector(0, 0, 0));
                                             ((LivingEntity) e).damage(3,stand);
+
+                                            stand.remove();
                                             final int[] count = {0};
                                             new BukkitRunnable() {
                                                 @Override
@@ -259,6 +262,8 @@ public class Aviator extends KitItems {
 
                                     ((LivingEntity) e).damage(2,stand);
                                     e.setVelocity(new Vector(0, 0, 0));
+
+                                    stand.remove();
                                     final int[] count = {0};
                                     new BukkitRunnable() {
                                         @Override

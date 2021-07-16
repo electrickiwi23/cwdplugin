@@ -45,7 +45,7 @@ public class Cleric extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_BOLT_COST);
-        lore.add("Heals anyone hit by this bolt for a moderate amount.");
+        lore.add(ChatColor.GRAY +"Heals anyone hit by this bolt for a moderate amount.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
@@ -54,25 +54,25 @@ public class Cleric extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_PILLAR_COST);
-        lore.add("Create a small platform that heals anyone near it.");
+        lore.add(ChatColor.GRAY +"Create a small platform that heals anyone near it.");
         meta.setLore(lore);
         lore.clear();
-        meta.setDisplayName(ChatColor.RESET+("Healing Pillars"));
+        meta.setDisplayName(ChatColor.RESET+("Healing Pillar"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PURIFICATION_WAVE_COST);
-        lore.add("Creates a field that removes debuffs from anyone ");
-        lore.add("inside when it sparkles.");
+        lore.add(ChatColor.GRAY +"Creates a field that removes debuffs from anyone ");
+        lore.add(ChatColor.GRAY +"inside when it sparkles.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Regenerates all allies within a large ");
-        lore.add("radius to full health.");
+        lore.add(ChatColor.GRAY +"Regenerates all allies within a large ");
+        lore.add(ChatColor.GRAY +"radius to full health.");
         meta.setDisplayName(ChatColor.GOLD+("Divine Intervention"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

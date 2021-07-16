@@ -2,7 +2,6 @@ package me.mintnetwork.listeners;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.TornadoEffect;
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.BlackHole;
 import me.mintnetwork.Objects.DecayBlock;
@@ -15,6 +14,7 @@ import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fire;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -286,6 +286,7 @@ public class ProjectileHitListener implements Listener {
                 if (ID.get(snow).equals("HealBolt")) {
                     if (hit != null) {
                         hit.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0));
+                        hit.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,30,2));
                     }
                     task.get(snow).cancel();
                 }
@@ -451,9 +452,13 @@ public class ProjectileHitListener implements Listener {
                                     if (!b.getType().isAir()) {
                                         if (b.getType().getBlastResistance() < 500) {
                                             Material temp = b.getType();
-                                            if (BlockDecay.decay.containsKey(b)) temp = BlockDecay.decay.get(b).decayInto;
+                                            BlockData data = b.getBlockData().clone();
+                                            if (BlockDecay.decay.containsKey(b)) {
+                                                temp = BlockDecay.decay.get(b).decayInto;
+                                                data = BlockDecay.decay.get(b).intoData;
+                                            }
                                             b.setType(Material.SLIME_BLOCK);
-                                            new DecayBlock(30,.2F, b,temp);
+                                            new DecayBlock(30,.2F, b,temp,data);
                                         }
                                     }
                                 }

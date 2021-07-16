@@ -6,12 +6,14 @@ import me.mintnetwork.Objects.Wizard;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.Ultimate;
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.UUID;
 
 public class GameStart {
@@ -89,8 +91,10 @@ public class GameStart {
                 }
             }
         }else if(world.getName().equals("oasis")){
-            Location[] spawns = new Location[]{new Location(world,67.5,63.5,8.5,0,0),
-                    new Location(world,67.5,63.5,240.5,180,0)};
+            Location[] spawns = new Location[]{new Location(world,67.5,63.5,-16.5,0,0),
+                    new Location(world,67.5,63.5,265.5,180,0),
+                    new Location(world,208.5,63.5,124.5,90,0),
+                    new Location(world,-73.5,63.5,124.5,-90,0),};
             for (Location location:spawns) {
                 Material mat = Material.GLASS;
 
@@ -98,8 +102,14 @@ public class GameStart {
                     case 0:
                         mat = Material.BLUE_STAINED_GLASS;
                         break;
+                    case (90):
+                        mat = Material.LIME_STAINED_GLASS;
+                        break;
                     case (180):
                         mat = Material.RED_STAINED_GLASS;
+                        break;
+                    case (-90):
+                        mat = Material.YELLOW_STAINED_GLASS;
                         break;
                 }
 
@@ -191,8 +201,10 @@ public class GameStart {
             }
         } else if(world.getName().equals("oasis")){
 
-            Location[] spawns = new Location[]{new Location(world,67.5,63.5,8.5,0,0),
-                    new Location(world,67.5,63.5,240.5,180,0)};
+            Location[] spawns = new Location[]{new Location(world,67.5,63.5,-16.5,0,0),
+                    new Location(world,67.5,63.5,265.5,180,0),
+                    new Location(world,208.5,63.5,124.5,90,0),
+                    new Location(world,-73.5,63.5,124.5,-90,0),};
             for (Location location:spawns) {
                 Location window = location.clone().add(location.clone().getDirection().multiply(25)).add(0,-1,0);
                 for (int i = -2; i < 3; i++) {
@@ -323,13 +335,18 @@ public class GameStart {
             }
 
             gameMode = GameMode.BATTLE_ROYAL;
+            FileConfiguration config = plugin.getConfig();
+            world.getWorldBorder().setCenter(config.getDouble("FlareBx"),config.getDouble("FlareBz"));
+
+            Random random = new Random();
+            world.getWorldBorder().setCenter(world.getWorldBorder().getCenter().add(random.nextGaussian()*55,0,random.nextGaussian()*55));
+
+            world.getWorldBorder().setSize(600);
+            world.getWorldBorder().setSize(300,60);
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-
-                    Bukkit.getServer().getWorld("world");
-                    System.out.println(world.getName());
                     world.getWorldBorder().setSize(300);
                     world.getWorldBorder().setSize(45, 120);
 
@@ -376,6 +393,7 @@ public class GameStart {
         }
 
         SetGlass(world);
+        world.getWorldBorder().setSize(10000);
 
         for (Player p:Bukkit.getOnlinePlayers()) {
             String str = winner.getDisplayName();

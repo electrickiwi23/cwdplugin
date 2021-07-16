@@ -53,12 +53,6 @@ public class PlayerSneakListener implements Listener {
                 p.getInventory().setHelmet(PreviousHelm.get(p));
                 Zoomed.remove(p);
             }
-            if(wizard.kitID.equals(Kit.PILLAR_MAN)){
-                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(0);
-                p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-            }
-
-
         }else{
             if (wizard.kitID.equals(Kit.AVIATOR)){
                 if (StatusEffects.cloudFloating.contains(p)){
@@ -68,11 +62,7 @@ public class PlayerSneakListener implements Listener {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 3, false, false));
                     StatusEffects.cloudFloating.add(p);
                 }
-            } else if(wizard.kitID.equals(Kit.PILLAR_MAN)){
-                p.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
-                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1000000,0,true,false));
             }
-
             if (!p.getInventory().getItemInMainHand().getType().isAir()) {
                 if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Sniper Bolt")) {
                     PreviousSpeed.put(p,p.getWalkSpeed());

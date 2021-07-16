@@ -7,7 +7,7 @@ public class Utils {
     public static final int ENGINE_BLAST_COST = 3;
     public static final int DRAGON_ORB_COST = 3;
     public static final int BAT_SONAR_COST = 3;
-    public static final int TNT_RING_COST = 3;
+    public static final int TNT_RING_COST = 4;
     public static final int HIVE_BOLT_COST = 3;
     public static final int BLACK_HOLE_COST = 4;
     public static final int END_WARP_COST = 3;
@@ -84,6 +84,7 @@ public class Utils {
 
     //Properties of Ults
     public static final int STORM_ULT_DURATION = 300;
+    public static final int SIREN_SONG_DURATION = 240;
 
 
 

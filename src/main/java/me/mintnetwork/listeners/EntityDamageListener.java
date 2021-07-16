@@ -75,8 +75,8 @@ public class  EntityDamageListener implements Listener {
 
                 Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
                 if (speedMap.containsKey(entity)) {
-                    ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
-                    speedMap.put((Player) entity, 30);
+                    ((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 1, false, true));
+                    speedMap.replace((Player) entity, 40);
                 }
 
 

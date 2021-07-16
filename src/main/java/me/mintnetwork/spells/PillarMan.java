@@ -40,7 +40,7 @@ public class PillarMan extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.VOID_PILLAR_COST);
-        lore.add("Creates a pillar that succs projectiles into itself");
+        lore.add(ChatColor.GRAY +"Creates a pillar that succs projectiles into itself");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Void Rift"));
@@ -49,8 +49,8 @@ public class PillarMan extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BEAM_PILLAR_COST);
-        lore.add("Creates a pillar that locks on and does");
-        lore.add("damage to anyone in the radius for a while.");
+        lore.add(ChatColor.GRAY +"Creates a pillar that locks on and does");
+        lore.add(ChatColor.GRAY +"damage to anyone in the radius for a while.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Beam Pillar"));
@@ -59,14 +59,14 @@ public class PillarMan extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MANA_PILLAR_COST);
-        lore.add("Creates a pillar that speeds up mana regen to those around it.");
+        lore.add(ChatColor.GRAY +"Creates a pillar that speeds up mana regen to those around it.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Mana Pillar"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Creates a pillar that shoots at anyone nearby.");
+        lore.add(ChatColor.GRAY +"Creates a pillar that shoots at anyone nearby.");
         meta.setDisplayName(ChatColor.GOLD+("Skeleton Spirit"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

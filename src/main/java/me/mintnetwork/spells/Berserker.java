@@ -2,14 +2,12 @@ package me.mintnetwork.spells;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.effect.VortexEffect;
+import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.repeaters.Mana;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -21,7 +19,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -78,7 +75,8 @@ public class Berserker extends KitItems {
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Upgrades your sword for more damage.");
+        lore.add(ChatColor.GRAY + "Upgrades your sword from a wood");
+        lore.add(ChatColor.GRAY + "sword to a stone sword.");
         meta.setDisplayName(ChatColor.WHITE + "Stone Age");
         meta.setLore(lore);
         passive.setItemMeta(meta);
@@ -94,12 +92,18 @@ public class Berserker extends KitItems {
         menuItem.setItemMeta(meta);
 
         //create itemstacks for each wand of the class
-    }
-    public static void SwordLunge(Player p){
-        if (Mana.spendMana(p,2)){
-            p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GOAT_LONG_JUMP,1,1);
-         p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0,.4,0)).normalize());
 
+    }
+    public static void SwordLunge(Player p) {
+        if (!p.hasCooldown(Material.STONE_SWORD)) {
+            if (Mana.spendMana(p, 2)) {
+                p.setCooldown(Material.STONE_SWORD,80);
+                WizardInit.playersWizards.get(p.getUniqueId()).PassiveTick = 0;
+
+                p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GOAT_LONG_JUMP, 1, 1);
+                p.setVelocity(p.getEyeLocation().getDirection().add(new Vector(0, .4, 0)).normalize());
+
+            }
         }
     }
 
@@ -107,8 +111,8 @@ public class Berserker extends KitItems {
         if (Mana.spendMana(p, Utils.SPEED_BOOST_COST)) {
             Map<LivingEntity, Integer> speedMap = StatusEffects.speedTimer;
             if (!speedMap.containsKey(p)) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1, false, true));
-                speedMap.put(p, 30);
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 1, false, true));
+                speedMap.put(p, 40);
 
             }
         }
@@ -136,7 +140,7 @@ public class Berserker extends KitItems {
         em.start(effect);
         final int[] count = {0};
         int finalDistance = distance;
-        BukkitTask task = new BukkitRunnable() {
+        new BukkitRunnable() {
             @Override
             public void run() {
                 count[0]++;

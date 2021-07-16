@@ -110,7 +110,7 @@ public class Tactician extends KitItems {
                     boolean hasHit = false;
                     while (!hasHit) {
                         if (current.isWorldLoaded()) {
-                            RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .2, null);
+                            RayTraceResult ray = p.getWorld().rayTrace(current, direction, 2, FluidCollisionMode.NEVER, true, .3, null);
                             if (ray != null) {
                                 Location hitLocation = null;
                                 LivingEntity hitEntity = null;
@@ -166,18 +166,18 @@ public class Tactician extends KitItems {
                                         hitEntity.damage(10, stand);
                                         p.playSound(p.getEyeLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
                                     } else {
-                                        hitEntity.damage(5, stand);
+                                        hitEntity.damage(6, stand);
                                     }
                                     stand.remove();
                                 }
 
                             }
                             if (!hasHit) {
-                                current = current.add(direction.multiply(2));
+                                current = current.add(direction.normalize().multiply(2));
                                 p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current, 1, 0, 0, 0, 0);
                                 p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current.add(direction), 1, 0, 0, 0, 0);
                                 range++;
-                                if (range >= 75) hasHit = true;
+                                if (range >= 150) hasHit = true;
                                 for (Entity shield : Shield.shieldMap.keySet()) {
                                     if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
                                         direction = Shield.shieldMap.get(shield).reflectVector(current, direction);

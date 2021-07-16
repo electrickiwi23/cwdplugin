@@ -19,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -77,9 +78,9 @@ public class ChangeClass implements CommandExecutor {
                 case ("painter"):
                     kit = Kit.PAINTER;
                     break;
-                case ("pillarman"):
-                    kit = Kit.PILLAR_MAN;
-                    break;
+//                case ("pillarman"):
+//                    kit = Kit.PILLAR_MAN;
+//                    break;
                 case ("shadow"):
                     kit = Kit.SHADOW;
                     break;
@@ -104,100 +105,101 @@ public class ChangeClass implements CommandExecutor {
         return false;
     }
 
-    public static void ChangeKit(Kit kit, Player p){
+    public static void ChangeKit(Kit kit, Player p) {
         boolean uniqueClass = true;
         Wizard wizard = WizardInit.playersWizards.get(p.getUniqueId());
 
-        for (UUID uuid: WizardInit.playersWizards.keySet()) {
+        for (UUID uuid : WizardInit.playersWizards.keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             Wizard tempWizard = WizardInit.playersWizards.get(uuid);
-            if (tempWizard.kitID!=null) {
-                if (tempWizard.kitID.equals(wizard.kitID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player != p) {
+            if (tempWizard.kitID != Kit.NONE) {
+                if (tempWizard.kitID.equals(wizard.kitID) && TeamsInit.getTeamName(p).matches(TeamsInit.getTeamName(player)) && player!=p) {
                     uniqueClass = false;
                 }
             }
         }
 
         if (uniqueClass) {
-        p.getInventory().clear();
+            p.getInventory().clear();
 
-        wizard.kitID = kit;
+            wizard.kitID = kit;
 
-        wizard.wands.clear();
+            wizard.wands.clear();
 
-        p.setCustomNameVisible(kit!=Kit.SHADOW);
-        StatusEffects.cloudFloating.remove(p);
-        p.removePotionEffect(PotionEffectType.SLOW_FALLING);
+            p.setCustomNameVisible(kit != Kit.SHADOW);
+            StatusEffects.cloudFloating.remove(p);
+            p.removePotionEffect(PotionEffectType.SLOW_FALLING);
 
-        if (wizard.kitID.equals(Kit.PROTECTOR)){
-            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(24);
-            p.setHealth(24);
-            p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).addModifier(new AttributeModifier("ProtectorSlow",p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()*-.15,AttributeModifier.Operation.ADD_NUMBER));
-        } else {
-            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
-            p.setHealth(20);
-            for (AttributeModifier modifier : p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getModifiers()) {
-                if (modifier.getName().equals("ProtectorSlow")) {
+            if (wizard.kitID.equals(Kit.PROTECTOR)) {
+                p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(24);
+                p.setHealth(24);
+                p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).addModifier(new AttributeModifier("ProtectorSlow", p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue() * -.15, AttributeModifier.Operation.ADD_NUMBER));
+            } else {
+                p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+                p.setHealth(20);
+                for (AttributeModifier modifier : p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getModifiers()) {
+                    if (modifier.getName().equals("ProtectorSlow")) {
 
-                    p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).removeModifier(modifier);
+                        p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).removeModifier(modifier);
+                    }
                 }
             }
-        }
 
-        ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
-        ItemMeta swordMeta = sword.getItemMeta();
-        if (wizard.kitID.equals(Kit.BERSERKER)) {
-            sword.setType(Material.STONE_SWORD);
-            swordMeta.setDisplayName((ChatColor.RESET+("Berserker Blade")));
-        }
-        swordMeta.setUnbreakable(true);
-        sword.setItemMeta(swordMeta);
-        p.getInventory().addItem(sword);
+            ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
+            ItemMeta swordMeta = sword.getItemMeta();
+            if (wizard.kitID.equals(Kit.BERSERKER)) {
+                sword.setType(Material.STONE_SWORD);
+                swordMeta.setDisplayName((ChatColor.RESET + ("Berserker Blade")));
+            }
+            swordMeta.setUnbreakable(true);
+            sword.setItemMeta(swordMeta);
+            p.getInventory().addItem(sword);
 
-        for (ItemStack item:kit.KitItems.wands) {
-            if (item.getType()==Material.STICK)  p.getInventory().addItem(item);
-        }
+            for (ItemStack item : kit.KitItems.wands) {
+                if (item.getType() == Material.STICK) p.getInventory().addItem(item);
+            }
 
-        p.getInventory().addItem(kit.KitItems.ult);
+            p.getInventory().addItem(kit.KitItems.ult);
 
-        ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
-        LeatherArmorMeta armorMeta = (LeatherArmorMeta) helm.getItemMeta();
+            ItemStack helm = new ItemStack(Material.LEATHER_HELMET);
+            LeatherArmorMeta armorMeta = (LeatherArmorMeta) helm.getItemMeta();
 
-        String TeamName = TeamsInit.getTeamName(p);
+            String TeamName = TeamsInit.getTeamName(p);
 
-        switch (TeamName) {
-            case "blue":
-                armorMeta.setColor(Color.fromRGB(60, 68, 170));
-                break;
-            case "red":
-                armorMeta.setColor(Color.fromRGB(176, 46, 38));
-                break;
-            case "green":
-                armorMeta.setColor(Color.fromRGB(128, 199, 31));
-                break;
-            case "yellow":
-                armorMeta.setColor(Color.fromRGB(120, 120, 2));
-                break;
-        }
+            switch (TeamName) {
+                case "blue":
+                    armorMeta.setColor(Color.fromRGB(60, 68, 170));
+                    break;
+                case "red":
+                    armorMeta.setColor(Color.fromRGB(176, 46, 38));
+                    break;
+                case "green":
+                    armorMeta.setColor(Color.fromRGB(128, 199, 31));
+                    break;
+                case "yellow":
+                    armorMeta.setColor(Color.fromRGB(254, 216, 61));
+                    break;
+            }
 
-        if (wizard.kitID.equals(Kit.DEMOLITIONIST)) {
-            armorMeta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 1, true);
-        }
+            if (wizard.kitID.equals(Kit.DEMOLITIONIST)) {
+                armorMeta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 1, true);
+                armorMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
-        armorMeta.setUnbreakable(true);
+            armorMeta.setUnbreakable(true);
 
-        helm.setItemMeta(armorMeta);
-        ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
-        chest.setItemMeta(armorMeta);
-        ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS);
-        legs.setItemMeta(armorMeta);
-        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-        boots.setItemMeta(armorMeta);
+            helm.setItemMeta(armorMeta);
+            ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
+            chest.setItemMeta(armorMeta);
+            ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS);
+            legs.setItemMeta(armorMeta);
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+            boots.setItemMeta(armorMeta);
 
-        ItemStack[] armor = {boots, legs, chest, helm};
+            ItemStack[] armor = {boots, legs, chest, helm};
 
-        p.getInventory().setArmorContents(armor);
-        }else{
+            p.getInventory().setArmorContents(armor);
+        } else {
             p.sendMessage(ChatColor.RED + "A player on your team already has chosen that class");
         }
     }

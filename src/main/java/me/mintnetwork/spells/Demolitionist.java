@@ -29,7 +29,8 @@ public class Demolitionist extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_LINE_COST);
-        lore.add("Throw blocks of tnt out at a straight line");
+        lore.add(ChatColor.GRAY +"Throw blocks of tnt out");
+        lore.add(ChatColor.GRAY +"at a straight line.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("TNT Line"));
@@ -38,7 +39,8 @@ public class Demolitionist extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_GRENADE_COST);
-        lore.add("Throw a grenade which explodes after a few seconds");
+        lore.add(ChatColor.GRAY +"Throw a grenade which ");
+        lore.add(ChatColor.GRAY +"explodes after a few seconds.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("TNT Grenade"));
@@ -47,16 +49,17 @@ public class Demolitionist extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_STICK_GRENADE_COST);
-        lore.add("Throw a grenade which sticks to enemies");
-        lore.add("and detonates after a short period.");
+        lore.add(ChatColor.GRAY +"Throw a grenade which sticks ");
+        lore.add(ChatColor.GRAY +"to enemies and detonates");
+        lore.add(ChatColor.GRAY +"after a short period.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Sticky Grenade"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Throws a piece of Tnt which rapidly divides ");
-        lore.add("into multiple after exploding once.");
+        lore.add(ChatColor.GRAY +"Throws a piece of TNT which rapidly divides ");
+        lore.add(ChatColor.GRAY +"into multiple after exploding once.");
         meta.setDisplayName(ChatColor.GOLD+("Cluster Bomb"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

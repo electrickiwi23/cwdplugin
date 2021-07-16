@@ -37,8 +37,8 @@ public class Builder extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.QUICK_BUILD_COST);
-        lore.add("Cause a line of blocks to shoot");
-        lore.add("from the ground or walls.");
+        lore.add(ChatColor.GRAY +"Cause a line of blocks to shoot");
+        lore.add(ChatColor.GRAY +"from the ground or walls.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Quick Build"));
@@ -47,8 +47,8 @@ public class Builder extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.POPUP_TOWER_COST);
-        lore.add("Build a tower that can be used for ");
-        lore.add("shelter or to shape terrain.");
+        lore.add(ChatColor.GRAY +"Build a tower that can be used for ");
+        lore.add(ChatColor.GRAY +"shelter or to shape terrain.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Pop up Tower"));
@@ -57,16 +57,16 @@ public class Builder extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BUILD_BOLT_COST);
-        lore.add("Shoot a projectile that creates blocks ");
-        lore.add("underneath as it travels.");
+        lore.add(ChatColor.GRAY +"Shoot a projectile that creates blocks ");
+        lore.add(ChatColor.GRAY +"underneath as it travels.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Bridge Bolt"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Build a large wall to separate enemy teams ");
-        lore.add("and make your position more secure.");
+        lore.add(ChatColor.GRAY +"Build a large wall to separate enemy teams ");
+        lore.add(ChatColor.GRAY +"and make your position more secure.");
         meta.setDisplayName(ChatColor.GOLD+"Netherite Wall");
         meta.setLore(lore);
         ult.setItemMeta(meta);

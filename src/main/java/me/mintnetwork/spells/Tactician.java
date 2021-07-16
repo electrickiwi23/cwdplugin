@@ -40,7 +40,8 @@ public class Tactician extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNIPER_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Zoom in with shift to fire a sniper ");
+        lore.add("bolt that does decent damage.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Sniper Bolt"));
@@ -49,7 +50,8 @@ public class Tactician extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MOLOTOV_COST);
-        lore.add("TEXT");
+        lore.add("Throw a flaming bottle that sets ");
+        lore.add("the area which it lands on fire.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Molotov Cocktail"));
@@ -58,14 +60,16 @@ public class Tactician extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GRAPPLE_HOOK_COST);
-        lore.add("TEXT");
+        lore.add("Climb to places with a hook that ");
+        lore.add("shoots out and drags you along.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Grapple Hook"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Call in a strike that decimates ");
+        lore.add("everything in its radius.");
         meta.setDisplayName(ChatColor.GOLD+("Orbital Strike"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

@@ -45,7 +45,8 @@ public class Cleric extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_BOLT_COST);
-        lore.add(ChatColor.GRAY +"Heals anyone hit by this bolt for a moderate amount.");
+        lore.add(ChatColor.GRAY +"Heals anyone hit by this ");
+        lore.add(ChatColor.GRAY +"bolt for a small amount.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Heal Bolt"));
@@ -54,7 +55,8 @@ public class Cleric extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_PILLAR_COST);
-        lore.add(ChatColor.GRAY +"Create a small platform that heals anyone near it.");
+        lore.add(ChatColor.GRAY +"Create a small platform and cake");
+        lore.add(ChatColor.GRAY +"that heals anyone near it.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Healing Pillar"));
@@ -63,16 +65,16 @@ public class Cleric extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.PURIFICATION_WAVE_COST);
-        lore.add(ChatColor.GRAY +"Creates a field that removes debuffs from anyone ");
-        lore.add(ChatColor.GRAY +"inside when it sparkles.");
+        lore.add(ChatColor.GRAY +"Creates a field that removes debuffs ");
+        lore.add(ChatColor.GRAY +"from anyone inside after charging.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Purification Wave"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY +"Regenerates all allies within a large ");
-        lore.add(ChatColor.GRAY +"radius to full health.");
+        lore.add(ChatColor.GRAY +"Regenerates all allies within ");
+        lore.add(ChatColor.GRAY +"a large radius to full health.");
         meta.setDisplayName(ChatColor.GOLD+("Divine Intervention"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

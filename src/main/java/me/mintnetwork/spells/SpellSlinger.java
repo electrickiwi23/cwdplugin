@@ -40,7 +40,9 @@ public class SpellSlinger extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.LIGHTNING_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Creates a cloud that shoots lightning ");
+        lore.add("out of it after a short charge.");
+
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Lightning Bolt"));
@@ -49,7 +51,7 @@ public class SpellSlinger extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIRE_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Shoots a bolt of fire that sets enemies alight.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Fire Bolt"));
@@ -58,14 +60,16 @@ public class SpellSlinger extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNOW_BOLT_COST);
-        lore.add("TEXT");
+        lore.add("Shoots a bolt of freezing weather ");
+        lore.add("that slows enemies when it lands.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Ice Bolt"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Channel all of the elements to create a destructive ");
+        lore.add("shot that decimates terrain and opponents.");
         meta.setDisplayName(ChatColor.GOLD+("Elemental Release"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

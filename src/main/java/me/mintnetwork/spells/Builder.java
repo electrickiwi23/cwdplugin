@@ -65,8 +65,9 @@ public class Builder extends KitItems {
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY +"Build a large wall to separate enemy teams ");
-        lore.add(ChatColor.GRAY +"and make your position more secure.");
+        lore.add(ChatColor.GRAY +"Build a large wall to separate ");
+        lore.add(ChatColor.GRAY +"enemy teams and make ");
+        lore.add(ChatColor.GRAY +"your position more secure.");
         meta.setDisplayName(ChatColor.GOLD+"Netherite Wall");
         meta.setLore(lore);
         ult.setItemMeta(meta);

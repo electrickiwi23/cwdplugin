@@ -39,7 +39,8 @@ public class Shadow extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_INVISIBILITY_COST);
-        lore.add("TEXT");
+        lore.add("Melt in the shadows to gain ");
+        lore.add("temporary invisibility until hit.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Darkness Camouflage"));
@@ -48,7 +49,8 @@ public class Shadow extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_RETREAT_COST);
-        lore.add("TEXT");
+        lore.add("Dash smoothly to get away ");
+        lore.add("or initiate from combat.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Shadow Dash"));
@@ -57,14 +59,15 @@ public class Shadow extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_GRAPPLE_COST);
-        lore.add("TEXT");
+        lore.add("Pick up enemies to separate them from teammates.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Pray Abduction"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Blinds and slows enemies in the ");
+        lore.add("large cloud created by your ult");
         meta.setDisplayName(ChatColor.GOLD + ("Consuming Midnight"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

@@ -60,16 +60,16 @@ public class Berserker extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FORCE_PULL_COST);
-        lore.add(ChatColor.GRAY + "Pull any enemies close to you ");
-        lore.add(ChatColor.GRAY + "using sheer will.");
+        lore.add(ChatColor.GRAY + "Pull any enemies in range to ");
+        lore.add(ChatColor.GRAY + "you using sheer will.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Force Pull"));
         wand2.setItemMeta(meta);
         wands.add(wand2);
 
-        lore.add(ChatColor.GRAY + "Buffs your damage and knockback for a");
-        lore.add(ChatColor.GRAY + "Short period of time.");
+        lore.add(ChatColor.GRAY + "Buffs your damage and knockback ");
+        lore.add(ChatColor.GRAY + "for a short period of time.");
         meta.setDisplayName(ChatColor.GOLD+("Unleash Rage"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
@@ -83,7 +83,8 @@ public class Berserker extends KitItems {
         lore.clear();
 
         lore.add(ChatColor.GRAY + "Chase down and stab your enemies");
-        lore.add(ChatColor.GRAY + "with your increased close range capabilities.");
+        lore.add(ChatColor.GRAY + "with your advanced sword.");
+
 
         menuItem.setType(Material.STONE_SWORD);
         meta = menuItem.getItemMeta();

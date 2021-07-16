@@ -49,7 +49,8 @@ public class Protector extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHIELD_DOME_COST);
-        lore.add(ChatColor.GRAY +"Create a magical dome which blocks all projectiles");
+        lore.add(ChatColor.GRAY +"Create a magical dome which ");
+        lore.add(ChatColor.GRAY +"blocks all projectiles");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Dome of Safety"));
@@ -58,14 +59,16 @@ public class Protector extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GIVE_ARMOR_COST);
-        lore.add(ChatColor.GRAY +"Increase the armor capability of your teammates.");
+        lore.add(ChatColor.GRAY +"Increase the armor capability and ");
+        lore.add(ChatColor.GRAY +"thus damage taken by your teammates.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Crystal Armor"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("TEXT");
+        lore.add("Increase the health of teammates");
+        lore.add("by a large amount.");
         meta.setDisplayName(ChatColor.GOLD+("Aura of Protection"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

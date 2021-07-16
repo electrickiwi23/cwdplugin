@@ -63,8 +63,8 @@ public class Bard extends KitItems {
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY + "Your song entrances your enemies and forces");
-        lore.add(ChatColor.GRAY + "them to look your direction.");
+        lore.add(ChatColor.GRAY + "Your song entrances your enemies and ");
+        lore.add(ChatColor.GRAY + "forces them to look your direction.");
         meta.setDisplayName(ChatColor.GOLD+("Siren Song"));
         meta.setLore(lore);
         ult.setItemMeta(meta);

@@ -75,16 +75,16 @@ public class Painter extends KitItems {
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Hitting enemies with your sword puts paint ");
-        lore.add(ChatColor.GRAY + "on them. When they have enough paint,");
-        lore.add(ChatColor.GRAY + "It bursts dealing massive damage.");
+        lore.add(ChatColor.GRAY + "Hitting enemies with your sword puts ");
+        lore.add(ChatColor.GRAY + "paint on them. When they have enough ");
+        lore.add(ChatColor.GRAY + "paint, It bursts dealing massive damage.");
         meta.setDisplayName(ChatColor.WHITE + "Colorful Blade");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
         lore.add(ChatColor.GRAY + "Smother your enemies with toxic");
-        lore.add(ChatColor.GRAY + "paint to paint over your competition");
+        lore.add(ChatColor.GRAY + "paint to paint over your competition.");
 
         menuItem.setType(Material.PURPLE_DYE);
         meta = menuItem.getItemMeta();

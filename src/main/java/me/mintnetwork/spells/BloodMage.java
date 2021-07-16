@@ -60,8 +60,8 @@ public class BloodMage extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLOOD_TRACKER_COST);
-        lore.add(ChatColor.GRAY +"Summons a flying imp that lock on and ");
-        lore.add(ChatColor.GRAY +"debuffs your enemies on contact.");
+        lore.add(ChatColor.GRAY +"Summons a flying imp that lock on ");
+        lore.add(ChatColor.GRAY +"and debuffs your enemies on contact.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Blood Tracker"));
@@ -83,8 +83,8 @@ public class BloodMage extends KitItems {
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Survive longer, and come back from low health ");
-        lore.add(ChatColor.GRAY + "with regenerative abilities.");
+        lore.add(ChatColor.GRAY + "Survive longer, and come back from low");
+        lore.add(ChatColor.GRAY + "health with regenerative abilities.");
 
         menuItem.setType(Material.REDSTONE);
         meta =menuItem.getItemMeta();

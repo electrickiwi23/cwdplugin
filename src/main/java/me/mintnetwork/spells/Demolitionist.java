@@ -58,15 +58,17 @@ public class Demolitionist extends KitItems {
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY +"Throws a piece of TNT which rapidly divides ");
-        lore.add(ChatColor.GRAY +"into multiple after exploding once.");
+        lore.add(ChatColor.GRAY +"Throws a piece of TNT which explodes");
+        lore.add(ChatColor.GRAY +"into multiple explosives which");
+        lore.add(ChatColor.GRAY +"explode into even more.");
         meta.setDisplayName(ChatColor.GOLD+("Cluster Bomb"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Your Armor is enchanted with blast protection");
-        lore.add(ChatColor.GRAY + "making you take less damage from explosions.");
+        lore.add(ChatColor.GRAY + "Your Armor is enchanted with blast");
+        lore.add(ChatColor.GRAY + "protection making you take less ");
+        lore.add(ChatColor.GRAY + "damage from explosions.");
         meta.setDisplayName(ChatColor.WHITE + "Blast-Proof Armor");
         meta.setLore(lore);
         passive.setItemMeta(meta);

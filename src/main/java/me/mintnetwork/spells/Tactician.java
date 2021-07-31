@@ -40,8 +40,8 @@ public class Tactician extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNIPER_BOLT_COST);
-        lore.add("Zoom in with shift to fire a sniper ");
-        lore.add("bolt that does decent damage.");
+        lore.add(ChatColor.GRAY + "Zoom in with shift to fire a sniper ");
+        lore.add(ChatColor.GRAY + "bolt that does decent damage.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Sniper Bolt"));
@@ -50,8 +50,8 @@ public class Tactician extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.MOLOTOV_COST);
-        lore.add("Throw a flaming bottle that sets ");
-        lore.add("the area which it lands on fire.");
+        lore.add(ChatColor.GRAY + "Throw a flaming bottle that sets ");
+        lore.add(ChatColor.GRAY + "the area which it lands on fire.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Molotov Cocktail"));
@@ -60,23 +60,24 @@ public class Tactician extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GRAPPLE_HOOK_COST);
-        lore.add("Climb to places with a hook that ");
-        lore.add("shoots out and drags you along.");
+        lore.add(ChatColor.GRAY + "Climb to places with a hook that ");
+        lore.add(ChatColor.GRAY + "shoots out and drags you along.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Grapple Hook"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Call in a strike that decimates ");
-        lore.add("everything in its radius.");
+        lore.add(ChatColor.GRAY + "Call in a strike that decimates ");
+        lore.add(ChatColor.GRAY + "everything in its radius.");
         meta.setDisplayName(ChatColor.GOLD+("Orbital Strike"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "When you deal damage to an enemy, you ");
-        lore.add(ChatColor.GRAY + "get a readout of information about them.");
+        lore.add(ChatColor.GRAY + "When you deal damage to an ");
+        lore.add(ChatColor.GRAY + "enemy, you get a readout of");
+        lore.add(ChatColor.GRAY + "information about them.");
         meta.setDisplayName(ChatColor.WHITE + "Advanced Intel");
         meta.setLore(lore);
         passive.setItemMeta(meta);

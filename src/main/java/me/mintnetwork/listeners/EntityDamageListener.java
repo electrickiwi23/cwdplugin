@@ -43,7 +43,6 @@ public class  EntityDamageListener implements Listener {
 
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
-                System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
 
@@ -106,7 +105,7 @@ public class  EntityDamageListener implements Listener {
                         }
                         break;
                     case SHADOW:
-                        if (wizard.PassiveTick >= 10&&!p.isInvisible()) {
+                        if (wizard.combatTick >= 10) {
                             event.setDamage(event.getDamage() + 2);
                             Vector horizontal = p.getEyeLocation().getDirection().rotateAroundY(Math.toRadians(90)).setY(0);
                             for (int i = 0; i < 10; i++) {
@@ -133,6 +132,7 @@ public class  EntityDamageListener implements Listener {
                         break;
                 }
             }
+            wizard.combatTick = 0;
         }
 
     }

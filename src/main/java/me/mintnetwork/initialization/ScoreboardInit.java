@@ -22,8 +22,20 @@ public class ScoreboardInit {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getMainScoreboard();
         board.clearSlot(DisplaySlot.SIDEBAR);
-        board.clearSlot(DisplaySlot.BELOW_NAME);
         board.clearSlot(DisplaySlot.PLAYER_LIST);
+    }
+
+    public static void InitHealth(){
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard board = manager.getMainScoreboard();
+
+        if (board.getObjective("health")!=null) board.getObjective("health").unregister();
+
+        Objective health =  board.registerNewObjective("health","health",ChatColor.RED+ "❤");
+
+        health.setRenderType(RenderType.HEARTS);
+
+        health.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
     }
 

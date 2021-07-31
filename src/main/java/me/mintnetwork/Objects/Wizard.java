@@ -15,6 +15,8 @@ public class Wizard {
     public int Ult = 0;
     public Kit kitID = Kit.NONE;
     public int PassiveTick = 0;
+    public int combatTick = 0;
+    public ArrowType nextArrow = ArrowType.REGULAR;
 
     public ArrayList<ItemStack> wands = new ArrayList<>();
     public FallingBlock thrownAnvil = null;

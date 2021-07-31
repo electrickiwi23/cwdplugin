@@ -246,10 +246,28 @@ public class RightClickListener implements Listener {
                                         Protector.ProtectionUlt(p);
                                         break;
 
-                                    case ("Tripwire"):
-                                        if (event.getClickedBlock() != null) {
-                                            Trapper.tripwire(p, plugin, event.getBlockFace(), event.getClickedBlock());
-                                        }
+                                    case ("Cosmic Ray"):
+                                        Cosmonaut.cosmicRay(p,plugin);
+                                        break;
+                                    case ("Unstable Nova"):
+                                        Cosmonaut.castSunBomb(p,plugin);
+                                        break;
+
+                                    case ("Starfield Barrage"):
+                                        Cosmonaut.starShower(p,plugin);
+                                        break;
+
+                                    case ("Bomb Arrow"):
+                                        Hunter.castBombArrow(p);
+                                        break;
+                                    case ("Scan Arrow"):
+                                        Hunter.castScanArrow(p);
+                                        break;
+                                    case ("Tracking Arrow"):
+                                        Hunter.castDecayArrow(p);
+                                        break;
+                                    case ("Starlight Arrow"):
+                                        Hunter.castLightArrow(p);
                                         break;
 
                                     case ("Create Clone"):

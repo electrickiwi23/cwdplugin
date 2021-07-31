@@ -57,9 +57,8 @@ public class Wands implements CommandExecutor {
         lore.add(ChatColor.GRAY + "Shoots an explosive ");
         lore.add(ChatColor.GRAY + "rocket towards your enemies");
 
-
-        item.setType(Material.FIREWORK_ROCKET);
         meta = item.getItemMeta();
+        item.setType(Material.FIREWORK_ROCKET);
         meta.setDisplayName(ChatColor.WHITE +"Firework Bolt");
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -120,9 +119,8 @@ public class Wands implements CommandExecutor {
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BAT_SONAR_COST);
         lore.add(ChatColor.GRAY + "Sends out a bat which locates");
         lore.add(ChatColor.GRAY + "and marks your enemies.");
-
-        item.setType(Material.SCULK_SENSOR);
         meta = item.getItemMeta();
+        item.setType(Material.SCULK_SENSOR);
         meta.setDisplayName(ChatColor.WHITE +"Bat Sonar");
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -163,20 +161,6 @@ public class Wands implements CommandExecutor {
 
 
         //      BLACK HOLE
-        lore.clear();
-        lore.add(select);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLACK_HOLE_COST);
-        lore.add(ChatColor.GRAY + "Create a black hole which after ");
-        lore.add(ChatColor.GRAY + "charging sucks in everything around it.");
-
-        item.setType(Material.NETHER_STAR);
-        meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.WHITE +"Black Hole");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        genericWands.add(meta.clone());
-        wandsInv.setItem(7, item);
-
 
 //      END WARP
         lore.clear();
@@ -190,7 +174,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(8, item);
+        wandsInv.setItem(7, item);
 
 
 //      BABY BOOMER
@@ -206,7 +190,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(9, item);
+        wandsInv.setItem(8, item);
 
 
 //      ZOMBIE SUMMON
@@ -221,7 +205,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(10, item);
+        wandsInv.setItem(9, item);
 
 
 //      SLIME BALL
@@ -237,7 +221,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(11, item);
+        wandsInv.setItem(10, item);
 
 
 //      FLASH STEP
@@ -253,7 +237,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(12, item);
+        wandsInv.setItem(11, item);
 
 
 //      SHOULDER BLITZ
@@ -268,7 +252,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(13, item);
+        wandsInv.setItem(12, item);
 
 
 //      ANVIL TOSS
@@ -285,7 +269,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(14, item);
+        wandsInv.setItem(13, item);
 
 
 //      STORM STRIKE
@@ -300,7 +284,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(15, item);
+        wandsInv.setItem(14, item);
 
 
 //      MANA BULLET
@@ -316,7 +300,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(16, item);
+        wandsInv.setItem(15, item);
 
         //      MANA BULLET
         lore.clear();
@@ -330,7 +314,7 @@ public class Wands implements CommandExecutor {
         meta.setLore(lore);
         item.setItemMeta(meta);
         genericWands.add(meta.clone());
-        wandsInv.setItem(17, item);
+        wandsInv.setItem(16, item);
 
 
 

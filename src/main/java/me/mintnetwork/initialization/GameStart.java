@@ -23,6 +23,7 @@ public class GameStart {
     public static boolean hasStarted = false;
     public static int timer = 0;
     public static World world;
+    public static ArrayList<Player> playersInGame = new ArrayList<>();
 
     public static void SetGlass(World world){
         if (world.getName().equals("woodlands")) {
@@ -308,6 +309,8 @@ public class GameStart {
             hasStarted = true;
         }
 
+        playersInGame.addAll(Bukkit.getOnlinePlayers());
+
         for (UUID uuid: WizardInit.playersWizards.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p!=null) {
@@ -317,7 +320,7 @@ public class GameStart {
                 p.setLevel(3);
                 TeamsInit.updateArmor(p);
             }
-        };
+        }
 
         //stops objectives that are running from previous games
         CapturePoint.Shutdown();
@@ -395,9 +398,11 @@ public class GameStart {
         SetGlass(world);
         world.getWorldBorder().setSize(10000);
 
-        for (Player p:Bukkit.getOnlinePlayers()) {
-            String str = winner.getDisplayName();
-            p.sendTitle(winner.getColor()+ str.substring(0, 1).toUpperCase() + str.substring(1) + " team has won.", "", 10 ,80, 20);
+        if (winner!=null) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                String str = winner.getDisplayName();
+                p.sendTitle(winner.getColor() + str.substring(0, 1).toUpperCase() + str.substring(1) + " team has won.", "", 10, 80, 20);
+            }
         }
 
         gameRunning = false;

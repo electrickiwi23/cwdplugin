@@ -73,6 +73,8 @@ public class StatusEffects {
 
     public static ArrayList<Player> stormUlt = new ArrayList<>();
 
+    public static HashMap<LivingEntity,BukkitTask> huntersMarker = new HashMap<>();
+
     public void statusEffects(Main plugin) {
         EffectManager em = new EffectManager(plugin);
         Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
@@ -159,7 +161,7 @@ public class StatusEffects {
 
                     for (Entity e : b.getWorld().getNearbyEntities(b.getLocation().add(.5, .5, .5), 1, 1.5, 1)) {
                         if (e instanceof LivingEntity) {
-                            ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 4, 1,false,false));
+                            e.setFreezeTicks(e.getMaxFreezeTicks()-1);
                         }
                     }
 

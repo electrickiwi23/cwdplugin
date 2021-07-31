@@ -78,17 +78,18 @@ public class TakeDamageListener implements Listener {
 
             if (shadowList.contains(p)) {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
-                System.out.println("invis damage");
                 CancelMap.get(p).run();
             }
-            if (WizardInit.playersWizards.get(p.getUniqueId()).kitID.equals(Kit.SHADOW)){
-                WizardInit.playersWizards.get(p.getUniqueId()).PassiveTick = 0;
-            }
+            WizardInit.playersWizards.get(p.getUniqueId()).combatTick = 0;
 
         }
         if (entity instanceof LivingEntity) {
             if (entity instanceof Rabbit && event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION){
                 event.setCancelled(true);
+            }
+
+            if (StatusEffects.huntersMarker.containsKey(entity)) {
+                event.setDamage(event.getDamage() + .8);
             }
 
             if (StatusEffects.BloodWeak.containsKey(entity)) {

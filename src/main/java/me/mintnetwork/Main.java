@@ -2,7 +2,6 @@ package me.mintnetwork;
 
 import me.mintnetwork.Objects.CapturePoint;
 import me.mintnetwork.commands.*;
-import me.mintnetwork.initialization.GameStart;
 import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.initialization.WizardInit;
 import me.mintnetwork.listeners.*;
@@ -10,7 +9,6 @@ import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.Passives;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.utils.Config;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static me.mintnetwork.commands.ClassSelect.createClassMenu;
@@ -26,6 +24,7 @@ public final class Main extends JavaPlugin {
         new CancelTill(this);
         WizardInit wizardInit = new WizardInit();
         wizardInit.WizardInitialization(this);
+        wizardInit.resetAllClasses();
         Passives.PassivesStart(this);
         BlockDecay.decayRepeater(this);
         StatusEffects statuses = new StatusEffects();
@@ -39,16 +38,17 @@ public final class Main extends JavaPlugin {
         new GiveWand(this);
         new AssignTeams(this);
         new setFlare(this);
+        new endGame(this);
 
         getCommand("changeclass").setTabCompleter(new ClassAutoCompleter());
         getCommand("givewands").setTabCompleter(new WandsAutoCompleter());
         getCommand("start").setTabCompleter(new StartAutoCompleter());
 
-
         TeamsInit.refreshTeams();
 
         Config.configSetup(this);
 
+        new PlayerRespawnListener(this);
         new FireworkExpolodeListener(this);
         new BlockPlaceListener(this);
         new EntityDamageListener(this);
@@ -63,6 +63,8 @@ public final class Main extends JavaPlugin {
         new InventoryClickListener(this);
         new DropItemListener(this);
         new BlockFallListener(this);
+        new PlayerFlyListener(this);
+        new BowShootListener(this);
 
         new TeamsInit(this);
 

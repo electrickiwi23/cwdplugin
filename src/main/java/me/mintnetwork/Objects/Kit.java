@@ -17,6 +17,8 @@ public enum Kit {
     SPELL_SLINGER(new SpellSlinger()),
     TACTICIAN(new Tactician()),
     PROTECTOR(new Protector()),
+    COSMONAUT(new Cosmonaut()),
+    HUNTER(new Hunter()),
     NONE(null);
 
     public final KitItems KitItems;

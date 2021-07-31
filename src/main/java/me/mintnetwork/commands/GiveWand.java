@@ -33,72 +33,69 @@ public class GiveWand implements CommandExecutor {
             }
 
             if (args.length==1) {
-                    ItemStack baseWand = new ItemStack(Material.STICK);
-                    ItemMeta meta = baseWand.getItemMeta();
+                ItemStack baseWand = new ItemStack(Material.STICK);
+                ItemMeta meta = baseWand.getItemMeta();
 
-                        switch (args[0].toLowerCase()) {
-                            case ("fireworkbolt"):
-                                meta = Wands.genericWands.get(0);
-                                break;
-                            case ("jumpboost"):
-                                meta = Wands.genericWands.get(1);
-                                break;
-                            case ("engineblast"):
-                                meta = Wands.genericWands.get(2);
-                            break;
-                            case ("dragonorb"):
-                                meta = Wands.genericWands.get(3);
-                            break;
-                            case ("batsonar"):
-                                meta = Wands.genericWands.get(4);
-                            break;
-                            case ("tntring"):
-                                meta = Wands.genericWands.get(5);
-                            break;
-                            case ("hivebolt"):
-                                meta = Wands.genericWands.get(6);
-                            break;
-                            case ("blackhole"):
-                                meta = Wands.genericWands.get(7);
-                            break;
-                            case ("endwarp"):
-                                meta = Wands.genericWands.get(8);
-                            break;
-                            case ("babyboomer"):
-                                meta = Wands.genericWands.get(9);
-                            break;
-                            case ("zombiesummon"):
-                                meta = Wands.genericWands.get(10);
-                            break;
-                            case ("slimeball"):
-                                meta = Wands.genericWands.get(11);
-                            break;
-                            case ("flashstep"):
-                                meta = Wands.genericWands.get(12);
-                            break;
-                            case ("shoulderblitz"):
-                                meta = Wands.genericWands.get(13);
-                            break;
-                            case ("anviltoss"):
-                                meta = Wands.genericWands.get(14);
-                            break;
-                            case ("stormstrike"):
-                                meta = Wands.genericWands.get(15);
-                            break;
-                            case("manabullet"):
-                                meta = Wands.genericWands.get(16);
-                            break;
-                            case("voidpillar"):
-                                meta = Wands.genericWands.get(17);
-                            break;
+                switch (args[0].toLowerCase()) {
+                    case ("fireworkbolt"):
+                        meta = Wands.genericWands.get(0);
+                        break;
+                    case ("jumpboost"):
+                        meta = Wands.genericWands.get(1);
+                        break;
+                    case ("engineblast"):
+                        meta = Wands.genericWands.get(2);
+                        break;
+                    case ("dragonorb"):
+                        meta = Wands.genericWands.get(3);
+                        break;
+                    case ("batsonar"):
+                        meta = Wands.genericWands.get(4);
+                        break;
+                    case ("tntring"):
+                        meta = Wands.genericWands.get(5);
+                        break;
+                    case ("hivebolt"):
+                        meta = Wands.genericWands.get(6);
+                        break;
+                    case ("endwarp"):
+                        meta = Wands.genericWands.get(7);
+                        break;
+                    case ("babyboomer"):
+                        meta = Wands.genericWands.get(8);
+                        break;
+                    case ("zombiesummon"):
+                        meta = Wands.genericWands.get(9);
+                        break;
+                    case ("slimeball"):
+                        meta = Wands.genericWands.get(10);
+                        break;
+                    case ("flashstep"):
+                        meta = Wands.genericWands.get(11);
+                        break;
+                    case ("shoulderblitz"):
+                        meta = Wands.genericWands.get(12);
+                        break;
+                    case ("anviltoss"):
+                        meta = Wands.genericWands.get(13);
+                        break;
+                    case ("stormstrike"):
+                        meta = Wands.genericWands.get(14);
+                        break;
+                    case ("manabullet"):
+                        meta = Wands.genericWands.get(15);
+                        break;
+                    case ("voidpillar"):
+                        meta = Wands.genericWands.get(16);
+                        break;
 
 
-                        }
-                        baseWand.setItemMeta(meta);
-                        p.getInventory().addItem(baseWand);
+                }
+                baseWand.setItemMeta(meta);
+                p.getInventory().addItem(baseWand);
 
-                        wizard.wands.add(baseWand);
-                } else {
+                wizard.wands.add(baseWand);
+            } else {
                 p.sendMessage(ChatColor.RED + ("You must select a spell."));
             }
 //        }

@@ -59,16 +59,17 @@ public class Protector extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.GIVE_ARMOR_COST);
-        lore.add(ChatColor.GRAY +"Increase the armor capability and ");
-        lore.add(ChatColor.GRAY +"thus damage taken by your teammates.");
+        lore.add(ChatColor.GRAY +"Gives a teammate extra hearts that");
+        lore.add(ChatColor.GRAY +"will take damage and knockback for them.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Crystal Armor"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Increase the health of teammates");
-        lore.add("by a large amount.");
+        lore.add(ChatColor.GRAY +"Gives you a large amount of hearts");
+        lore.add(ChatColor.GRAY +"and for a short time you take damage");
+        lore.add(ChatColor.GRAY +"in place of nearby teammates.");
         meta.setDisplayName(ChatColor.GOLD+("Aura of Protection"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
@@ -172,8 +173,6 @@ public class Protector extends KitItems {
                 if (p.hasLineOfSight(victim)) {
                     Vector direction = victim.getLocation().toVector().subtract(p.getLocation().toVector());
                     double angle = Math.toDegrees(p.getEyeLocation().getDirection().angle(direction));
-                    System.out.println("angle: " + angle);
-                    System.out.println();
                     if (angle < 20 && angle < currentAngle && victim.getEyeLocation().distance(p.getLocation()) < 30) {
                         currentAngle = angle;
                         currentVictim = victim;

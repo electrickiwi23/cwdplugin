@@ -158,13 +158,11 @@ public class TeamsInit implements Listener {
                 updateArmor(online);
             }
         } else if (teamAmount == 4) {
-            System.out.println("seventh");
             int count = 0;
             for (Player online : players) {
                 count++;
                 switch (count % 4) {
                     case (1):
-                        System.out.println("tenth");
                         board.getTeam("red").addEntry(online.getName());
                         break;
                     case (2):

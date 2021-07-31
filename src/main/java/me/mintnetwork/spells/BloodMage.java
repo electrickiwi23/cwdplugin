@@ -244,7 +244,7 @@ public class BloodMage extends KitItems {
                         if (item != null) {
                             ItemMeta meta = item.getItemMeta();
                             if (meta.getDisplayName().contains("Blood Link Ritual")) {
-                                meta.setDisplayName(ChatColor.RESET + ("Blood Link Ritual (" + StatusEffects.bloodLink.get(p).size() + ")"));
+                                meta.setDisplayName(ChatColor.RESET + (ChatColor.GOLD + "Blood Link Ritual (" + StatusEffects.bloodLink.get(p).size() + ")"));
                                 item.setItemMeta(meta);
                             }
                         }

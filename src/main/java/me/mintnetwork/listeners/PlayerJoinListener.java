@@ -14,10 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private final Main plugin;
 
     public PlayerJoinListener(Main plugin) {
-        this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -31,7 +29,7 @@ public class PlayerJoinListener implements Listener {
             }
         }
         if (GameStart.gameRunning&& GameStart.gameMode!= me.mintnetwork.initialization.GameMode.SKIRMISH){
-            p.setGameMode(GameMode.SPECTATOR);
+            if (!GameStart.playersInGame.contains(p)) p.setGameMode(GameMode.SPECTATOR);
         }
         if (!WizardInit.playersWizards.containsKey(p.getUniqueId())) {
             WizardInit.playersWizards.put(p.getUniqueId(), new Wizard(p));

@@ -39,8 +39,8 @@ public class Shadow extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_INVISIBILITY_COST);
-        lore.add("Melt in the shadows to gain ");
-        lore.add("temporary invisibility until hit.");
+        lore.add(ChatColor.GRAY +"Melt in the shadows to gain");
+        lore.add(ChatColor.GRAY +"temporary invisibility until hit.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Darkness Camouflage"));
@@ -49,8 +49,8 @@ public class Shadow extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_RETREAT_COST);
-        lore.add("Dash smoothly to get away ");
-        lore.add("or initiate from combat.");
+        lore.add(ChatColor.GRAY +"Dash smoothly to get away");
+        lore.add(ChatColor.GRAY +"or initiate from combat.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Shadow Dash"));
@@ -59,21 +59,22 @@ public class Shadow extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SHADOW_GRAPPLE_COST);
-        lore.add("Pick up enemies to separate them from teammates.");
+        lore.add(ChatColor.GRAY +"Pick up enemies to separate");
+        lore.add(ChatColor.GRAY +"them from teammates.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET + ("Pray Abduction"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Blinds and slows enemies in the ");
-        lore.add("large cloud created by your ult");
+        lore.add(ChatColor.GRAY +"Blinds and slows enemies in the");
+        lore.add(ChatColor.GRAY +"large cloud created by your ult.");
         meta.setDisplayName(ChatColor.GOLD + ("Consuming Midnight"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "If you haven't taken or dealt damage ");
+        lore.add(ChatColor.GRAY + "If you haven't taken or dealt damage");
         lore.add(ChatColor.GRAY + "in the last 10 seconds, your next");
         lore.add(ChatColor.GRAY + "attack deals extra damage.");
         meta.setDisplayName(ChatColor.WHITE + "Shadow Blade");

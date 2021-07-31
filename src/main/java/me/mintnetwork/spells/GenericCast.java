@@ -135,7 +135,7 @@ public class GenericCast {
                     cloud.setParticle(Particle.DRAGON_BREATH);
                     cloud.setRadius(4);
                     cloud.setDuration(200);
-                    cloud.setCustomName("A Dragon Grenade");
+                    cloud.setCustomName("a Dragon Grenade");
                     cloud.setReapplicationDelay(10);
                     cloud.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 1, 1, false, false), true);
                     Map<Entity, Entity> linked = ProjectileInfo.getLinkedSnowball();
@@ -277,17 +277,6 @@ public class GenericCast {
                     }
                 }
             }, 12);
-
-
-//            Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (!bolt.isDead()) {
-//                        bolt.remove();
-//                        tick.get(bolt).cancel();
-//                    }
-//                }
-//            }, 460);
         }
     }
 
@@ -503,9 +492,6 @@ public class GenericCast {
                         @Override
                         public void run() {
                             count[0]++;
-
-
-                            System.out.println(Math.toDegrees(v[0].angle(p.getEyeLocation().getDirection())));
 
                             p.teleport(p.getLocation().setDirection(v[0]));
                             p.setVelocity(v[0]);
@@ -781,12 +767,12 @@ public class GenericCast {
                                         block.damage(30);
                                         block.setForceful(true);
                                     }
-                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
+                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0,null,true);
                                     break;
                                 }
                                 if (hitEntity != null && (!(hitEntity == p && range <= 2))) {
 
-                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0);
+                                    p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0,null,true);
 
                                     ArmorStand stand = (ArmorStand) p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
                                     stand.setInvisible(true);
@@ -803,7 +789,7 @@ public class GenericCast {
                                 }
                             }
                             current = current.add(direction);
-                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 1, 0, 0, 0, 0);
+                            p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, current, 1, 0, 0, 0, 0,null,true);
 
                             range++;
                             if (range >= 30) break;

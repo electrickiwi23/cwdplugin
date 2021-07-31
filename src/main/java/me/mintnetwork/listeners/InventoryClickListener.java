@@ -35,7 +35,7 @@ public class InventoryClickListener implements Listener {
 
         String[] classSlots = {
                 "alchemist", "bard", "berserker", "bloodmage", "builder", "cleric", "aviator", "demolitionist", "painter",
-                "shadow", "spellslinger", "tactician", "protector"
+                "shadow", "spellslinger", "tactician", "protector","cosmonaut","hunter"
         };
 
         if (event.getView().getTitle().equals(ChatColor.BOLD + "Select Class")) {
@@ -97,12 +97,9 @@ public class InventoryClickListener implements Listener {
 
 
                 if (event.getCurrentItem().getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    System.out.println("pane");
 
                     for (ItemStack item : WizardInit.playersWizards.get(player.getUniqueId()).wands) {
-                        System.out.println(item.getItemMeta().getDisplayName());
                         if (ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()).equals(ChatColor.stripColor(item.getItemMeta().getDisplayName()))) {
-                            System.out.println("ooga");
                             player.getInventory().removeItem(item);
                             WizardInit.playersWizards.get(player.getUniqueId()).wands.remove(item);
                             event.getClickedInventory().setContents(Wands.wandsEditInventory(player, Wands.wandsInv).getContents());
@@ -113,7 +110,7 @@ public class InventoryClickListener implements Listener {
                 }
 
                 String[] slots = {
-                        "fireworkbolt", "jumpboost", "engineblast", "dragonorb", "batsonar", "tntring", "hivebolt", "blackhole", "endwarp",
+                        "fireworkbolt", "jumpboost", "engineblast", "dragonorb", "batsonar", "tntring", "hivebolt", "endwarp",
                         "babyboomer", "zombiesummon", "slimeball", "flashstep", "shoulderblitz", "anviltoss", "stormstrike", "manabullet","voidpillar"
                 };
 

@@ -53,7 +53,7 @@ public class Mana{
                         Player player = Bukkit.getPlayer(uuid);
                         if (player!=null) {
                             if (player.isOnline()) {
-                                player.setFoodLevel(8);
+                                player.setFoodLevel(8+ WizardInit.playersWizards.get(player.getUniqueId()).combatTick*12/10);
                                 tickMana(player);
                             }
                         }

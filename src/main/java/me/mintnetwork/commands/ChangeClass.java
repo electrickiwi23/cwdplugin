@@ -2,11 +2,10 @@ package me.mintnetwork.commands;
 
 import me.mintnetwork.Main;
 import me.mintnetwork.Objects.Kit;
-import me.mintnetwork.initialization.TeamsInit;
-import me.mintnetwork.repeaters.StatusEffects;
-import me.mintnetwork.utils.Utils;
 import me.mintnetwork.Objects.Wizard;
+import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.initialization.WizardInit;
+import me.mintnetwork.repeaters.StatusEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -16,18 +15,14 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class ChangeClass implements CommandExecutor {
@@ -62,6 +57,7 @@ public class ChangeClass implements CommandExecutor {
                     break;
                 case ("bloodmage"):
                     kit = Kit.BLOOD_MAGE;
+                    StatusEffects.bloodLink.put(p,new HashMap<>());
                     break;
                 case ("builder"):
                     kit = Kit.BUILDER;
@@ -93,6 +89,12 @@ public class ChangeClass implements CommandExecutor {
                 case ("protector"):
                     kit = Kit.PROTECTOR;
                     break;
+                case ("cosmonaut"):
+                    kit = Kit.COSMONAUT;
+                    break;
+                case ("hunter"):
+                    kit = Kit.HUNTER;
+                    break;
             }
             if (kit == Kit.NONE) {
                 sender.sendMessage(args[0] + " is not a valid Class");
@@ -120,29 +122,20 @@ public class ChangeClass implements CommandExecutor {
         }
 
         if (uniqueClass) {
+            WizardInit.resetClass(p);
+
             p.getInventory().clear();
 
             wizard.kitID = kit;
 
             wizard.wands.clear();
 
-            p.setCustomNameVisible(kit != Kit.SHADOW);
-            StatusEffects.cloudFloating.remove(p);
-            p.removePotionEffect(PotionEffectType.SLOW_FALLING);
+            p.setAllowFlight(kit.equals(Kit.AVIATOR));
 
             if (wizard.kitID.equals(Kit.PROTECTOR)) {
                 p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(24);
                 p.setHealth(24);
                 p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).addModifier(new AttributeModifier("ProtectorSlow", p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue() * -.15, AttributeModifier.Operation.ADD_NUMBER));
-            } else {
-                p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
-                p.setHealth(20);
-                for (AttributeModifier modifier : p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getModifiers()) {
-                    if (modifier.getName().equals("ProtectorSlow")) {
-
-                        p.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).removeModifier(modifier);
-                    }
-                }
             }
 
             ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
@@ -154,6 +147,15 @@ public class ChangeClass implements CommandExecutor {
             swordMeta.setUnbreakable(true);
             sword.setItemMeta(swordMeta);
             p.getInventory().addItem(sword);
+
+            if (wizard.kitID.equals(Kit.HUNTER)){
+                ItemStack bow = new ItemStack(Material.BOW);
+                ItemMeta bowMeta =  bow.getItemMeta();
+                bowMeta.setUnbreakable(true);
+                bowMeta.setDisplayName(ChatColor.RESET + "Hunter's Bow");
+                bow.setItemMeta(bowMeta);
+                p.getInventory().addItem(bow);
+            }
 
             for (ItemStack item : kit.KitItems.wands) {
                 if (item.getType() == Material.STICK) p.getInventory().addItem(item);

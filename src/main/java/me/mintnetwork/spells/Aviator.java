@@ -65,7 +65,7 @@ public class Aviator extends KitItems {
 
         lore.add(ChatColor.GRAY + "Charges you with energy that makes");
         lore.add(ChatColor.GRAY + "movement spells cost much less");
-        lore.add(ChatColor.GRAY + "and gives them an electric Kick.");
+        lore.add(ChatColor.GRAY + "and gives them an electric kick.");
         meta.setDisplayName(ChatColor.GOLD+"Thunderstorm Overdrive");
         meta.setLore(lore);
         ult.setItemMeta(meta);

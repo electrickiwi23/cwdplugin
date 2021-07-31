@@ -1,5 +1,7 @@
 package me.mintnetwork.utils;
 
+import org.bukkit.entity.LivingEntity;
+
 public class Utils {
     // mana costs of non class spells
     public static final int FIREWORK_BOLT_COST = 3;
@@ -32,7 +34,7 @@ public class Utils {
     public static final int SPEED_BOOST_COST = 3;
     public static final int FORCE_PULL_COST = 4;
     public static final int BLOOD_BOLT_COST = 3;
-    public static final int BLOOD_SACRIFICE_COST = 6; // IN HEALTH
+    public static final int BLOOD_SACRIFICE_COST = 4; // IN HEALTH
     public static final int BLOOD_TRACKER_COST = 3;
     public static final int QUICK_BUILD_COST = 1;
     public static final int POPUP_TOWER_COST = 4;
@@ -65,7 +67,11 @@ public class Utils {
     public static final int SNIPER_BOLT_COST = 3;
     public static final int MOLOTOV_COST = 3;
     public static final int GRAPPLE_HOOK_COST = 3;
-
+    public static final int SUN_BOMB_COST = 3;
+    public static final int COSMIC_RAY_COST = 2;
+    public static final int BOMB_ARROW_COST = 3;
+    public static final int SCAN_ARROW_COST = 3;
+    public static final int DECAY_ARROW_COST = 2;
     //Ultimate charge times for Classes
     public static final int ALCHEMIST_ULT_TIME = 450;
     public static final int BARD_ULT_TIME = 900;
@@ -81,10 +87,17 @@ public class Utils {
     public static final int SPELL_SLINGER_ULT_TIME = 720;
     public static final int TACTICIAN_ULT_TIME = 750;
     public static final int PROTECTOR_ULT_TIME = 720;
+    public static final int COSMONAUT_ULT_TIME = 720;
+    public static final int HUNTER_ULT_TIME = 500;
+
 
     //Properties of Ults
     public static final int STORM_ULT_DURATION = 300;
     public static final int SIREN_SONG_DURATION = 240;
+
+    public static boolean isGrounded(LivingEntity l){
+        return l.isOnGround();
+    }
 
 
 

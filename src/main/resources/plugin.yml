@@ -20,3 +20,5 @@ commands:
     description: Test GUI
   wands:
     description: Opens the Menu to select wands
+  endgame:
+    description: Ends the current game

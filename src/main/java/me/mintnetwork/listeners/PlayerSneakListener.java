@@ -54,15 +54,6 @@ public class PlayerSneakListener implements Listener {
                 Zoomed.remove(p);
             }
         }else{
-            if (wizard.kitID.equals(Kit.AVIATOR)){
-                if (StatusEffects.cloudFloating.contains(p)){
-                    p.removePotionEffect(PotionEffectType.SLOW_FALLING);
-                    StatusEffects.cloudFloating.remove(p);
-                }else {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100000, 3, false, false));
-                    StatusEffects.cloudFloating.add(p);
-                }
-            }
             if (!p.getInventory().getItemInMainHand().getType().isAir()) {
                 if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Sniper Bolt")) {
                     PreviousSpeed.put(p,p.getWalkSpeed());

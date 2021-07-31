@@ -10,6 +10,7 @@ import me.mintnetwork.initialization.TeamsInit;
 import me.mintnetwork.repeaters.BlockDecay;
 import me.mintnetwork.repeaters.StatusEffects;
 import me.mintnetwork.spells.BloodMage;
+import me.mintnetwork.spells.Cosmonaut;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -81,6 +82,50 @@ public class ProjectileHitListener implements Listener {
                          });
                      }
                  }
+                if (ID.get(e).equals("Mark Arrow")) {
+                    if (hit != null) {
+                        LivingEntity finalHit = hit;
+
+                        if (StatusEffects.huntersMarker.containsKey(finalHit)) {
+                            StatusEffects.huntersMarker.get(finalHit).cancel();
+                        }
+
+
+                        BukkitTask task2 = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+                            @Override
+                            public void run() {
+                                finalHit.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 3, 10));
+                                finalHit.getWorld().spawnParticle(Particle.REDSTONE, finalHit.getLocation().add(0, 1, 0), 2, .2, .4, .2, 0, new Particle.DustOptions(Color.RED, 2));
+                                finalHit.getWorld().playSound(finalHit.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, .15f, 1);
+                            }
+                        }, 7, 20);
+                        BukkitTask task1 = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (finalHit.isDead()) {
+                                    this.cancel();
+                                    task2.cancel();
+                                    StatusEffects.huntersMarker.get(finalHit).cancel();
+                                    StatusEffects.huntersMarker.remove(finalHit);
+
+                                } else {
+                                    finalHit.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 3, 10));
+                                    finalHit.getWorld().spawnParticle(Particle.REDSTONE, finalHit.getLocation().add(0, 1, 0), 2, .2, .4, .2, 0, new Particle.DustOptions(Color.RED, 2));
+                                    finalHit.getWorld().playSound(finalHit.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, .2f, 1);
+                                }
+
+                            }
+                        }.runTaskTimer(plugin, 1, 20);
+                        StatusEffects.huntersMarker.put(finalHit, Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                            @Override
+                            public void run() {
+                                task1.cancel();
+                                task2.cancel();
+                                StatusEffects.huntersMarker.remove(finalHit);
+                            }
+                        }, 300));
+                    }
+                }
                 if (ID.get(e).equals("Tracker Arrow")) {
                     if (hit != null) {
                         Map<Player, Entity> tracked = ProjectileInfo.getStrikeTrackedEntity();
@@ -199,6 +244,16 @@ public class ProjectileHitListener implements Listener {
 
                 }
 
+                if (ID.get(snow).equals("SunBomb")){
+                    if (hitFace!=null) {
+                        Cosmonaut.summonSunBomb(snow.getLocation().add(hitFace.getDirection()), plugin);
+                    } else {
+                        Cosmonaut.summonSunBomb(snow.getLocation(), plugin);
+                    }
+                    task.get(snow).cancel();
+
+                }
+
                 if (ID.get(snow).equals("FireBolt")) {
                     if (hit != null) {
                         hit.damage(2, snow);
@@ -229,6 +284,25 @@ public class ProjectileHitListener implements Listener {
                     snow.remove();
                     task.get(snow).cancel();
 
+                }
+                if (ID.get(snow).equals("StarBolt")) {
+                    snow.getWorld().createExplosion(snow.getLocation(),1.7f,false,true);
+                    task.get(snow).cancel();
+                }
+                if (ID.get(snow).equals("CosmicRay")) {
+                    if (hit != null) {
+                        if (TeamsInit.getTeamName(hit).equals("")||!TeamsInit.getTeamName(hit).equals(TeamsInit.getTeamName(shooter))) {
+                            hit.damage(5, snow);
+                        }
+                    }
+                    if (hitBlock != null){
+                        if (BlockDecay.decay.containsKey(hitBlock)){
+                            DecayBlock block = BlockDecay.decay.get(hitBlock);
+                            block.damage(80);
+                            block.setForceful(true);
+                        }
+                    }
+                    task.get(snow).cancel();
                 }
 
                 if (ID.get(snow).equals("BloodBolt")) {
@@ -536,6 +610,12 @@ public class ProjectileHitListener implements Listener {
                                     ((LivingEntity) victim).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 140, 10,false,false));
 
                                     Map<LivingEntity, Integer> stunMap = StatusEffects.stunSong;
+                                    if (victim instanceof Player){
+                                        ((Player) victim).setCooldown(Material.STICK,140);
+                                        ((Player) victim).setCooldown(Material.DIAMOND_HOE,140);
+
+                                    }
+
                                     if (stunMap.containsKey(living)) {
                                         stunMap.replace(living, 70);
                                     } else {

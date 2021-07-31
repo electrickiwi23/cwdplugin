@@ -10,10 +10,7 @@ import me.mintnetwork.repeaters.Ultimate;
 import me.mintnetwork.spells.projectiles.ProjectileInfo;
 import me.mintnetwork.utils.Utils;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,8 +37,8 @@ public class SpellSlinger extends KitItems {
 
 
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.LIGHTNING_BOLT_COST);
-        lore.add("Creates a cloud that shoots lightning ");
-        lore.add("out of it after a short charge.");
+        lore.add(ChatColor.GRAY + "Creates a cloud that shoots lightning ");
+        lore.add(ChatColor.GRAY + "out of it after a short charge.");
 
         meta.setLore(lore);
         lore.clear();
@@ -51,7 +48,8 @@ public class SpellSlinger extends KitItems {
 
         ItemStack wand2 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.FIRE_BOLT_COST);
-        lore.add("Shoots a bolt of fire that sets enemies alight.");
+        lore.add(ChatColor.GRAY + "Shoots a bolt of fire that");
+        lore.add(ChatColor.GRAY + "sets enemies alight.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Fire Bolt"));
@@ -60,16 +58,17 @@ public class SpellSlinger extends KitItems {
 
         ItemStack wand3 = new ItemStack(Material.STICK);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SNOW_BOLT_COST);
-        lore.add("Shoots a bolt of freezing weather ");
-        lore.add("that slows enemies when it lands.");
+        lore.add(ChatColor.GRAY + "Shoots a bolt of freezing weather ");
+        lore.add(ChatColor.GRAY + "that slows enemies when it lands.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Ice Bolt"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add("Channel all of the elements to create a destructive ");
-        lore.add("shot that decimates terrain and opponents.");
+        lore.add(ChatColor.GRAY + "Channel all of the elements to");
+        lore.add(ChatColor.GRAY + "create a destructive shot that");
+        lore.add(ChatColor.GRAY + "decimates terrain and opponents.");
         meta.setDisplayName(ChatColor.GOLD+("Elemental Release"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
@@ -211,24 +210,7 @@ public class SpellSlinger extends KitItems {
 
     public static void FireBolt(Player p,Plugin plugin){
         if (Mana.spendMana(p, Utils.FIRE_BOLT_COST)) {
-            p.getWorld().playSound(p.getEyeLocation(),Sound.ENTITY_BLAZE_SHOOT,1,1);
-            Snowball bolt = p.launchProjectile(Snowball.class);
-            Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-            velocity.put(bolt, p.getEyeLocation().getDirection());
-            Map<Entity, String> ID = ProjectileInfo.getProjectileID();
-            bolt.setItem(new ItemStack(Material.FIRE_CHARGE));
-            bolt.setFireTicks(600);
-            bolt.setGravity(false);
-            ID.put(bolt, "FireBolt");
-            Map<Entity, BukkitTask> tick = ProjectileInfo.getTickCode();
-            tick.put(bolt, Bukkit.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Map<Entity, Vector> velocity = ProjectileInfo.getLockedVelocity();
-                    bolt.setVelocity(velocity.get(bolt));
-                    bolt.getWorld().spawnParticle(Particle.FLAME, bolt.getLocation(), 1, .1, .1, .1,.1);
-                }
-            }, 1, 1));
+            p.launchProjectile(Fireball.class,p.getEyeLocation().getDirection());
         }
     }
 

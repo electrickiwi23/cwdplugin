@@ -29,6 +29,10 @@ public class InventoryClickListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+
+
+
+
     @EventHandler()
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();

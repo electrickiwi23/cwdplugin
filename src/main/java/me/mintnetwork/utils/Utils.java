@@ -11,7 +11,7 @@ public class Utils {
     public static final int BAT_SONAR_COST = 3;
     public static final int TNT_RING_COST = 4;
     public static final int HIVE_BOLT_COST = 3;
-    public static final int BLACK_HOLE_COST = 4;
+    // public static final int BLACK_HOLE_COST = 4; No longer class spell
     public static final int END_WARP_COST = 3;
     public static final int BABY_BOOMER_COST = 4;
     public static final int ZOMBIE_SUMMON_COST = 4;
@@ -47,7 +47,7 @@ public class Utils {
     public static final int TNT_STICK_GRENADE_COST = 2;
     public static final int SPRAY_PAINT_COST = 2;
     public static final int PAINT_BOMB_COST = 3;
-    public static final int PAINT_ACTIVATE = 2;
+    // public static final int PAINT_ACTIVATE = 2;
     public static final int BRUSH_STROKE_COST = 3;
     public static final int VOID_PILLAR_COST = 4;
     public static final int MANA_PILLAR_COST = 4;
@@ -67,6 +67,7 @@ public class Utils {
     public static final int SNIPER_BOLT_COST = 3;
     public static final int MOLOTOV_COST = 3;
     public static final int GRAPPLE_HOOK_COST = 3;
+    public static final int BLACK_HOLE_COST = 4;
     public static final int SUN_BOMB_COST = 3;
     public static final int COSMIC_RAY_COST = 2;
     public static final int BOMB_ARROW_COST = 3;

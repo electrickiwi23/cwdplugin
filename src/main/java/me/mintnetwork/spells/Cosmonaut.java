@@ -35,9 +35,9 @@ public class Cosmonaut extends KitItems {
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_LINE_COST);
-        lore.add(ChatColor.GRAY +"Throw blocks of tnt out");
-        lore.add(ChatColor.GRAY +"at a straight line.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.COSMIC_RAY_COST);
+        lore.add(ChatColor.GRAY +"Shoots a laser which ");
+        lore.add(ChatColor.GRAY +"damages enemies on hit.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Cosmic Ray"));
@@ -45,9 +45,10 @@ public class Cosmonaut extends KitItems {
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_GRENADE_COST);
-        lore.add(ChatColor.GRAY +"Throw a grenade which ");
-        lore.add(ChatColor.GRAY +"explodes after a few seconds.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SUN_BOMB_COST);
+        lore.add(ChatColor.GRAY +"Toss the core of a dying sun ");
+        lore.add(ChatColor.GRAY +"that explodes after a few seconds,");
+        lore.add(ChatColor.GRAY +"dealing massive damage.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Unstable Nova"));
@@ -55,34 +56,34 @@ public class Cosmonaut extends KitItems {
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.TNT_STICK_GRENADE_COST);
-        lore.add(ChatColor.GRAY +"Throw a grenade which sticks ");
-        lore.add(ChatColor.GRAY +"to enemies and detonates");
-        lore.add(ChatColor.GRAY +"after a short period.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BLACK_HOLE_COST);
+        lore.add(ChatColor.GRAY +"Create a black hole that sucks ");
+        lore.add(ChatColor.GRAY +"in anyone around it dealing");
+        lore.add(ChatColor.GRAY +"damage to those too close.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Black Hole"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY +"Throws a piece of TNT which explodes");
-        lore.add(ChatColor.GRAY +"into multiple explosives which");
-        lore.add(ChatColor.GRAY +"explode into even more.");
+        lore.add(ChatColor.GRAY +"Rockets you into the air and ");
+        lore.add(ChatColor.GRAY +"hurls a stream of explosive ");
+        lore.add(ChatColor.GRAY +"stars into anyone below.");
         meta.setDisplayName(ChatColor.GOLD+("Starfield Barrage"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Your Armor is enchanted with blast");
-        lore.add(ChatColor.GRAY + "protection making you take less ");
-        lore.add(ChatColor.GRAY + "damage from explosions.");
-        meta.setDisplayName(ChatColor.WHITE + "TBD");
+        lore.add(ChatColor.GRAY + "Double tap the space bar");
+        lore.add(ChatColor.GRAY + "to activate or deactivate");
+        lore.add(ChatColor.GRAY + "your powers of flight.");
+        meta.setDisplayName(ChatColor.WHITE + " Anti-Gravity Boots");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Exterminate your enemies with large");
-        lore.add(ChatColor.GRAY + "area of effect explosions");
+        lore.add(ChatColor.GRAY + "Arrive from the stars and use");
+        lore.add(ChatColor.GRAY + "your kit to deny enemies territory");
 
         menuItem.setType(Material.NETHER_STAR);
         meta = menuItem.getItemMeta();

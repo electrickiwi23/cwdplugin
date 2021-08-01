@@ -159,8 +159,7 @@ public class Wands implements CommandExecutor {
         genericWands.add(meta.clone());
         wandsInv.setItem(6, item);
 
-
-        //      BLACK HOLE
+        //      RIP BLACK HOLE
 
 //      END WARP
         lore.clear();
@@ -181,7 +180,7 @@ public class Wands implements CommandExecutor {
         lore.clear();
         lore.add(select);
         lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BABY_BOOMER_COST);
-        lore.add(ChatColor.GRAY +"Summons a baby zombie with TNT "); //todo do something better me
+        lore.add(ChatColor.GRAY +"Summons a baby zombie that holds TNT ");
         lore.add(ChatColor.GRAY +"that explodes after a few seconds.");
 
         item.setType(Material.GUNPOWDER);

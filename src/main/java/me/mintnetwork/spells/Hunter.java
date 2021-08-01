@@ -27,9 +27,9 @@ public class Hunter extends KitItems{
         ItemMeta meta = wand1.getItemMeta();
 
 
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.HEAL_SONG_COST);
-        lore.add(ChatColor.GRAY + "Your singing heals your teammates");
-        lore.add(ChatColor.GRAY + "who listen for a large amount.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.BOMB_ARROW_COST);
+        lore.add(ChatColor.GRAY + "Attach explosives to your next bow shot");
+        lore.add(ChatColor.GRAY + "that explodes soon after contact.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Bomb Arrow"));
@@ -37,9 +37,10 @@ public class Hunter extends KitItems{
         wands.add(wand1);
 
         ItemStack wand2 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SPEED_SONG_COST);
-        lore.add(ChatColor.GRAY + "Your singing allows your teammates");
-        lore.add(ChatColor.GRAY + "who listen to run faster.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.SCAN_ARROW_COST);
+        lore.add(ChatColor.GRAY + "Imbues your arrow with light ");
+        lore.add(ChatColor.GRAY + "that reveals those around the ");
+        lore.add(ChatColor.GRAY + "arrow after a short period.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Scan Arrow"));
@@ -47,32 +48,33 @@ public class Hunter extends KitItems{
         wands.add(wand2);
 
         ItemStack wand3 = new ItemStack(Material.STICK);
-        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.STUN_SONG_COST);
-        lore.add(ChatColor.GRAY + "Throws a bouncy jukebox that ");
-        lore.add(ChatColor.GRAY + "explodes after a short amount");
-        lore.add(ChatColor.GRAY + "of time stunning enemies.");
+        lore.add(ChatColor.GREEN + "Mana Cost: " + Utils.DECAY_ARROW_COST);
+        lore.add(ChatColor.GRAY + "Attaches a tracker to your next ");
+        lore.add(ChatColor.GRAY + "arrow that reveals the targets");
+        lore.add(ChatColor.GRAY + "position in short bursts.");
         meta.setLore(lore);
         lore.clear();
         meta.setDisplayName(ChatColor.RESET+("Tracking Arrow"));
         wand3.setItemMeta(meta);
         wands.add(wand3);
 
-        lore.add(ChatColor.GRAY + "Your song entrances your enemies and ");
-        lore.add(ChatColor.GRAY + "forces them to look your direction.");
+        lore.add(ChatColor.GRAY + "converts your arrow to light and ");
+        lore.add(ChatColor.GRAY + "shoots out dealing damage to anyone");
+        lore.add(ChatColor.GRAY + "in the ray(goes through walls).");
         meta.setDisplayName(ChatColor.GOLD+("Starlight Arrow"));
         meta.setLore(lore);
         ult.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Inspire teammates around you, giving");
-        lore.add(ChatColor.GRAY + "them points that buff their next attack.");
-        meta.setDisplayName(ChatColor.WHITE + "Bardic Inspiration");
+        lore.add(ChatColor.GRAY + "Gain a bow to suppress enemies");
+        lore.add(ChatColor.GRAY + "from a long distance away.");
+        meta.setDisplayName(ChatColor.WHITE + "Ranged Tactics");
         meta.setLore(lore);
         passive.setItemMeta(meta);
         lore.clear();
 
-        lore.add(ChatColor.GRAY + "Use the power of music to heal");
-        lore.add(ChatColor.GRAY + "your allies and ward off enemies.");
+        lore.add(ChatColor.GRAY + "Outplay your enemies by gathering ");
+        lore.add(ChatColor.GRAY + "information and out-ranging the enemies.");
 
         menuItem.setType(Material.BOW);
         meta = menuItem.getItemMeta();

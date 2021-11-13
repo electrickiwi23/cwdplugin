@@ -154,9 +154,11 @@ public class Cosmonaut extends KitItems {
                                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
 
                                     //code for shield reflection--------------------------------------------------------
-                                    for (Entity shield : Shield.shieldMap.keySet()) {
-                                        if (shield.getLocation().distance(current[0]) < Shield.shieldMap.get(shield).getRadius() + .5) {
-                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0], direction[0]);
+                                    for (Entity shieldEntity : Shield.shieldMap.keySet()) {
+                                        Shield shield = Shield.shieldMap.get(shieldEntity);
+
+                                        if (current[0].distance(shieldEntity.getLocation()) >= shield.getRadius() && current[0].clone().add(direction[0]).distance(shieldEntity.getLocation())<=shield.getRadius()) {
+                                            direction[0] = shield.reflectVector(current[0], direction[0]);
                                         }
                                     }
                                     //----------------------------------------------------------------------------------
@@ -214,7 +216,7 @@ public class Cosmonaut extends KitItems {
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    location.getWorld().createExplosion(location, 5);
+                    location.getWorld().createExplosion(location, 4);
                     task.cancel();
                     snowball.remove();
 

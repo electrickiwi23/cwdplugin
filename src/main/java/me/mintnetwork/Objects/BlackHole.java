@@ -81,7 +81,7 @@ public class BlackHole {
                     effect.particleOrbital = Particle.FLAME;
                     effect.orbitals = 3;
                     effectManger.start(effect);
-                    effect.iterations = 200;
+                    effect.iterations = 140;
                 } else {
                     location.getWorld().spawnParticle(Particle.SQUID_INK, location, 8, .2, .2, .2, 0);
 
@@ -89,7 +89,7 @@ public class BlackHole {
 
 
                 age++;
-                if (age>=260) remove();
+                if (age>=200) remove();
             }
         }.runTaskTimer(plugin, 1, 1);
     }

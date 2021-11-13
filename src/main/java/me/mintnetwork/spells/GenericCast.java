@@ -717,9 +717,12 @@ public class GenericCast {
                                     Map<Entity, String> ID = ProjectileInfo.getProjectileID();
 
                                     //code for shield reflection--------------------------------------------------------
-                                    for (Entity shield : Shield.shieldMap.keySet()) {
-                                        if (shield.getLocation().distance(current[0]) < Shield.shieldMap.get(shield).getRadius() + .5) {
-                                            direction[0] = Shield.shieldMap.get(shield).reflectVector(current[0], direction[0]);
+                                    for (Entity shieldEntity : Shield.shieldMap.keySet()) {
+                                        Shield shield = Shield.shieldMap.get(shieldEntity);
+
+
+                                        if (current[0].distance(shieldEntity.getLocation()) >= shield.getRadius() && current[0].clone().add(direction[0]).distance(shieldEntity.getLocation()) <= shield.getRadius()) {
+                                            direction[0] = shield.reflectVector(current[0], direction[0]);
                                         }
                                     }
                                     //----------------------------------------------------------------------------------
@@ -764,7 +767,7 @@ public class GenericCast {
                                 if (hitLocation != null && hitEntity == null) {
                                     if (BlockDecay.decay.containsKey(ray.getHitBlock())) {
                                         DecayBlock block = BlockDecay.decay.get(ray.getHitBlock());
-                                        block.damage(30);
+                                        block.damage(35);
                                         block.setForceful(true);
                                     }
                                     p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hitLocation, 1, 0, 0, 0, 0,null,true);
@@ -795,9 +798,12 @@ public class GenericCast {
                             if (range >= 30) break;
 
                             //code for shield reflection--------------------------------------------------------
-                            for (Entity shield : Shield.shieldMap.keySet()) {
-                                if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
-                                    direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
+                            for (Entity shieldEntity : Shield.shieldMap.keySet()) {
+                                Shield shield = Shield.shieldMap.get(shieldEntity);
+
+
+                                if (current.distance(shieldEntity.getLocation()) >= shield.getRadius() && current.clone().add(direction).distance(shieldEntity.getLocation()) <= shield.getRadius()) {
+                                    direction = shield.reflectVector(current, direction);
                                 }
                             }
                             //----------------------------------------------------------------------------------

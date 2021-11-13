@@ -43,7 +43,7 @@ public class Shield {
     }
 
     public void tick(){
-        for (Entity e: entity.getNearbyEntities(radius+1,radius+1,radius+1)) {
+        for (Entity e: entity.getNearbyEntities(radius+2.5,radius+2.5,radius+2.5)) {
             if (e instanceof Projectile) {
                 this.reflectEntity(e);
             }
@@ -51,7 +51,7 @@ public class Shield {
     }
 
     public void reflectEntity(Entity projectile){
-        if (projectile.getLocation().distance(entity.getLocation()) <= radius+.5&&(!SkeletonTurret.turretMap.containsKey(entity)||SkeletonTurret.turretMap.get(entity).active)) {
+        if (projectile.getLocation().distance(entity.getLocation()) >= radius && projectile.getLocation().add(projectile.getVelocity()).distance(entity.getLocation())<=radius) {
             Vector d = projectile.getVelocity();
             Vector n = projectile.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize();
             if (d.dot(n) <= 0 && projectile.getLocation().distance(entity.getLocation()) >= radius-1) {

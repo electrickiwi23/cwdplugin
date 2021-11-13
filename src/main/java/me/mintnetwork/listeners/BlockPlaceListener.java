@@ -22,13 +22,13 @@ public class BlockPlaceListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    static ArrayList<Material> mats = new ArrayList<Material>(Arrays.asList(Material.RED_WOOL, Material.BLUE_WOOL, Material.YELLOW_WOOL, Material.LIME_WOOL,Material.GRAY_WOOL));
+
     @EventHandler
     public void onClick(BlockPlaceEvent event) {
 
-        ArrayList<Material> mats = new ArrayList<Material>(Arrays.asList(Material.RED_WOOL, Material.BLUE_WOOL, Material.YELLOW_WOOL, Material.LIME_WOOL));
-
         if (mats.contains(event.getItemInHand().getType())){
-            new DecayBlock(75,0,event.getBlock());
+            new DecayBlock(70,0,event.getBlock());
 
         }
     }

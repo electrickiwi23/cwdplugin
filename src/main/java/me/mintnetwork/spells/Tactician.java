@@ -109,7 +109,7 @@ public class Tactician extends KitItems {
                     }
                     Vector direction = spread.getDirection();
                     Location current = p.getEyeLocation().add(direction);
-                    p.getWorld().spawnParticle(Particle.FLASH, p.getEyeLocation().add(p.getEyeLocation().getDirection()), 1, 0, 0, 0, 0);
+                    p.getWorld().spawnParticle(Particle.FLASH, p.getEyeLocation().add(p.getEyeLocation().getDirection()), 1, 0, 0, 0, 0,true);
                     p.getWorld().playSound(current, Sound.ENTITY_GENERIC_EXPLODE, 10, 1);
                     int range = 0;
                     boolean hasHit = false;
@@ -180,12 +180,16 @@ public class Tactician extends KitItems {
                             if (!hasHit) {
                                 current = current.add(direction.normalize().multiply(2));
                                 p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current, 1, 0, 0, 0, 0);
-                                p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current.add(direction), 1, 0, 0, 0, 0);
+                                p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, current.clone().add(direction.normalize()), 1, 0, 0, 0, 0);
                                 range++;
                                 if (range >= 150) hasHit = true;
-                                for (Entity shield : Shield.shieldMap.keySet()) {
-                                    if (shield.getLocation().distance(current) < Shield.shieldMap.get(shield).getRadius() + .5) {
-                                        direction = Shield.shieldMap.get(shield).reflectVector(current, direction);
+
+                                for (Entity shieldEntity : Shield.shieldMap.keySet()) {
+                                    Shield shield = Shield.shieldMap.get(shieldEntity);
+
+                                    if (current.distance(shieldEntity.getLocation()) >= shield.getRadius() && current.clone().add(direction.normalize().multiply(2)).distance(shieldEntity.getLocation()) <= shield.getRadius()) {
+                                        System.out.println("reflect");
+                                        direction = shield.reflectVector(current, direction);
                                     }
                                 }
                             }

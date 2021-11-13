@@ -149,11 +149,11 @@ public class Protector extends KitItems {
             effect.setLocation(p.getLocation().add(0, 0, 0));
             effect.particle = Particle.END_ROD;
             effect.particleCount = 1;
-            effect.radius = 4;
+            effect.radius = 5;
             effect.iterations = 200;
             em.start(effect);
 
-            Shield shield = new Shield(stand,4,plugin);
+            Shield shield = new Shield(stand,5,plugin);
 
             Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override

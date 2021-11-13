@@ -167,6 +167,24 @@ public class Cleric extends KitItems {
 
                     ArrayList<Block> limit = wizard.HealPillars;
 
+                    String team = TeamsInit.getTeamName(p);
+                    Material mat = Material.PINK_WOOL;
+
+                    switch (team) {
+                        case "blue":
+                            mat = Material.BLUE_WOOL;
+                            break;
+                        case "red":
+                            mat = Material.RED_WOOL;
+                            break;
+                        case "green":
+                            mat = Material.LIME_WOOL;
+                            break;
+                        case "yellow":
+                            mat = Material.YELLOW_WOOL;
+                            break;
+                    }
+
                     limit.removeIf(block1 -> block1.getType()!=Material.CAKE);
 
                     if (limit.size()>=3){
@@ -180,7 +198,7 @@ public class Cleric extends KitItems {
                         for (int j = 0; j < 3; j++) {
                             Block alter = pillarLocation.getLocation().add(i - 1, 0, j - 1).getBlock();
                             if (alter.isPassable()) {
-                                alter.setType(Material.PINK_WOOL);
+                                alter.setType(mat);
                             }
                         }
                     }
@@ -190,7 +208,8 @@ public class Cleric extends KitItems {
                             for (Entity e : pillarLocation.getWorld().getNearbyEntities(pillarLocation.getLocation().add(.5,.5,.5), 6, 6, 6)) {
                                 if (e instanceof LivingEntity) {
                                     LivingEntity live = (LivingEntity) e;
-                                    if (!live.isDead()) {
+                                    if (!live.isDead()&&TeamsInit.getTeamName(live).equals(team)) {
+
                                         if (live.getMaxHealth() - .033 >= Math.ceil(live.getHealth())) {
                                             live.setHealth(live.getHealth() + .033);
                                         }

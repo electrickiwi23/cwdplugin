@@ -25,8 +25,6 @@ public class FireworkExpolodeListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    Map<UUID, Long> lastUsed = new HashMap<UUID, Long>();
-
     @EventHandler
     public void onHit(FireworkExplodeEvent event) {
         Firework firework = event.getEntity();

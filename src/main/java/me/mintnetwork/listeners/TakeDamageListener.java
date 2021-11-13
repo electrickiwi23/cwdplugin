@@ -80,7 +80,10 @@ public class TakeDamageListener implements Listener {
                 Map<Player, Runnable> CancelMap = StatusEffects.getShadowCancel();
                 CancelMap.get(p).run();
             }
-            WizardInit.playersWizards.get(p.getUniqueId()).combatTick = 0;
+
+            if (event.getCause()!= EntityDamageEvent.DamageCause.FALL) {
+                WizardInit.playersWizards.get(p.getUniqueId()).combatTick = 0;
+            }
 
         }
         if (entity instanceof LivingEntity) {

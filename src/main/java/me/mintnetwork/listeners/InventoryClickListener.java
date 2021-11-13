@@ -45,7 +45,6 @@ public class InventoryClickListener implements Listener {
                 if (event.getCurrentItem().getItemMeta() == null) return;
                 if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
 
-
                 if (event.getCurrentItem().getType() == Material.LIME_STAINED_GLASS_PANE || event.getCurrentItem().getType() == Material.RED_STAINED_GLASS_PANE) {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, .5F, 1);
                     return;
